@@ -10,6 +10,31 @@ async def login(request):
     name = request.rel_url.query['name']
     password = request.rel_url.query['password']
 
+    # Make sure user name and password are specified.
+    if name == '':
+        return web.Response(
+            status=404,
+            body=json.dumps(
+                {
+                    'token': None,
+                    'incorrectName': True,
+                    'errorMessage': 'Please specify user name.'
+                }
+            )
+        )
+
+    if password == '':
+        return web.Response(
+            status=404,
+            body=json.dumps(
+                {
+                    'token': None,
+                    'incorrectPassword': True,
+                    'errorMessage': 'Please specify password.'
+                }
+            )
+        )
+
     pool = request.app['db']
     async with pool.acquire() as db:
         db: asyncpg.Connection = db
@@ -22,23 +47,27 @@ async def login(request):
 
             # If we the combination user password doesn't exist return None.
             if user_password is None:
-                return web.Response(status=404,
-                                    body=json.dumps(
-                                        {
-                                            'token': None,
-                                            'errorMessage': 'User Name not found'
-                                        }
-                                    )
-                                    )
+                return web.Response(
+                    status=404,
+                    body=json.dumps(
+                        {
+                            'token': None,
+                            'incorrectName': True,
+                            'errorMessage': f'User name `{name}` not found'
+                        }
+                    )
+                )
             elif user_password['password'] != password:
-                return web.Response(status=401,
-                                    body=json.dumps(
-                                        {
-                                            'token': None,
-                                            'errorMessage': 'Incorrect Password'
-                                        }
-                                    )
-                                    )
+                return web.Response(
+                    status=401,
+                    body=json.dumps(
+                        {
+                            'token': None,
+                            'incorrectPassword': True,
+                            'errorMessage': f'Incorrect Password for user `{name}`'
+                        }
+                    )
+                )
             # Generate token.
             token = uuid4()
 
@@ -49,5 +78,12 @@ async def login(request):
                              WHERE name=$2
                              """, token, name)
 
-            return web.Response(status=200, body=json.dumps({'token': str(token),
-                                                             'errorMessage': f'User {name} logged in.'}))
+            return web.Response(
+                status=200,
+                body=json.dumps(
+                    {
+                        'token': str(token),
+                        'errorMessage': f'User {name} logged in.'
+                    }
+                )
+            )

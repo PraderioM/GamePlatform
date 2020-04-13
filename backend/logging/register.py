@@ -5,19 +5,65 @@ from uuid import uuid4
 from aiohttp import web
 import asyncpg
 
+MIN_PASSWORD_LEN = 5
+
 
 async def register(request):
     """Add User and Password"""
     name = request.rel_url.query['name']
     password = request.rel_url.query['password']
+    confirmed_password = request.rel_url.query['confirmed_password']
 
+    # Name must be specified.
+    if name == '':
+        return web.Response(
+            status=409,
+            body=json.dumps(
+                {
+                    'token': None,
+                    'incorrectName': True,
+                    'errorMessage': 'User name must be specified.'
+                }
+            )
+        )
+
+    # Password must have at least 5 characters.
+    if len(password) < MIN_PASSWORD_LEN:
+        return web.Response(
+            status=409,
+            body=json.dumps(
+                {
+                    'token': None,
+                    'incorrectPassword': True,
+                    'errorMessage': f'Password must have at least {MIN_PASSWORD_LEN} characters but got '
+                                    f'password with {len(password)} characters.',
+                }
+            )
+        )
+
+    # Password only alpha numeric.
     if re.match('^[\w]+$', password) is None:
         return web.Response(
             status=403,
             body=json.dumps(
                 {
                     'token': None,
+                    'incorrectPassword': True,
                     'errorMessage': f'Passwords can only contain alphanumeric values.'
+                }
+            )
+        )
+
+    # password and confirmed password must coincide.
+    if password != confirmed_password:
+        return web.Response(
+            status=409,
+            body=json.dumps(
+                {
+                    'token': None,
+                    'incorrectPassword': True,
+                    'incorrectConfirmedPassword': True,
+                    'errorMessage': f'Password confirmation does not coincide with password.',
                 }
             )
         )
@@ -39,6 +85,7 @@ async def register(request):
                     body=json.dumps(
                         {
                             'token': None,
+                            'incorrectName': True,
                             'errorMessage': f'User {name} already exists. Please try a different username.'
                         }
                     )
