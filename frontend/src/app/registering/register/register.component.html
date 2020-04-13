@@ -1,0 +1,22 @@
+<ul style="text-align:center" class="data-container">
+  <li style="text-align:center" class="data-container">
+    <input type="text" placeholder="name"
+           class="small-input"
+           [ngClass]="{'failed': nameFailed}"
+           #inputName>
+    <input type="password" placeholder="password"
+           class="small-input"
+           [ngClass]="{'failed': passwordFailed}"
+           #inputPassword>
+    <input type="password" placeholder="confirm password"
+           class="small-input"
+           [ngClass]="{'failed': passwordConfirmFailed}"
+           #inputConfirmPassword>
+    <button (click)="tryRegister(inputName.value, inputPassword.value, inputConfirmPassword.value)">
+      register
+    </button>
+    <button (click)="goToLogin.emit()">
+      go to log in
+    </button>
+  </li>
+</ul>

@@ -1,0 +1,18 @@
+<ul class="data-container">
+  <li class="data-container">
+    <input type="text" placeholder="name"
+           class="small-input"
+           [ngClass]="{'failed': incorrectName}"
+           #labelerName>
+    <input type="password" placeholder="password"
+           class="small-input"
+           [ngClass]="{'failed': incorrectPassword}"
+           #inputPassword>
+    <button (click)="tryLogIn(labelerName.value, inputPassword.value)">
+      log in
+    </button>
+    <button (click)="goToRegister.emit()">
+      register
+    </button>
+  </li>
+</ul>
