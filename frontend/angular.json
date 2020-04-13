@@ -11,14 +11,14 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "ngx-build-plus:build",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/frontend",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "aot": true,
+            "aot": false,
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -26,13 +26,7 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": [],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "src/styles"
-              ]
-            },
-            "extraWebpackConfig": "webpack.extra.js"
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -47,6 +41,7 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
+              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -66,10 +61,9 @@
           }
         },
         "serve": {
-          "builder": "ngx-build-plus:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "frontend:build",
-            "extraWebpackConfig": "webpack.extra.js"
+            "browserTarget": "frontend:build"
           },
           "configurations": {
             "production": {
@@ -97,12 +91,7 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": [],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "src/styles"
-              ]
-            }
+            "scripts": []
           }
         },
         "lint": {
@@ -131,10 +120,6 @@
           }
         }
       }
-    }
-  },
-  "defaultProject": "frontend",
-  "cli": {
-    "defaultCollection": "yang-schematics"
-  }
+    }},
+  "defaultProject": "frontend"
 }

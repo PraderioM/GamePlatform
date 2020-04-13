@@ -1,2 +1,3 @@
 aiohttp
 asyncpg
+aiohttp_cors

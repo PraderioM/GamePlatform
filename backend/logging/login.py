@@ -13,7 +13,8 @@ async def login(request):
     # Make sure user name and password are specified.
     if name == '':
         return web.Response(
-            status=404,
+            status=200,
+            # status=404,
             body=json.dumps(
                 {
                     'token': None,
@@ -25,7 +26,8 @@ async def login(request):
 
     if password == '':
         return web.Response(
-            status=404,
+            status=200,
+            # status=404,
             body=json.dumps(
                 {
                     'token': None,
@@ -48,7 +50,8 @@ async def login(request):
             # If we the combination user password doesn't exist return None.
             if user_password is None:
                 return web.Response(
-                    status=404,
+                    status=200,
+                    # status=404,
                     body=json.dumps(
                         {
                             'token': None,
@@ -59,7 +62,8 @@ async def login(request):
                 )
             elif user_password['password'] != password:
                 return web.Response(
-                    status=401,
+                    status=200,
+                    # status=401,
                     body=json.dumps(
                         {
                             'token': None,

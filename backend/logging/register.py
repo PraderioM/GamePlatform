@@ -17,7 +17,8 @@ async def register(request):
     # Name must be specified.
     if name == '':
         return web.Response(
-            status=409,
+            status=200,
+            # status=409,
             body=json.dumps(
                 {
                     'token': None,
@@ -30,7 +31,8 @@ async def register(request):
     # Password must have at least 5 characters.
     if len(password) < MIN_PASSWORD_LEN:
         return web.Response(
-            status=409,
+            status=200,
+            # status=409,
             body=json.dumps(
                 {
                     'token': None,
@@ -44,12 +46,13 @@ async def register(request):
     # Password only alpha numeric.
     if re.match('^[\w]+$', password) is None:
         return web.Response(
-            status=403,
+            status=200,
+            # status=403,
             body=json.dumps(
                 {
                     'token': None,
                     'incorrectPassword': True,
-                    'errorMessage': f'Passwords can only contain alphanumeric values.'
+                    'errorMessage': 'Passwords can only contain alphanumeric values.'
                 }
             )
         )
@@ -57,13 +60,14 @@ async def register(request):
     # password and confirmed password must coincide.
     if password != confirmed_password:
         return web.Response(
-            status=409,
+            status=200,
+            # status=409,
             body=json.dumps(
                 {
                     'token': None,
                     'incorrectPassword': True,
-                    'incorrectConfirmedPassword': True,
-                    'errorMessage': f'Password confirmation does not coincide with password.',
+                    'incorrectPasswordConfirm': True,
+                    'errorMessage': 'Password confirmation does not coincide with password.',
                 }
             )
         )
@@ -72,16 +76,17 @@ async def register(request):
     async with pool.acquire() as db:
         db: asyncpg.Connection = db
         async with db.transaction():
-            user_password = await db.fetchval("""
-                                         SELECT COUNT(name)
-                                         FROM  users
-                                         WHERE name=$1
-                                         """, name)
+            name_count = await db.fetchval("""
+                                           SELECT COUNT(name)
+                                           FROM  users
+                                           WHERE name=$1
+                                           """, name)
 
             # If the user password doesn't exist return None.
-            if user_password is not None:
+            if name_count != 0:
                 return web.Response(
-                    status=409,
+                    status=200,
+                    # status=409,
                     body=json.dumps(
                         {
                             'token': None,
