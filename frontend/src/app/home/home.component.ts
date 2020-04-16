@@ -1,12 +1,13 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, NgModule, Output} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {StateService} from '../services/state.service';
+import {TicTacToeModule} from '../tic-tac-toe/tic-tac-toe.module';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  providers: [StateService, HttpClient]
+  providers: [StateService, HttpClient, TicTacToeModule]
 })
 export class HomeComponent {
   @Output() loggedOut = new EventEmitter<void>();
@@ -15,6 +16,7 @@ export class HomeComponent {
   gameSelections: boolean[];
 
   constructor(private stateService: StateService) {
+    this.gameSelections = [];
     for (const name of this.gameNames) {
       this.gameSelections.push(false);
     }

@@ -1,0 +1,5 @@
+<app-player-display *ngFor="let player in players; let i = index"
+                    [player]="player"
+                    [selected]="i===currentPlayer">
+
+</app-player-display>

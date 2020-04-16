@@ -1,0 +1,3 @@
+<app-active-games-board [token]="token" *ngIf="showActive"></app-active-games-board>
+<app-leaderboard [token]="token" *ngIf="!showActive"></app-leaderboard>
+<button (click)="toggleShowed()">{{showActive ? 'Leader board': 'Active games'}}</button>

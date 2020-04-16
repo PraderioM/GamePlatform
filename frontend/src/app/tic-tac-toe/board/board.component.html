@@ -1,0 +1,13 @@
+<p *ngIf="description == null">No game can available</p>
+<div *ngIf="description != null">
+  <app-players-display [players]="description.players"
+                       [currentPlayer]="description.currentPlayer">
+
+  </app-players-display>
+  <app-board-display (makePlay)="makePlay($event)"
+                     [token]="token"
+                     [description]="description">
+
+  </app-board-display>
+  <app-options-display (backToMenu)="backToMenu.emit()"></app-options-display>
+</div>

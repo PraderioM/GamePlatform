@@ -1,0 +1,34 @@
+<app-new-game-description (enterGame)="enterGame.emit($event)"
+                          [token]="token"
+                          #newGameDescriptionComponent
+                          (closeComponent)="newGamePopover.close()">
+</app-new-game-description>
+<app-existing-game-search (enterGame)="enterGame.emit($event)"
+                          [token]="token"
+                          #existingGameSearchComponent
+                          (closeComponent)="findGamePopover.close()">
+</app-existing-game-search>
+<p>
+  <button class="btn" placement="left"
+          [ngbPopover]="newGameDescriptionComponent"
+          [autoClose]="'outside'"
+          popoverTitle="create Game"
+          #newGamePopover="ngbPopover">
+    create game
+  </button>
+</p>
+<p>
+  <button class="btn" placement="left"
+          [ngbPopover]="existingGameSearchComponent"
+          [autoClose]="'outside'"
+          popoverTitle="find Game"
+          #findGamePopover="ngbPopover">
+    find game
+  </button>
+</p>
+<p>
+  <button class="btn" (click)="backToGameSelection.emit()">
+    game selection
+  </button>
+</p>
+

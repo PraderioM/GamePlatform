@@ -1,0 +1,24 @@
+<form>
+  <label for="rows">Rows</label>
+  <input #rows id="rows" type="number" value="3">
+  <br>
+  <label for="cols">Columns</label>
+  <input #cols id="cols" type="number" value="3">
+  <br>
+  <label for="npc">Bots</label>
+  <input #npc id="npc" type="number" value="0">
+  <br>
+  <label for="pc">Players</label>
+  <input #pc id="pc" type="number" value="2">
+  <br>
+  <label for="gravity">Gravity</label>
+  <input #gravity id="gravity" type="checkbox">
+  <br>
+  <button
+    (click)="tryCreateGame(rows.valueAsNumber, cols.valueAsNumber,
+                        npc.valueAsNumber, pc.valueAsNumber,
+                        gravity.checked)">
+    Create game
+  </button>
+</form>
+<button (click)="closeComponent.emit()">Close</button>

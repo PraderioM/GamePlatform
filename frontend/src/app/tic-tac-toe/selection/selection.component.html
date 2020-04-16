@@ -1,0 +1,10 @@
+
+<app-game-table (enterGame)="enterGame.emit($event)"
+                [token]="token">
+
+</app-game-table>
+<app-game-options (enterGame)="enterGame.emit($event)"
+                  [token]="token"
+                  (backToGameSelection)="backToGameSelection.emit($event)">
+
+</app-game-options>

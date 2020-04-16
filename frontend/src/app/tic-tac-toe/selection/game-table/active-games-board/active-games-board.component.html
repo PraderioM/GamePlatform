@@ -1,0 +1,15 @@
+<p>Active Games</p>
+<table>
+  <tr>
+    <th>gameId</th>
+    <th>nPlayers</th>
+    <th>nBots</th>
+    <th>currentPlayers</th>
+    <th>rows</th>
+    <th>cols</th>
+  </tr>
+  <app-active-game-display *ngFor="let activeGame of activeGames"
+                         [activeGame]="activeGame"
+                         [token]="token">
+  </app-active-game-display>
+</table>

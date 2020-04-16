@@ -1,1 +1,12 @@
-<p>tic-tac-toe works!</p>
+<app-selection (enterGame)="startGame($event)"
+               [token]="token"
+               (backToGameSelection)="backToMenu.emit()"
+               *ngIf="selectionMode">
+
+</app-selection>
+<app-board (backToMenu)="toggleSelectionMode()"
+           [description]="description"
+           [token]="token"
+           *ngIf="!selectionMode">
+
+</app-board>
