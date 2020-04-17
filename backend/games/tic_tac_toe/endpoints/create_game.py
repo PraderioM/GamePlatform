@@ -28,7 +28,7 @@ async def create_game(request: web.Request) -> web.Response:
         dummy_game = Game(rows=0, cols=0, current_player_index=0, gravity=gravity,
                           play_list=[], player_list=[], id_=None)
         error_message: Optional[str] = None
-        if rows <= 0 or  cols <= 0:
+        if rows <= 0 or cols <= 0:
             error_message = f'rows and cols must be strictly positive however got rows={rows} and cols={cols}.'
         elif rows * cols % (npc + pc) != 0:
             error_message = f'Total number of cells must be a multiple of the number of players however there ' \
@@ -36,9 +36,13 @@ async def create_game(request: web.Request) -> web.Response:
         elif pc < 1:
             error_message = f'There must be at least one player character however ' \
                             f'got number of player characters of {pc}'
-        elif npc <= 0:
+        elif npc < 0:
             error_message = f'There cannot be a negative number of non player characters however ' \
                             f'got number of non player characters of {npc}'
+        elif pc + npc <= 1:
+            error_message = f'The is a game of at least two players but got total number of players of {npc + pc}.'
+        elif npc > 0:
+            error_message = f'Artificial intelligence is not yet implemented and npc player cannot be set.'
 
         if error_message is not None:
             return web.Response(

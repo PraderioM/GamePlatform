@@ -24,12 +24,13 @@ class Player:
             'symbol': self.symbol,
         }
 
-    def to_frontend(self, token: Optional[str]) -> Dict[str, Union[str, bool]]:
+    def to_frontend(self, token: Optional[str], points: int) -> Dict[str, Union[str, bool]]:
         return {
             'name': self.name,
             'isBot': self.is_bot,
             'symbol': self.symbol,
             'token': token,
+            'points': points
         }
 
     async def get_token(self, db: asyncpg.Connection) -> Optional[str]:

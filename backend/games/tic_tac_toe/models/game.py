@@ -1,4 +1,4 @@
-from typing import Dict, List, Optional, Union
+from typing import Callable, Dict, List, Optional, Tuple, Union
 
 import asyncpg
 
@@ -48,7 +48,8 @@ class Game:
             'rows': self.rows,
             'cols': self.cols,
             'currentPlayer': self.current_player_index,
-            'players': [player.to_frontend(await player.get_token(db=db)) for player in self.player_list],
+            'players': [player.to_frontend(token=await player.get_token(db=db),
+                                           points=self.get_player_points(player)) for player in self.player_list],
             'plays': [play.to_frontend() for play in self.play_list],
             'id': self.id,
             'description': description,
@@ -64,6 +65,48 @@ class Game:
             'rows': self.rows,
             'cols': self.cols,
         }
+
+    def to_game_resolution(self, player: Optional[Player]) -> Dict[str, bool]:
+        if player is None:
+            return {'isObserver': True}
+
+        all_points = sorted([self.get_player_points(p) for p in self.player_list], reverse=True)
+        player_points = self.get_player_points(player)
+
+        if player_points == all_points[0]:
+            if player_points == all_points[1]:
+                return {'isTie': True}
+            else:
+                return {'isVictorious': True}
+        else:
+            return {'isLoser': True}
+
+    def resolution_points(self, player: Player):
+        all_scores = [self.get_player_points(p) for p in self.player_list]
+        player_score = self.get_player_points(player)
+        above_players = len([score for score in all_scores if score > player_score])
+        below_players = len([score for score in all_scores if score < player_score])
+
+        return below_players - above_players
+
+    def get_player_points(self, player: Player) -> int:
+        # Get player plays.
+        plays = [play for play in self.play_list if play.player == player]
+
+        # Compute lengths of all formed rows.
+        hor_lengths = self._get_row_lengths(plays[:], lambda row, col: (row, col+1))
+        diag_lengths = self._get_row_lengths(plays[:], lambda row, col: (row+1, col+1))
+        ver_lengths = self._get_row_lengths(plays[:], lambda row, col: (row+1, col))
+        anti_diag_lengths = self._get_row_lengths(plays[:], lambda row, col: (row+1, col-1))
+
+        # Join all lengths.
+        all_lengths = hor_lengths + diag_lengths + ver_lengths + anti_diag_lengths
+
+        # Points are computed for every row of plays as (row_length - 1)**2 and all results are added together
+        if len(all_lengths) == 0:
+            return 0
+        else:
+            return sum([(length - 1)**2 for length in all_lengths])
 
     def add_play(self, play: Optional[Play]):
         if play is None:
@@ -97,6 +140,38 @@ class Game:
             for player in self.player_list:
                 if not player.is_bot and player.name is None:
                     player.name = name
+
+    @staticmethod
+    def get_play_in_coords(row: int, col: int, play_list: List[Play]) -> Optional[Play]:
+        for play in play_list:
+            if play.row == row and play.col == col:
+                return play
+        return None
+
+    def _get_row_lengths(self, play_list: List[Play],
+                         get_next_coord_func: Callable[[int, int], Tuple[int, int]]) -> List[int]:
+        length_list: List[int] = []
+        for row in range(self.rows):
+            for col in range(self.cols):
+                current_play = Game.get_play_in_coords(row=row, col=col, play_list=play_list)
+                if current_play is not None:
+                    row_length, play_list = self._update_play_list(play=current_play,
+                                                                   play_list=play_list[:],
+                                                                   get_next_coord_func=get_next_coord_func)
+                    length_list.append(row_length)
+        return length_list
+
+    @staticmethod
+    def _update_play_list(play: Play, play_list: List[Play],
+                          get_next_coord_func: Callable[[int, int], Tuple[int, int]]) -> Tuple[int, List[Play]]:
+        row_length = 0
+        while play is not None:
+            play_list.remove(play)
+            row_length += 1
+            new_row, new_col = get_next_coord_func(play.row, play.col)
+            play = Game.get_play_in_coords(row=new_row, col=new_col, play_list=play_list)
+
+        return row_length, play_list
 
     def _pre_process_play_with_gravity(self, play: Play) -> Optional[Play]:
         occupied_rows = [existing_play.row for existing_play in self.play_list if existing_play.col == play.col]

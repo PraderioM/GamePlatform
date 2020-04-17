@@ -17,10 +17,10 @@ async def get_leader_board(request: web.Request) -> web.Response:
             leader_board_data = await db.fetch("""
                                                SELECT player_name AS player_name,
                                                       wins AS wins,
-                                                      losses AS losses,
-                                                      ties AS ties
+                                                      played AS played,
+                                                      points AS points
                                                FROM tic_tac_toe_leader_board
-                                               ORDER BY wins - losses DESC
+                                               ORDER BY points DESC
                                                LIMIT $1 OFFSET $2
                                                """, limit, offset)
             leader_board_rows = [LeaderBoardRow.from_database(await json_data) for json_data in leader_board_data]
