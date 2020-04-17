@@ -1,5 +1,4 @@
 import json
-from datetime import time, timedelta
 
 from aiohttp import web
 import asyncpg
@@ -39,14 +38,19 @@ async def get_active_games(request: web.Request) -> web.Response:
 
 
 async def remove_old_games(db: asyncpg.Connection, minute_limits: int = 10):
-    to_remove_ids = await db.fetch("""
+    # Get ids that need to be removed.
+    to_remove_ids = await db.fetch(f"""
                                    SELECT id
                                    FROM tic_tac_toe_active_games
-                                   WHERE last_updated - now() > $1
-                                   """, timedelta(minutes=minute_limits))
+                                   WHERE (last_updated - now()::time) > INTERVAL '{minute_limits} mins' 
+                                   """)
+    if to_remove_ids is None:
+        return
+
     # Remove ids.
-    to_remove_ids = ["\'" + str(id_) + "\'" for id_ in to_remove_ids]
+    to_remove_ids = [str(id_) for id_ in to_remove_ids]
+    id_string = ', '.join([f'${i+1}' for i in range(len(to_remove_ids))])
     await db.execute(f"""
                      DELETE FROM tic_tac_toe_active_games
-                     WHERE id IN ({', '.join(to_remove_ids)})
-                     """)
+                     WHERE id IN ({id_string})
+                     """, *to_remove_ids)
