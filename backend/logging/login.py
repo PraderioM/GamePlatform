@@ -5,7 +5,7 @@ from aiohttp import web
 import asyncpg
 
 
-async def login(request):
+async def login(request: web.Request) -> web.Response:
     """Returns state 200 and the generated token if the user and password are correct, returns state 401 otherwise"""
     name = request.rel_url.query['name']
     password = request.rel_url.query['password']

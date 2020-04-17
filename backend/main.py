@@ -9,6 +9,7 @@ import asyncpg
 from backend.logging.login import login
 from backend.logging.logout import logout
 from backend.logging.register import register
+from backend.games.tic_tac_toe.endpoints.collect_end_points import collect_end_points
 
 
 async def create_app():  # Start the app
@@ -41,6 +42,7 @@ async def create_app():  # Start the app
     app_.router.add_get('/login', login)
     app_.router.add_get('/logout', logout)
     app_.router.add_get('/register', register)
+    collect_end_points(app=app_)
 
     # Configure CORS on all routes (deactivate it).
     for route in list(app_.router.routes()):

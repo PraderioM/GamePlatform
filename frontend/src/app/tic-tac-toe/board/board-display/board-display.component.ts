@@ -19,10 +19,7 @@ export class BoardDisplayComponent implements OnInit {
   newPlay(row: number, col: number) {
     for (const player of this.description.players) {
       if (player.token === this.token) {
-        const play = new Play();
-        play.row = row;
-        play.col = col;
-        play.symbol = player.symbol;
+        const play = new Play(row, col, player.symbol);
         this.makePlay.emit(play);
       }
     }

@@ -31,7 +31,7 @@ export class BoardComponent implements OnInit {
   }
 
   async makePlay(play: Play) {
-    await this.stateService.makePlay(this.token, play);
+    await this.stateService.makePlay(this.token, play, this.description.id);
   }
 
 }

@@ -27,10 +27,11 @@ export class StateService {
         .toPromise();
     }
 
-    async makePlay(token: string, play: Play) {
+    async makePlay(token: string, play: Play, gameId: string) {
       return await this.http
         .get<GameDescription>(this.urlPath + '/make-play',
-          {params: new HttpParams().set('token', token).set('row', stringify(play.row)).set('col', stringify(play.col))})
+          {params: new HttpParams().set('token', token).set('game_id', gameId)
+                                          .set('row', stringify(play.row)).set('col', stringify(play.col))})
         .toPromise();
     }
 

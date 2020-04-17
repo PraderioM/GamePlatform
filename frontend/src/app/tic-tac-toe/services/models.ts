@@ -3,17 +3,18 @@ export class Play {
 }
 
 export class Player {
-  constructor(name: string, isBot: boolean, symbol: string, token?: string) {
-}
+  constructor(public isBot: boolean, public symbol: string, public name?: string, public token?: string) { }
 }
 
 export class GameDescription {
-  constructor(public rows: number, public cols: number, public players: Player[], public currentPlayer: number, public description: string,
+  constructor(public rows: number, public cols: number, public players: Player[],
+              public currentPlayer: number, public description: string,
               public id?: string, public plays: Play[] = []) { }
 }
 
 export class ActiveGame {
   constructor(public gameId: string, public nPlayers: number, public nBots: number,
+              public gravity: boolean,
               public currentPlayers: number, public rows: number, public cols: number) { }
 }
 
