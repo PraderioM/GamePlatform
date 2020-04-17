@@ -1,10 +1,11 @@
+<ul style="text-align:center" class="hor-data-container">
+  <app-game-table (enterGame)="enterGame.emit($event)"
+                  [token]="token">
 
-<app-game-table (enterGame)="enterGame.emit($event)"
-                [token]="token">
+  </app-game-table>
+  <app-game-options (enterGame)="enterGame.emit($event)"
+                    [token]="token"
+                    (backToGameSelection)="backToGameSelection.emit($event)">
 
-</app-game-table>
-<app-game-options (enterGame)="enterGame.emit($event)"
-                  [token]="token"
-                  (backToGameSelection)="backToGameSelection.emit($event)">
-
-</app-game-options>
+  </app-game-options>
+</ul>

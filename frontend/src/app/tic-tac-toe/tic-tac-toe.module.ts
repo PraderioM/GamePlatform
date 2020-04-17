@@ -17,8 +17,11 @@ import {PlayerDisplayComponent} from './board/players-display/player-display/pla
 import {RowDisplayComponent} from './board/board-display/row-display/row-display.component';
 import { CellDisplayComponent } from './board/board-display/row-display/cell-display/cell-display.component';
 import { ActiveGameDisplayComponent } from './selection/game-table/active-games-board/active-game-display/active-game-display.component';
-import { LeaderBoardPositionDisplayComponent } from './selection/game-table/leaderboard/leader-board-position-display/leader-board-position-display.component';
+// tslint:disable-next-line:max-line-length
+import { LeaderBoardRowDisplayComponent } from './selection/game-table/leaderboard/leader-board-row-display/leader-board-row-display.component';
 import { GameResolutionDisplayComponent } from './board/game-resolution-display/game-resolution-display.component';
+import {HttpClientModule} from '@angular/common/http';
+import { StateService } from './services/state.service';
 
 
 const DECLARATIONS: any[] = [
@@ -49,7 +52,7 @@ const MODULES: any[] = [
     RowDisplayComponent,
     CellDisplayComponent,
     ActiveGameDisplayComponent,
-    LeaderBoardPositionDisplayComponent,
+    LeaderBoardRowDisplayComponent,
     GameResolutionDisplayComponent
   ],
   exports: [
@@ -58,5 +61,6 @@ const MODULES: any[] = [
     BoardComponent,
   ],
   imports: MODULES,
+  providers: [ HttpClientModule, StateService ],
 })
 export class TicTacToeModule { }

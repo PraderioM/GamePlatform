@@ -3,10 +3,10 @@ import {LeaderBoardPosition} from '../../../../services/models';
 
 @Component({
   selector: 'app-leader-board-position-display',
-  templateUrl: './leader-board-position-display.component.html',
-  styleUrls: ['./leader-board-position-display.component.css']
+  templateUrl: './leader-board-row-display.component.html',
+  styleUrls: ['./leader-board-row-display.component.css']
 })
-export class LeaderBoardPositionDisplayComponent implements OnInit {
+export class LeaderBoardRowDisplayComponent implements OnInit {
   @Input() leaderBoardPosition: LeaderBoardPosition;
   constructor() { }
 

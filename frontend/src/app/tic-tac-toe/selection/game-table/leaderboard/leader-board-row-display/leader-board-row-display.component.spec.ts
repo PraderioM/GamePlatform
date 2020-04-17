@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LeaderBoardPositionDisplayComponent } from './leader-board-position-display.component';
+import { LeaderBoardRowDisplayComponent } from './leader-board-row-display.component';
 
 describe('LeaderBoardPositionDisplayComponent', () => {
-  let component: LeaderBoardPositionDisplayComponent;
-  let fixture: ComponentFixture<LeaderBoardPositionDisplayComponent>;
+  let component: LeaderBoardRowDisplayComponent;
+  let fixture: ComponentFixture<LeaderBoardRowDisplayComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LeaderBoardPositionDisplayComponent ]
+      declarations: [ LeaderBoardRowDisplayComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LeaderBoardPositionDisplayComponent);
+    fixture = TestBed.createComponent(LeaderBoardRowDisplayComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
