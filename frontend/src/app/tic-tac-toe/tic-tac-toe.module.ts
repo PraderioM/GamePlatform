@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Injectable } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {TicTacToeComponent} from './tic-tac-toe.component';
 import {SelectionComponent} from './selection/selection.component';
@@ -42,6 +42,7 @@ const MODULES: any[] = [
   NgbModule,
 ];
 
+@Injectable()
 @NgModule({
   declarations: [
     DECLARATIONS,
