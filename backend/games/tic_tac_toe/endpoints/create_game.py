@@ -15,9 +15,7 @@ async def create_game(request: web.Request) -> web.Response:
     cols = int(request.rel_url.query['cols'])
     npc = int(request.rel_url.query['npc'])
     pc = int(request.rel_url.query['pc'])
-    gravity = True if request.rel_url.query['gravity'] == 'True' else False
-    # todo debug.
-    print(request.rel_url.query['gravity'])
+    gravity = True if request.rel_url.query['gravity'] == 'true' else False
 
     pool = request.app['db']
 

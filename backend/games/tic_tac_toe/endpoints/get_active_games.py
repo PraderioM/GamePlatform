@@ -44,7 +44,7 @@ async def remove_old_games(db: asyncpg.Connection, minute_limits: int = 10):
                                    FROM tic_tac_toe_active_games
                                    WHERE (last_updated - now()::time) > INTERVAL '{minute_limits} mins' 
                                    """)
-    if to_remove_ids is None:
+    if len(to_remove_ids) == 0:
         return
 
     # Remove ids.
