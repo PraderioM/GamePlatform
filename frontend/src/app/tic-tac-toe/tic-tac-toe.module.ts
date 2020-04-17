@@ -18,6 +18,7 @@ import {RowDisplayComponent} from './board/board-display/row-display/row-display
 import { CellDisplayComponent } from './board/board-display/row-display/cell-display/cell-display.component';
 import { ActiveGameDisplayComponent } from './selection/game-table/active-games-board/active-game-display/active-game-display.component';
 import { LeaderBoardPositionDisplayComponent } from './selection/game-table/leaderboard/leader-board-position-display/leader-board-position-display.component';
+import { GameResolutionDisplayComponent } from './board/game-resolution-display/game-resolution-display.component';
 
 
 const DECLARATIONS: any[] = [
@@ -47,7 +48,8 @@ const MODULES: any[] = [
     RowDisplayComponent,
     CellDisplayComponent,
     ActiveGameDisplayComponent,
-    LeaderBoardPositionDisplayComponent
+    LeaderBoardPositionDisplayComponent,
+    GameResolutionDisplayComponent
   ],
   exports: [
     TicTacToeComponent,

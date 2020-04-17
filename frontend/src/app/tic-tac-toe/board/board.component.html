@@ -1,5 +1,5 @@
-<p *ngIf="description == null">No game can available</p>
-<div *ngIf="description != null">
+<p *ngIf="description == null">Game session has expired</p>
+<div *ngIf="description != null && isPlaying">
   <app-players-display [players]="description.players"
                        [currentPlayer]="description.currentPlayer">
 
@@ -11,3 +11,9 @@
   </app-board-display>
   <app-options-display (backToMenu)="backToMenu.emit()"></app-options-display>
 </div>
+<app-game-resolution-display *ngIf="description != null && !isPlaying"
+                             [gameDescription]="description"
+                             [gameResolution]="gameResolution"
+                             (backToMenu)="backToMenu.emit()">
+
+</app-game-resolution-display>

@@ -3,13 +3,18 @@ export class Play {
 }
 
 export class Player {
-  constructor(public isBot: boolean, public symbol: string, public name?: string, public token?: string) { }
+  constructor(public isBot: boolean, public symbol: string, public points: number,
+              public name?: string, public token?: string) { }
 }
 
 export class GameDescription {
   constructor(public rows: number, public cols: number, public players: Player[],
               public currentPlayer: number, public description: string,
               public id?: string, public plays: Play[] = []) { }
+
+  hasEnded() {
+    return this.rows * this.cols <= this.plays.length;
+  }
 }
 
 export class ActiveGame {
@@ -20,7 +25,11 @@ export class ActiveGame {
 
 export class LeaderBoardPosition {
   constructor(public playerName: string, public totalPlayed: number,
-              public wins: number, public losses: number, public ties: number,
-              public points: number) {
+              public wins: number, public points: number) {
   }
+}
+
+export class GameResolution {
+  constructor(public isObserver: boolean = false, public isVictorious: boolean = false,
+              public isLoser: boolean = false, public isTie: boolean = false) { }
 }

@@ -26,7 +26,6 @@ export class StateService {
     constructor(private http: HttpClient) {
     }
 
-    // region logging.
     async login(name: string, password: string) {
       console.log('Logging in');
       const response = await this.http
@@ -72,6 +71,4 @@ export class StateService {
     setToken(token?: string) {
       this.token = token;
     }
-    // endregion.
-
 }

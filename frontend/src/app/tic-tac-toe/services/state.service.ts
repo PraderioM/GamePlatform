@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {ActiveGame, GameDescription, Play, LeaderBoardPosition} from './models';
+import {ActiveGame, GameDescription, Play, LeaderBoardPosition, GameResolution} from './models';
 import {stringify} from 'querystring';
 
 @Injectable()
@@ -48,5 +48,12 @@ export class StateService {
           {params: new HttpParams().set('token', token)})
         .toPromise();
     }
+
+  async endGame(token: string, gameId: string) {
+    return await this.http
+      .get<GameResolution>(this.urlPath + '/end-game',
+        {params: new HttpParams().set('token', token).set('game_id', gameId)})
+      .toPromise();
+  }
 
 }
