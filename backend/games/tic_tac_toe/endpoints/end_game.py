@@ -7,7 +7,7 @@ from ..models.game import Game
 from ..models.play import Play
 
 
-async def make_play(request: web.Request) -> web.Response:
+async def end_game(request: web.Request) -> web.Response:
     game_id = request.rel_url.query['game_id']
     pool = request.app['db']
 
