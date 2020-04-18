@@ -19,4 +19,9 @@ export class GameTableComponent implements OnInit {
   toggleShowed() {
     this.showActive = !this.showActive;
   }
+
+  onEnterGame(gameDescription: GameDescription) {
+    console.log('Game table: entering game.');
+    this.enterGame.emit(gameDescription);
+  }
 }

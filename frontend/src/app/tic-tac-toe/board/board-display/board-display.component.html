@@ -1,4 +1,9 @@
-<app-row-display *ngFor="let rowIndex of getRowIndexes()"
+<table>
+  <tr *ngFor="let rowIndex of getRowIndexes()">
+    <th *ngFor="let colIndex of getColIndexes()">
+      <app-cell-display
                  [description]="description"
-                 [index] ="rowIndex"
-                 (makePlay)="newPlay(rowIndex, $event)"></app-row-display>>
+                 (makePlay)="newPlay(rowIndex, colIndex)"></app-cell-display>
+    </th>
+  </tr>
+</table>

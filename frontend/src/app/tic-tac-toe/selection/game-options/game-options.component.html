@@ -1,30 +1,10 @@
-<ng-template #newGameDescriptionComponent>
-  <app-new-game-description (enterGame)="enterGame.emit($event)"
-                          [token]="token"
-                          (closeComponent)="newGamePopover.close()">
-  </app-new-game-description>
-</ng-template>
-<ng-template #existingGameSearchComponent>
-  <app-existing-game-search (enterGame)="enterGame.emit($event)"
-                            [token]="token"
-                            (closeComponent)="findGamePopover.close()">
-  </app-existing-game-search>
-</ng-template>
 <p>
-  <button class="btn" placement="left"
-          [ngbPopover]="newGameDescriptionComponent"
-          [autoClose]="'outside'"
-          popoverTitle="create Game"
-          #newGamePopover="ngbPopover">
+  <button class="btn" (click)="enterGameCreation.emit()">
     create game
   </button>
 </p>
 <p>
-  <button class="btn" placement="left"
-          [ngbPopover]="existingGameSearchComponent"
-          [autoClose]="'outside'"
-          popoverTitle="find Game"
-          #findGamePopover="ngbPopover">
+  <button class="btn" (click)="enterGameFinding.emit()">
     find game
   </button>
 </p>

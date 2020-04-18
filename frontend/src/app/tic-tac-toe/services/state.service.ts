@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {ActiveGame, GameDescription, Play, LeaderBoardPosition, GameResolution} from './models';
+import {ActiveGame, GameDescription, GameResolution, LeaderBoardPosition, Play} from './models';
 
 @Injectable()
 export class StateService {

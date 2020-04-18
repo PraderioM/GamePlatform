@@ -12,7 +12,7 @@ export class GameDescription {
               public currentPlayer: number, public description: string,
               public id?: string, public plays: Play[] = []) { }
 
-  hasEnded() {
+  public hasEnded() {
     return this.rows * this.cols <= this.plays.length;
   }
 }

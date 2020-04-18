@@ -1,0 +1,55 @@
+<table class="container">
+  <tr>
+    <th>
+      <label for="rows">Rows</label>
+    </th>
+    <th>
+      <input #rows id="rows" type="number" value="10">
+    </th>
+  </tr>
+  <tr>
+    <th>
+      <label for="cols">Columns</label>
+    </th>
+    <th>
+      <input #cols id="cols" type="number" value="10">
+    </th>
+  </tr>
+  <tr>
+    <th>
+      <label for="npc">Bots</label>
+    </th>
+    <th>
+      <input #npc id="npc" type="number" value="0">
+    </th>
+  </tr>
+  <tr>
+    <th>
+      <label for="pc">Players</label>
+    </th>
+    <th>
+      <input #pc id="pc" type="number" value="2">
+    </th>
+  </tr>
+  <tr>
+    <th>
+      <label for="gravity">Gravity</label>
+    </th>
+    <th>
+      <input #gravity id="gravity" type="checkbox">
+    </th>
+  </tr>
+  <tr>
+    <th>
+      <button
+        (click)="tryCreateGame(rows.valueAsNumber, cols.valueAsNumber,
+                               npc.valueAsNumber, pc.valueAsNumber,
+                               gravity.checked)">
+        Create game
+      </button>
+    </th>
+    <th>
+      <button (click)="back.emit()">Close</button>
+    </th>
+  </tr>
+</table>

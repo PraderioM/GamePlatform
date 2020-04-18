@@ -9,8 +9,13 @@
     <th>cols</th>
     <th>gravity</th>
   </tr>
-  <app-active-game-display *ngFor="let activeGame of activeGames"
-                         [activeGame]="activeGame"
-                         [token]="token">
-  </app-active-game-display>
+  <tr *ngFor="let activeGame of activeGames" (click)="tryEnterGame(activeGame)">
+    <th>{{activeGame.gameId}}</th>
+    <th>{{activeGame.nPlayers}}</th>
+    <th>{{activeGame.nBots}}</th>
+    <th>{{activeGame.currentPlayers}}</th>
+    <th>{{activeGame.rows}}</th>
+    <th>{{activeGame.cols}}</th>
+    <th>{{activeGame.gravity}}</th>
+  </tr>
 </table>

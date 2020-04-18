@@ -4,7 +4,7 @@
                *ngIf="selectionMode">
 
 </app-selection>
-<app-board (backToMenu)="toggleSelectionMode()"
+<app-board (backToMenu)="enterSelectionMode()"
            [description]="description"
            [token]="token"
            *ngIf="!selectionMode">

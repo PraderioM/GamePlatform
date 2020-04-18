@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {GameDescription} from '../../../services/models';
-import {StateService} from '../../../services/state.service';
+import {GameDescription} from '../../services/models';
+import {StateService} from '../../services/state.service';
 
 @Component({
   selector: 'app-existing-game-search',
@@ -9,7 +9,7 @@ import {StateService} from '../../../services/state.service';
 })
 export class ExistingGameSearchComponent implements OnInit {
   @Output() enterGame = new EventEmitter<GameDescription>();
-  @Output() closeComponent = new EventEmitter<void>();
+  @Output() back = new EventEmitter<void>();
   @Input() token: string;
 
   constructor(private stateService: StateService) { }

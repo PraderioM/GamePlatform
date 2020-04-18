@@ -1,19 +1,19 @@
 <p *ngIf="description == null">Game session has expired</p>
-<div *ngIf="description != null && isPlaying">
-  <app-players-display [players]="description.players"
+<div *ngIf="description != null && isPlaying" class="container">
+    <app-players-display [players]="description.players"
                        [currentPlayer]="description.currentPlayer">
 
-  </app-players-display>
-  <app-board-display (makePlay)="makePlay($event)"
-                     [token]="token"
-                     [description]="description">
+    </app-players-display>
+    <app-board-display (makePlay)="makePlay($event)"
+                       [token]="token"
+                       [description]="description">
 
-  </app-board-display>
-  <app-options-display (backToMenu)="backToMenu.emit()"></app-options-display>
+    </app-board-display>
+    <app-options-display (backToMenu)="onBackToMenu()"></app-options-display>
 </div>
 <app-game-resolution-display *ngIf="description != null && !isPlaying"
                              [gameDescription]="description"
                              [gameResolution]="gameResolution"
-                             (backToMenu)="backToMenu.emit()">
+                             (backToMenu)="onBackToMenu()">
 
 </app-game-resolution-display>

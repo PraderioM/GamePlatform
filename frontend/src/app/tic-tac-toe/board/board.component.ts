@@ -10,7 +10,7 @@ import {StateService} from '../services/state.service';
 export class BoardComponent implements OnInit {
   @Output() backToMenu = new EventEmitter<void>();
   @Input() token: string;
-  @Input() description?: GameDescription;
+  @Input() description: GameDescription;
 
   interval;
   gameResolution: GameResolution;
@@ -29,7 +29,8 @@ export class BoardComponent implements OnInit {
     const description = await this.stateService.findGame(this.token, this.description.id);
     if (description.id != null) {
       this.description = description;
-      if (description.hasEnded()) {
+      const hasEnded = description.rows * description.cols <= description.plays.length;
+      if (hasEnded) {
         await this.endGame();
       }
     }
@@ -45,4 +46,8 @@ export class BoardComponent implements OnInit {
     this.isPlaying = false;
   }
 
+  onBackToMenu() {
+    clearInterval(this.interval);
+    this.backToMenu.emit();
+  }
 }

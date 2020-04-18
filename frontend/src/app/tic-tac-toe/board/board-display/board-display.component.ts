@@ -32,4 +32,12 @@ export class BoardDisplayComponent implements OnInit {
     }
     return indexes;
   }
+
+  getColIndexes() {
+    const indexes: number [] = [];
+    for (let i = 0; i < this.description.cols; i++) {
+      indexes.push(i);
+    }
+    return indexes;
+  }
 }

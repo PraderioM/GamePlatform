@@ -7,16 +7,14 @@ import { GameOptionsComponent } from './selection/game-options/game-options.comp
 import { GameTableComponent } from './selection/game-table/game-table.component';
 import { LeaderboardComponent } from './selection/game-table/leaderboard/leaderboard.component';
 import { ActiveGamesBoardComponent } from './selection/game-table/active-games-board/active-games-board.component';
-import { NewGameDescriptionComponent } from './selection/game-options/new-game-description/new-game-description.component';
-import { ExistingGameSearchComponent } from './selection/game-options/existing-game-search/existing-game-search.component';
+import { NewGameDescriptionComponent } from './selection/new-game-description/new-game-description.component';
+import { ExistingGameSearchComponent } from './selection/existing-game-search/existing-game-search.component';
 import { PlayersDisplayComponent } from './board/players-display/players-display.component';
 import { BoardDisplayComponent } from './board/board-display/board-display.component';
 import { OptionsDisplayComponent } from './board/options-display/options-display.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {PlayerDisplayComponent} from './board/players-display/player-display/player-display.component';
-import {RowDisplayComponent} from './board/board-display/row-display/row-display.component';
-import { CellDisplayComponent } from './board/board-display/row-display/cell-display/cell-display.component';
-import { ActiveGameDisplayComponent } from './selection/game-table/active-games-board/active-game-display/active-game-display.component';
+import { CellDisplayComponent } from './board/board-display/cell-display/cell-display.component';
 // tslint:disable-next-line:max-line-length
 import { LeaderBoardRowDisplayComponent } from './selection/game-table/leaderboard/leader-board-row-display/leader-board-row-display.component';
 import { GameResolutionDisplayComponent } from './board/game-resolution-display/game-resolution-display.component';
@@ -49,9 +47,7 @@ const MODULES: any[] = [
 @NgModule({
   declarations: [
     DECLARATIONS,
-    RowDisplayComponent,
     CellDisplayComponent,
-    ActiveGameDisplayComponent,
     LeaderBoardRowDisplayComponent,
     GameResolutionDisplayComponent
   ],

@@ -21,13 +21,14 @@ export class TicTacToeComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  toggleSelectionMode() {
-    this.selectionMode = !this.selectionMode;
+  enterSelectionMode() {
+    this.selectionMode = true;
   }
 
   startGame(description: GameDescription) {
     this.description = description;
-    this.toggleSelectionMode();
+    console.log('starting game.');
+    this.selectionMode = false;
   }
 
 }

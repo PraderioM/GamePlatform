@@ -7,7 +7,8 @@ import {GameDescription} from '../../services/models';
   styleUrls: ['./game-options.component.css']
 })
 export class GameOptionsComponent implements OnInit {
-  @Output() enterGame = new EventEmitter<GameDescription>();
+  @Output() enterGameCreation = new EventEmitter<void>();
+  @Output() enterGameFinding = new EventEmitter<void>();
   @Output() backToGameSelection = new EventEmitter<void>();
   @Input() token: string;
 
