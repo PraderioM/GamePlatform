@@ -1,3 +1,4 @@
+import json
 from typing import Callable, Dict, List, Optional, Tuple, Union
 
 import asyncpg
@@ -25,9 +26,9 @@ class Game:
         gravity = json_data['cols']
         id_ = json_data['id']
         current_player_index = json_data['current_player_index']
-        players_list = [Player.from_database(json_data=json_data) for json_data in json_data['players']]
+        players_list = [Player.from_database(json_data=json_data) for json_data in json.loads(json_data['players'])]
         play_list = [Play.from_database(json_data=json_data,
-                                        all_players=players_list) for json_data in json_data['plays']]
+                                        all_players=players_list) for json_data in json.loads(json_data['plays'])]
         return Game(rows=rows, cols=cols, current_player_index=current_player_index, gravity=gravity,
                     play_list=play_list, player_list=players_list, id_=id_)
 
@@ -37,8 +38,8 @@ class Game:
             'cols': self.cols,
             'current_player_index': self.current_player_index,
             'gravity': self.gravity,
-            'play_list': [play.to_database() for play in self.play_list],
-            'player_list': [player.to_database() for player in self.player_list],
+            'plays': json.dumps([play.to_database() for play in self.play_list]),
+            'players': json.dumps([player.to_database() for player in self.player_list]),
             'id': self.id,
         }
 
@@ -51,13 +52,13 @@ class Game:
             'players': [player.to_frontend(token=await player.get_token(db=db),
                                            points=self.get_player_points(player)) for player in self.player_list],
             'plays': [play.to_frontend() for play in self.play_list],
-            'id': self.id,
+            'id': str(self.id),
             'description': description,
         }
 
     def to_display(self) -> Dict[str, Union[str, int, bool]]:
         return {
-            'gameId': self.id,
+            'gameId': str(self.id),
             'nPlayers': self.n_players,
             'nBots': self.n_bots,
             'gravity': self.gravity,
@@ -136,6 +137,11 @@ class Game:
             return self._pre_process_play_without_gravity(play)
 
     def add_new_player_name(self, name: str):
+        # Cannot add twice the same player.
+        for player in self.player_list:
+            if player.name == name:
+                return
+
         if self.n_missing > 0:
             for player in self.player_list:
                 if not player.is_bot and player.name is None:
@@ -201,7 +207,7 @@ class Game:
 
     @property
     def n_current(self) -> int:
-        return len([player for player in self.player_list if not player.is_bot and player.name is not None])
+        return len([player for player in self.player_list if player.name is not None and not player.is_bot])
 
     @property
     def n_missing(self) -> int:

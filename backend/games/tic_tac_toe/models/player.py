@@ -29,7 +29,7 @@ class Player:
             'name': self.name,
             'isBot': self.is_bot,
             'symbol': self.symbol,
-            'token': token,
+            'token': str(token),
             'points': points
         }
 
@@ -40,7 +40,7 @@ class Player:
         return await db.fetchval("""
                                  SELECT token
                                  FROM users
-                                 WHERE name == $1
+                                 WHERE name = $1
                                  """, self.name)
 
     def get_bot_play(self, game):

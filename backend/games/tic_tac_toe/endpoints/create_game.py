@@ -43,6 +43,7 @@ async def create_game(request: web.Request) -> web.Response:
             error_message = f'Artificial intelligence is not yet implemented and npc player cannot be set.'
 
         if error_message is not None:
+            print('game creation failed.')
             return web.Response(
                 status=200,
                 body=json.dumps(await dummy_game.to_frontend(db=db, description=error_message))
@@ -73,9 +74,8 @@ async def create_game(request: web.Request) -> web.Response:
                              database_game['players'], database_game['plays'],
                              out_game.gravity)
 
-            if error_message is not None:
-                return web.Response(
-                    status=200,
-                    body=json.dumps(await out_game.to_frontend(db=db, description=error_message))
-                )
-    pass
+            print('Creating game.')
+            return web.Response(
+                status=200,
+                body=json.dumps(await out_game.to_frontend(db=db))
+            )

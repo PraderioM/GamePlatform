@@ -14,20 +14,20 @@ async def find_game(request: web.Request) -> web.Response:
     async with pool.acquire() as db:
         async with db.transaction():
             db: asyncpg.Connection = db
-            row = await db.fetchrow("""
-                                    SELECT id AS id,
-                                           rows AS rows,
-                                           cols AS cols,
-                                           current_player_index AS current_player_index,
-                                           players AS players, 
-                                           plays AS plays,
-                                           gravity AS gravity
-                                    FROM tic_tac_toe_active_games
-                                    WHERE id = $1
-                                    """, game_id)
+            game_data = await db.fetchrow("""
+                                          SELECT id AS id,
+                                                 rows AS rows,
+                                                 cols AS cols,
+                                                 current_player_index AS current_player_index,
+                                                 players AS players, 
+                                                 plays AS plays,
+                                                 gravity AS gravity
+                                          FROM tic_tac_toe_active_games
+                                          WHERE id = $1
+                                          """, game_id)
 
             # Return a dummy result if no game was found with desired id.
-            if row is None:
+            if game_data is None:
                 dummy_game = Game(rows=0, cols=0, current_player_index=0, gravity=False,
                                   play_list=[], player_list=[], id_=None)
                 error_message = f'There is no active game with id `{game_id}`.'
@@ -38,17 +38,13 @@ async def find_game(request: web.Request) -> web.Response:
                                     )
                 )
 
-            game_data = {
-                key: await row[key] for key in ['rows', 'cols', 'id',
-                                                'players', 'plays', 'current_player_index']
-            }
             out_game = Game.from_database(json_data=game_data)
 
             # Add new player if needed and update database.
             if out_game.n_missing > 0:
                 name = await get_name_from_token(token=request.rel_url.query['token'], db=db)
                 out_game.add_new_player_name(name=name)
-                database_player_list = [player.to_database() for player in out_game.player_list]
+                database_player_list = json.dumps([player.to_database() for player in out_game.player_list])
                 await db.execute("""
                                  UPDATE tic_tac_toe_active_games
                                  SET last_updated = now(), players = $1

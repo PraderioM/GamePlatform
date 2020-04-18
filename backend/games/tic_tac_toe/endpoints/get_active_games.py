@@ -29,26 +29,26 @@ async def get_active_games(request: web.Request) -> web.Response:
                                           """, limit, offset)
 
             # Return a list of the desired results
-            game_list = [Game.from_database(json_data=await game_data) for game_data in active_games]
+            game_list = [Game.from_database(json_data=game_data) for game_data in active_games]
 
             return web.Response(
                 status=200,
-                body=json.dumps([await game.to_frontend(db=db) for game in game_list])
+                body=json.dumps([game.to_display() for game in game_list])
             )
 
 
-async def remove_old_games(db: asyncpg.Connection, minute_limits: int = 10):
-    # Get ids that need to be removed.
+async def remove_old_games(db: asyncpg.Connection, minute_limits: int = 5):
+    # Get ids that need to be removed. # Todo check out why it fails with minute limits greater than 10.
     to_remove_ids = await db.fetch(f"""
                                    SELECT id
                                    FROM tic_tac_toe_active_games
-                                   WHERE (last_updated - now()::time) > INTERVAL '{minute_limits} mins' 
+                                   WHERE (now()::time - last_updated) > INTERVAL '{minute_limits} mins' 
                                    """)
     if len(to_remove_ids) == 0:
         return
 
     # Remove ids.
-    to_remove_ids = [str(id_) for id_ in to_remove_ids]
+    to_remove_ids = [str(id_['id']) for id_ in to_remove_ids]
     id_string = ', '.join([f'${i+1}' for i in range(len(to_remove_ids))])
     await db.execute(f"""
                      DELETE FROM tic_tac_toe_active_games
