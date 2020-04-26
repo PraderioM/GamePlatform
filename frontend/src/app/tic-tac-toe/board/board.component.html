@@ -9,7 +9,10 @@
                        [description]="description">
 
     </app-board-display>
-    <app-options-display (backToMenu)="onBackToMenu()"></app-options-display>
+    <app-options-display (backToMenu)="onBackToMenu()"
+                         [gameId]="description.id">
+
+    </app-options-display>
 </div>
 <app-game-resolution-display *ngIf="description != null && !isPlaying"
                              [gameDescription]="description"

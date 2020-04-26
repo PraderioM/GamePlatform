@@ -4,7 +4,8 @@ import {ActiveGame, GameDescription, GameResolution, LeaderBoardPosition, Play} 
 
 @Injectable()
 export class StateService {
-  urlPath = 'http://0.0.0.0:2121/tic-tac-toe';
+  // urlPath = 'http://192.168.1.19:2121/tic-tac-toe';
+  urlPath = 'http://192.168.1.19:2121/tic-tac-toe';
 
     constructor(private http: HttpClient) {
     }

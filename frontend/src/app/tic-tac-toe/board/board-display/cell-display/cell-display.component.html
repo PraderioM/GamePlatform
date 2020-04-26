@@ -1,1 +1,3 @@
-<button (click)="makePlay.emit()">{{getSymbol()}}</button>
+<button (click)="makePlay.emit()" class="cell" [ngClass]="{selected: isLastPlay()}">
+  {{getSymbol()}}
+</button>

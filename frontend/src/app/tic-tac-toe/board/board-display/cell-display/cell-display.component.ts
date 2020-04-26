@@ -17,14 +17,24 @@ export class CellDisplayComponent implements OnInit {
   ngOnInit() {
   }
 
-  getSymbol() {
-    let symbol = '';
+  isLastPlay() {
+    let playIndex = 0;
     for (const play of this.description.plays) {
+      playIndex += 1;
       if (play.row === this.rowIndex && play.col === this.colIndex) {
-        symbol = play.symbol;
+        return playIndex === this.description.plays.length;
       }
     }
-    return symbol;
+    return false;
+  }
+
+  getSymbol() {
+    for (const play of this.description.plays) {
+      if (play.row === this.rowIndex && play.col === this.colIndex) {
+        return play.symbol;
+      }
+    }
+    return '';
   }
 
 }

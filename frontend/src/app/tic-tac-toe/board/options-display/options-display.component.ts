@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-options-display',
@@ -7,6 +7,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 })
 export class OptionsDisplayComponent implements OnInit {
   @Output() backToMenu = new EventEmitter<void>();
+  @Input() gameId: string;
 
   constructor() { }
 

@@ -3,6 +3,8 @@
     <th *ngFor="let colIndex of getColIndexes()">
       <app-cell-display
                  [description]="description"
+                 [rowIndex]="rowIndex"
+                 [colIndex]="colIndex"
                  (makePlay)="newPlay(rowIndex, colIndex)"></app-cell-display>
     </th>
   </tr>

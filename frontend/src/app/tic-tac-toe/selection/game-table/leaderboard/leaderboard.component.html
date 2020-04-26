@@ -6,7 +6,10 @@
     <th>wins</th>
     <th>points</th>
   </tr>
-  <app-leader-board-position-display *ngFor="let leaderBoardPosition of leaderBoardPositions"
-                                     [leaderBoardPosition]="leaderBoardPosition">
-  </app-leader-board-position-display>
+  <tr *ngFor="let leaderBoardPosition of leaderBoardPositions">
+    <th>{{leaderBoardPosition.playerName}}</th>
+    <th>{{leaderBoardPosition.totalPlayed}}</th>
+    <th>{{leaderBoardPosition.wins}}</th>
+    <th>{{leaderBoardPosition.points}}</th>
+  </tr>
 </table>
