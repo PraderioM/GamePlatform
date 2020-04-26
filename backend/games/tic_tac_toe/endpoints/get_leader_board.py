@@ -28,4 +28,3 @@ async def get_leader_board(request: web.Request) -> web.Response:
                 status=200,
                 body=json.dumps([row.to_frontend() for row in leader_board_rows])
             )
-    pass
