@@ -52,13 +52,13 @@ class Game:
             'players': [player.to_frontend(token=await player.get_token(db=db),
                                            points=self.get_player_points(player)) for player in self.player_list],
             'plays': [play.to_frontend() for play in self.play_list],
-            'id': str(self.id),
+            'id': None if self.id is None else str(self.id),
             'description': description,
         }
 
     def to_display(self) -> Dict[str, Union[str, int, bool]]:
         return {
-            'gameId': str(self.id),
+            'gameId': None if self.id is None else str(self.id),
             'nPlayers': self.n_players,
             'nBots': self.n_bots,
             'gravity': self.gravity,

@@ -23,7 +23,7 @@ async def get_leader_board(request: web.Request) -> web.Response:
                                                ORDER BY points DESC
                                                LIMIT $1 OFFSET $2
                                                """, limit, offset)
-            leader_board_rows = [LeaderBoardRow.from_database(await json_data) for json_data in leader_board_data]
+            leader_board_rows = [LeaderBoardRow.from_database(json_data) for json_data in leader_board_data]
             return web.Response(
                 status=200,
                 body=json.dumps([row.to_frontend() for row in leader_board_rows])
