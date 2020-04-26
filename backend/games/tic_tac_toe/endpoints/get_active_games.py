@@ -33,7 +33,7 @@ async def get_active_games(request: web.Request) -> web.Response:
 
             return web.Response(
                 status=200,
-                body=json.dumps([game.to_display() for game in game_list])
+                body=json.dumps([game.to_display() for game in game_list if not game.has_ended])
             )
 
 
