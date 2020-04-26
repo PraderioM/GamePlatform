@@ -144,8 +144,9 @@ class Game:
 
         if self.n_missing > 0:
             for player in self.player_list:
-                if not player.is_bot and player.name is None:
+                if player.name is None and not player.is_bot:
                     player.name = name
+                    break
 
     @staticmethod
     def get_play_in_coords(row: int, col: int, play_list: List[Play]) -> Optional[Play]:

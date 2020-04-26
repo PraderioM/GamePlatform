@@ -74,7 +74,6 @@ async def create_game(request: web.Request) -> web.Response:
                              database_game['players'], database_game['plays'],
                              out_game.gravity)
 
-            print('Creating game.')
             return web.Response(
                 status=200,
                 body=json.dumps(await out_game.to_frontend(db=db))
