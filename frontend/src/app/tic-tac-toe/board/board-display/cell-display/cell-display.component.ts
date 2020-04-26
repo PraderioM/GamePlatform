@@ -37,4 +37,30 @@ export class CellDisplayComponent implements OnInit {
     return '';
   }
 
+  getColor() {
+    const symbol = this.getSymbol();
+    if (symbol === '') {
+      return '#555555';
+    }
+
+    // Todo generate color automatically.
+    if (symbol === 't') {
+      return '#ff0000';
+    } else if (symbol === 'h') {
+      return '#00ff00';
+    } else if (symbol === 'e') {
+      return '#0000ff';
+    } else if (symbol === 'G') {
+      return '#ffff00';
+    } else if (symbol === 'A') {
+      return '#ff00ff';
+    } else if (symbol === 'M') {
+      return '#00ffff';
+    } else if (symbol === 'E') {
+      return '#aa0000';
+    }
+
+    return '#ffffff';
+  }
+
 }

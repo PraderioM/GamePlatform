@@ -2,8 +2,9 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 
 
-class LoginResponse {
+export class LoginResponse {
   public token?: string;
+  public name?: string;
   public errorMessage: string;
   public incorrectName = false;
   public incorrectPassword = false;
@@ -28,13 +29,13 @@ export class StateService {
     }
 
     async login(name: string, password: string) {
-      console.log('Logging in');
+      console.log('Logging in as ' + name);
       const response = await this.http
         .get<LoginResponse>(this.urlPath + '/login',
           {params: new HttpParams().set('name', name).set('password', password)})
         .toPromise();
 
-      console.log(response);
+      response.name = name;
 
       this.setToken(response.token);
       return response;

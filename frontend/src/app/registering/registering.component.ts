@@ -1,4 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {LoginResponse} from '../services/state.service';
 
 
 @Component({
@@ -7,14 +8,14 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
   styleUrls: ['./registering.component.css']
 })
 export class RegisteringComponent implements OnInit {
-  @Output() loggedIn = new EventEmitter<string>();
+  @Output() loggedIn = new EventEmitter<LoginResponse>();
   registering = false;
 
   ngOnInit() {
   }
 
-  logIn(token: string) {
-    this.loggedIn.emit(token);
+  logIn(loginResponse: LoginResponse) {
+    this.loggedIn.emit(loginResponse);
   }
 
   toggleRegistering() {

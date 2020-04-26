@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {StateService} from './services/state.service';
+import {LoginResponse, StateService} from './services/state.service';
 import {HttpClient} from '@angular/common/http';
 
 @Component({
@@ -10,10 +10,12 @@ import {HttpClient} from '@angular/common/http';
 })
 export class AppComponent {
   token?: string;
+  name?: string;
   loggedIn = false;
 
-  logIn(token: string) {
-    this.token = token;
+  logIn(loginResponse: LoginResponse) {
+    this.token = loginResponse.token;
+    this.name = loginResponse.name;
     this.loggedIn = true;
   }
 

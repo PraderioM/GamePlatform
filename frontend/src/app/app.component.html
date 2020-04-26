@@ -1,4 +1,4 @@
 <div>
-<app-home (loggedOut)="logOut()" [token]="token" *ngIf="loggedIn"></app-home>
+<app-home (loggedOut)="logOut()" [token]="token" [name]="name" *ngIf="loggedIn"></app-home>
 <app-registering (loggedIn)="logIn($event)" *ngIf="!loggedIn"></app-registering>
 </div>

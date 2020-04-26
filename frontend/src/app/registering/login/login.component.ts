@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {StateService} from '../../services/state.service';
+import {StateService, LoginResponse} from '../../services/state.service';
 
 
 @Component({
@@ -8,7 +8,7 @@ import {StateService} from '../../services/state.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  @Output() login = new EventEmitter<string>();
+  @Output() login = new EventEmitter<LoginResponse>();
   @Output() goToRegister = new EventEmitter<void>();
   incorrectName = false;
   incorrectPassword = false;
@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
 
     if (response.token != null) {
       console.log('Successfully logged in.');
-      this.login.emit(response.token);
+      this.login.emit(response);
     } else {
       this.incorrectName = response.incorrectName;
       this.incorrectPassword = response.incorrectPassword;
