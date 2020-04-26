@@ -14,7 +14,7 @@ async def end_game(request: web.Request) -> web.Response:
     async with pool.acquire() as db:
         db: asyncpg.Connection = db
         async with db.transaction():
-            database_data = await db.fetchrow("""
+            game_data = await db.fetchrow("""
                                     SELECT id AS id,
                                            rows AS rows,
                                            cols AS cols,
@@ -25,10 +25,6 @@ async def end_game(request: web.Request) -> web.Response:
                                     FROM tic_tac_toe_active_games
                                     WHERE id = $1
                                     """, game_id)
-            game_data = {
-                key: await database_data[key] for key in ['rows', 'cols', 'id',
-                                                          'players', 'plays', 'current_player_index']
-            }
             game = Game.from_database(json_data=game_data)
             name = await get_name_from_token(token=request.rel_url.query['token'], db=db)
             player = game.get_player_from_name(name=name)
