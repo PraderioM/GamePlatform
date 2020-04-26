@@ -23,7 +23,7 @@ class Game:
     def from_database(cls, json_data: Dict[str, Union[int, str, bool, Dict]]) -> 'Game':
         rows = json_data['rows']
         cols = json_data['cols']
-        gravity = json_data['cols']
+        gravity = json_data['gravity']
         id_ = json_data['id']
         current_player_index = json_data['current_player_index']
         players_list = [Player.from_database(json_data=json_data) for json_data in json.loads(json_data['players'])]
@@ -212,3 +212,8 @@ class Game:
     @property
     def n_missing(self) -> int:
         return self.n_players - self.n_current
+
+    @property
+    def has_ended(self) -> bool:
+        return len(self.play_list) >= self.rows * self.cols
+
