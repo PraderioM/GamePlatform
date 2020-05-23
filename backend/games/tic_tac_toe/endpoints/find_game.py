@@ -4,7 +4,7 @@ from aiohttp import web
 import asyncpg
 
 from ..models.game import Game
-from backend.logging.identify import get_name_from_token
+from backend.registration.identify import get_name_from_token
 
 
 async def find_game(request: web.Request) -> web.Response:

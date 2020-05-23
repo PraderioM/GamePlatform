@@ -2,7 +2,7 @@ from aiohttp import web
 import asyncpg
 import json
 
-from backend.logging.identify import get_name_from_token
+from backend.registration.identify import get_name_from_token
 from ..models.game import Game
 from ..models.play import Play
 

@@ -1,14 +1,14 @@
-import asyncio
 import logging
+import asyncio
 import os
 
 from aiohttp import web
 import aiohttp_cors
 import asyncpg
 
-from backend.logging.login import login
-from backend.logging.logout import logout
-from backend.logging.register import register
+from backend.registration.login import login
+from backend.registration.logout import logout
+from backend.registration.register import register
 from backend.games.tic_tac_toe.endpoints.collect_end_points import collect_end_points
 
 
@@ -54,4 +54,4 @@ async def create_app():  # Start the app
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()
     app = loop.run_until_complete(create_app())
-    web.run_app(app, host=os.environ.get('DATABASE_HOST'), port=2121)
+    web.run_app(app, host=os.environ.get('HOST'), port=2121)
