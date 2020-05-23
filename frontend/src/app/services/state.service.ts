@@ -22,7 +22,8 @@ class RegisteringResponse {
 @Injectable()
 export class StateService {
     // urlPath = 'http://0.0.0.0:2121';
-    urlPath = 'http://192.168.1.19:2121';
+    // urlPath = 'http://192.168.1.19:2121';
+    urlPath = 'http://85.53.252.3:27182';
     token?: string;
 
     constructor(private http: HttpClient) {
