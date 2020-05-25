@@ -1,27 +1,21 @@
-import json
-from typing import Optional
+from typing import Dict, Optional, Tuple
 from uuid import uuid4
 
 from aiohttp import web
 import asyncpg
 
 from backend.registration.identify import get_name_from_token
+from backend.games.common.endpoints.create_game import create_game as general_create_game
 from ..models.game import Game
 from ..models.player import Player
 
 
 async def create_game(request: web.Request) -> web.Response:
-    rows = int(request.rel_url.query['rows'])
-    cols = int(request.rel_url.query['cols'])
-    npc = int(request.rel_url.query['npc'])
-    pc = int(request.rel_url.query['pc'])
-    gravity = True if request.rel_url.query['gravity'] == 'true' else False
-
-    pool = request.app['db']
-
-    async with pool.acquire() as db:
-        db: asyncpg.Connection = db
-
+    async def get_new_game(rows: int, cols: int,
+                           npc: int, pc: int,
+                           gravity: bool,
+                           token: str,
+                           db: asyncpg.Connection) -> Tuple[Optional[Game], Optional[Dict]]:
         # Check correctness of input data.
         dummy_game = Game(rows=0, cols=0, current_player_index=0, gravity=gravity,
                           play_list=[], player_list=[], id_=None)
@@ -30,7 +24,7 @@ async def create_game(request: web.Request) -> web.Response:
             error_message = f'rows and cols must be strictly positive however got rows={rows} and cols={cols}.'
         elif rows * cols % (npc + pc) != 0:
             error_message = f'Total number of cells must be a multiple of the number of players however there ' \
-                            f'are {rows*cols} cells which is not divisible by the number of players ({npc + pc}).'
+                            f'are {rows * cols} cells which is not divisible by the number of players ({npc + pc}).'
         elif pc < 1:
             error_message = f'There must be at least one player character however ' \
                             f'got number of player characters of {pc}'
@@ -43,14 +37,10 @@ async def create_game(request: web.Request) -> web.Response:
             error_message = f'Artificial intelligence is not yet implemented and npc player cannot be set.'
 
         if error_message is not None:
-            print('game creation failed.')
-            return web.Response(
-                status=200,
-                body=json.dumps(await dummy_game.to_frontend(db=db, description=error_message))
-            )
+            return None, dummy_game.to_frontend(db=None, description=error_message)
 
         # If settings are correct we create a new game.
-        name_list = [await get_name_from_token(request.rel_url.query['token'], db=db)] + [None] * (npc + pc - 1)
+        name_list = [await get_name_from_token(token=token, db=db)] + [None] * (npc + pc - 1)
         symbol_list = []
         for i in range(npc + pc):
             for letter in 'theGAME':
@@ -62,19 +52,25 @@ async def create_game(request: web.Request) -> web.Response:
         is_bot_list = [False] * pc + [True] * npc
         player_list = [Player(name=name, symbol=symbol, is_bot=is_bot)
                        for name, symbol, is_bot in zip(name_list, symbol_list, is_bot_list)]
-        out_game = Game(rows=rows, cols=cols, current_player_index=0, gravity=gravity, play_list=[],
-                        player_list=player_list, id_=str(uuid4()))
-        database_game = out_game.to_database()
-        async with db.transaction():
-            # Inset name in database.
-            await db.execute("""
-                             INSERT INTO tic_tac_toe_active_games (id, rows, cols, players, plays, gravity)
-                             VALUES ($1, $2, $3, $4, $5, $6)
-                             """, out_game.id, out_game.rows, out_game.cols,
-                             database_game['players'], database_game['plays'],
-                             out_game.gravity)
+        return Game(rows=rows, cols=cols, current_player_index=0, gravity=gravity, play_list=[],
+                    player_list=player_list, id_=str(uuid4())), None
 
-            return web.Response(
-                status=200,
-                body=json.dumps(await out_game.to_frontend(db=db))
-            )
+    async def add_new_game_to_database(new_game: Game, db: asyncpg.Connection):
+        database_game = new_game.to_database()
+        # Inset name in database.
+        await db.execute("""
+                         INSERT INTO tic_tac_toe_active_games (id, rows, cols, players, plays, gravity)
+                         VALUES ($1, $2, $3, $4, $5, $6)
+                         """, new_game.id, new_game.rows, new_game.cols,
+                         database_game['players'], database_game['plays'],
+                         new_game.gravity)
+
+    return await general_create_game(pool=request.app['db'],
+                                     token=request.rel_url.query['token'],
+                                     get_new_game=get_new_game,
+                                     add_new_game_to_database=add_new_game_to_database,
+                                     rows=int(request.rel_url.query['rows']),
+                                     cols=int(request.rel_url.query['cols']),
+                                     npc=int(request.rel_url.query['npc']),
+                                     pc=int(request.rel_url.query['pc']),
+                                     gravity=True if request.rel_url.query['gravity'] == 'true' else False)

@@ -5,6 +5,7 @@ import json
 from backend.registration.identify import get_name_from_token
 from ..models.game import Game
 from ..models.play import Play
+from .utils import get_game_data
 
 
 async def make_play(request: web.Request) -> web.Response:
@@ -14,24 +15,14 @@ async def make_play(request: web.Request) -> web.Response:
     async with pool.acquire() as db:
         db: asyncpg.Connection = db
         async with db.transaction():
-            game_data = await db.fetchrow("""
-                                    SELECT id AS id,
-                                           rows AS rows,
-                                           cols AS cols,
-                                           current_player_index AS current_player_index,
-                                           players AS players, 
-                                           plays AS plays,
-                                           gravity AS gravity
-                                    FROM tic_tac_toe_active_games
-                                    WHERE id = $1
-                                    """, game_id)
+            game_data = await get_game_data(game_id=game_id, db=db)
             game = Game.from_database(json_data=game_data)
 
             # If all players aren't ready we cannot make any play.
             if game.n_missing > 0:
                 return web.Response(
                     status=200,
-                    body=json.dumps(await game.to_frontend(db=db))
+                    body=json.dumps(game.to_frontend(db=db))
                 )
 
             name = await get_name_from_token(token=request.rel_url.query['token'], db=db)
@@ -44,8 +35,8 @@ async def make_play(request: web.Request) -> web.Response:
                 game.add_play(play)
 
             # Make bot plays.
-            while game.current_player().is_bot:
-                play = game.current_player().get_bot_play(game)
+            while game.current_player.is_bot:
+                play = game.current_player.get_bot_play(game)
                 play = game.pre_process_play(play)
                 game.add_play(play)
 
@@ -63,5 +54,5 @@ async def make_play(request: web.Request) -> web.Response:
 
             return web.Response(
                 status=200,
-                body=json.dumps(await game.to_frontend(db=db))
+                body=json.dumps(game.to_frontend(db=db))
             )

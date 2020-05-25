@@ -1,3 +1,4 @@
+import asyncio
 import json
 from typing import Callable, Dict, List, Optional, Tuple, Union
 
@@ -5,19 +6,18 @@ import asyncpg
 
 from .play import Play
 from .player import Player
+from ...common.models.game import Game as BaseGame
 
 
-class Game:
+class Game(BaseGame):
     def __init__(self, rows: int, cols: int, current_player_index: int, gravity: bool,
                  play_list: List[Play], player_list: List[Player],
                  id_: Optional[str]):
         self.rows = rows
         self.cols = cols
-        self.current_player_index = current_player_index
         self.gravity = gravity
-        self.play_list = play_list[:]
-        self.player_list = player_list[:]
-        self.id = id_
+        BaseGame.__init__(self, current_player_index=current_player_index, play_list=play_list, player_list=player_list,
+                          id_=id_)
 
     @classmethod
     def from_database(cls, json_data: Dict[str, Union[int, str, bool, Dict]]) -> 'Game':
@@ -32,6 +32,10 @@ class Game:
         return Game(rows=rows, cols=cols, current_player_index=current_player_index, gravity=gravity,
                     play_list=play_list, player_list=players_list, id_=id_)
 
+    @classmethod
+    def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'Game':
+        raise ValueError('Not implemented error.')
+
     def to_database(self) -> Dict[str, Union[str, int, bool, Dict]]:
         return {
             'rows': self.rows,
@@ -43,14 +47,14 @@ class Game:
             'id': self.id,
         }
 
-    async def to_frontend(self, db: asyncpg.Connection,
-                          description: str = 'successfully obtained game.') -> Dict[str, Union[str, int]]:
+    def to_frontend(self, db: asyncpg.Connection,
+                    description: str = 'successfully obtained game.') -> Dict[str, Union[str, int]]:
         return {
             'rows': self.rows,
             'cols': self.cols,
             'currentPlayer': self.current_player_index,
-            'players': [player.to_frontend(token=await player.get_token(db=db),
-                                           points=self.get_player_points(player)) for player in self.player_list],
+            'players': [player.to_frontend(token=asyncio.get_event_loop().run_until_complete(player.get_token(db=db)),
+                                           points=self.get_player_score(player)) for player in self.player_list],
             'plays': [play.to_frontend() for play in self.play_list],
             'id': None if self.id is None else str(self.id),
             'description': description,
@@ -67,30 +71,7 @@ class Game:
             'cols': self.cols,
         }
 
-    def to_game_resolution(self, player: Optional[Player]) -> Dict[str, bool]:
-        if player is None:
-            return {'isObserver': True}
-
-        all_points = sorted([self.get_player_points(p) for p in self.player_list], reverse=True)
-        player_points = self.get_player_points(player)
-
-        if player_points == all_points[0]:
-            if player_points == all_points[1]:
-                return {'isTie': True}
-            else:
-                return {'isVictorious': True}
-        else:
-            return {'isLoser': True}
-
-    def resolution_points(self, player: Player):
-        all_scores = [self.get_player_points(p) for p in self.player_list]
-        player_score = self.get_player_points(player)
-        above_players = len([score for score in all_scores if score > player_score])
-        below_players = len([score for score in all_scores if score < player_score])
-
-        return below_players - above_players
-
-    def get_player_points(self, player: Player) -> int:
+    def get_player_score(self, player: Player) -> int:
         # Get player plays.
         plays = [play for play in self.play_list if play.player == player]
 
@@ -109,44 +90,11 @@ class Game:
         else:
             return sum([(length - 1)**2 for length in all_lengths])
 
-    def add_play(self, play: Optional[Play]):
-        if play is None:
-            return
-        if play.player in self.player_list:
-            if self.player_list.index(play.player) == self.current_player_index:
-                self.play_list.append(play)
-                self.update_player_index()
-
-    def update_player_index(self):
-        self.current_player_index = (self.current_player_index + 1) % len(self.player_list)
-
-    def get_player_from_name(self, name: str) -> Optional[Player]:
-        out_player: Optional[Player] = None
-        for player in self.player_list:
-            if player.name == name:
-                out_player = player
-        return out_player
-
-    def current_player(self) -> Player:
-        return self.player_list[self.current_player_index]
-
     def pre_process_play(self, play: Play) -> Optional[Play]:
         if self.gravity:
             return self._pre_process_play_with_gravity(play)
         else:
             return self._pre_process_play_without_gravity(play)
-
-    def add_new_player_name(self, name: str):
-        # Cannot add twice the same player.
-        for player in self.player_list:
-            if player.name == name:
-                return
-
-        if self.n_missing > 0:
-            for player in self.player_list:
-                if player.name is None and not player.is_bot:
-                    player.name = name
-                    break
 
     @staticmethod
     def get_play_in_coords(row: int, col: int, play_list: List[Play]) -> Optional[Play]:
@@ -197,22 +145,6 @@ class Game:
         if pos_occupied:
             return None
         return play
-
-    @property
-    def n_bots(self) -> int:
-        return len([player for player in self.player_list if player.is_bot])
-
-    @property
-    def n_players(self) -> int:
-        return len([player for player in self.player_list if not player.is_bot])
-
-    @property
-    def n_current(self) -> int:
-        return len([player for player in self.player_list if player.name is not None and not player.is_bot])
-
-    @property
-    def n_missing(self) -> int:
-        return self.n_players - self.n_current
 
     @property
     def has_ended(self) -> bool:

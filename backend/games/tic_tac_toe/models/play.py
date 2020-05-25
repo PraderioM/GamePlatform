@@ -1,13 +1,14 @@
 from typing import Dict, List, Optional, Union
 
 from .player import Player
+from backend.games.common.models.play import Play as BasePlay
 
 
-class Play:
+class Play(BasePlay):
     def __init__(self, row: int, col: int, player: Player):
         self.row = row
         self.col = col
-        self.player = player
+        BasePlay.__init__(self, player=player)
 
     @classmethod
     def from_database(cls, json_data: Dict[str, Union[int, str]], all_players: List[Player]) -> 'Play':

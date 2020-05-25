@@ -1,13 +1,15 @@
+import asyncio
 from typing import Dict, Optional, Union
 
 import asyncpg
 
+from backend.games.common.models.player import Player as BasePlayer
 
-class Player:
+
+class Player(BasePlayer):
     def __init__(self, name: Optional[str], symbol: str, is_bot: bool = False):
-        self.name = name
         self.symbol = symbol
-        self.is_bot = is_bot
+        BasePlayer.__init__(self, name=name, is_bot=is_bot)
 
     @classmethod
     def from_database(cls, json_data: Dict[str, Union[bool, str]]) -> 'Player':
@@ -32,16 +34,6 @@ class Player:
             'token': str(token),
             'points': points
         }
-
-    async def get_token(self, db: asyncpg.Connection) -> Optional[str]:
-        if self.is_bot:
-            return None
-
-        return await db.fetchval("""
-                                 SELECT token
-                                 FROM users
-                                 WHERE name = $1
-                                 """, self.name)
 
     def get_bot_play(self, game):
         # Todo implement
