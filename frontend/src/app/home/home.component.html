@@ -1,5 +1,5 @@
 <p>Logged in as {{name}}</p>
-<app-tic-tac-toe [token]="token" (backToMenu)="deSelectGames()" *ngIf="isSelected('tic-tac-toe')">
+<app-tic-tac-toe [token]="token" [name]="name" (backToMenu)="deSelectGames()" *ngIf="isSelected('tic-tac-toe')">
 </app-tic-tac-toe>
 <ul style="text-align:center" class="data-container" *ngIf="!isAnyGameSelected()">
   Select Game

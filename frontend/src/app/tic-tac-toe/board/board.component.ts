@@ -10,6 +10,7 @@ import {StateService} from '../services/state.service';
 export class BoardComponent implements OnInit {
   @Output() backToMenu = new EventEmitter<void>();
   @Input() token: string;
+  @Input() name: string;
   @Input() description: GameDescription;
 
   interval;

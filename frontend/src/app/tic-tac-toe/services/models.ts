@@ -4,17 +4,13 @@ export class Play {
 
 export class Player {
   constructor(public isBot: boolean, public symbol: string, public points: number,
-              public name?: string, public token?: string) { }
+              public name?: string) { }
 }
 
 export class GameDescription {
   constructor(public rows: number, public cols: number, public players: Player[],
               public currentPlayer: number, public description: string,
               public id?: string, public plays: Play[] = []) { }
-
-  public hasEnded() {
-    return this.rows * this.cols <= this.plays.length;
-  }
 }
 
 export class ActiveGame {

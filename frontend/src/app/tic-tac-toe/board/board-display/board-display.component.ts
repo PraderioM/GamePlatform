@@ -10,6 +10,7 @@ export class BoardDisplayComponent implements OnInit {
   @Output() makePlay = new EventEmitter<Play>();
   @Input() description: GameDescription;
   @Input() token: string;
+  @Input() name: string;
 
   constructor() { }
 
@@ -18,7 +19,7 @@ export class BoardDisplayComponent implements OnInit {
 
   newPlay(row: number, col: number) {
     for (const player of this.description.players) {
-      if (player.token === this.token) {
+      if (player.name === this.name) {
         const play = new Play(row, col, player.symbol);
         this.makePlay.emit(play);
       }

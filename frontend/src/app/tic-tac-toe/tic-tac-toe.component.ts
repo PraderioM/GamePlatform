@@ -12,6 +12,7 @@ import {GameDescription} from './services/models';
 export class TicTacToeComponent implements OnInit {
   @Output() backToMenu = new EventEmitter<void>();
   @Input() token: string;
+  @Input() name: string;
 
   selectionMode = true;
   description?: GameDescription;
