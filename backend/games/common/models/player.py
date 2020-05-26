@@ -22,5 +22,5 @@ class Player(GameComponent):
         raise NotImplementedError('Bot is not implemented for current game.')
 
     @abc.abstractmethod
-    def to_frontend(self, token: Optional[str] = None, *args, **kwargs) -> Dict:
+    def to_frontend(self, *args, **kwargs) -> Dict:
         raise NotImplementedError('Sub-classes must implement to frontend method.')

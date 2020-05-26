@@ -42,7 +42,7 @@ class Game(GameComponent):
             return {'isObserver': True}
 
         scores_dict = self.get_all_player_scores()
-        sorted_scores = sorted([score for _, score in scores_dict.items()])
+        sorted_scores = sorted([score for _, score in scores_dict.items()], reverse=True)
         player_score = scores_dict[player.name]
 
         if player_score == sorted_scores[0]:
@@ -58,7 +58,7 @@ class Game(GameComponent):
 
     def resolution_points(self, player: Player):
         scores_dict = self.get_all_player_scores()
-        sorted_scores = sorted([score for _, score in scores_dict.items()])
+        sorted_scores = sorted([score for _, score in scores_dict.items()], reverse=True)
         player_score = scores_dict[player.name]
         above_players = len([score for score in sorted_scores if score > player_score])
         below_players = len([score for score in sorted_scores if score < player_score])

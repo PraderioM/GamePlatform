@@ -26,15 +26,15 @@ class Player(BasePlayer):
             'symbol': self.symbol,
         }
 
-    def to_frontend(self, token: Optional[str], points: int) -> Dict[str, Union[str, bool]]:
+    def to_frontend(self, points: int) -> Dict[str, Union[str, bool]]:
         return {
             'name': self.name,
             'isBot': self.is_bot,
             'symbol': self.symbol,
-            'token': str(token),
             'points': points
         }
 
     def get_bot_play(self, game):
         # Todo implement
+        raise NotImplementedError('Get bot play has not yet been implemented.')
         pass

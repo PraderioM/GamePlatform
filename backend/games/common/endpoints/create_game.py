@@ -12,7 +12,7 @@ async def create_game(pool: asyncpg.pool.Pool,
                       add_new_game_to_database: Callable[[Game, asyncpg.Connection], Awaitable[None]]) -> web.Response:
     async with pool.acquire() as db:
         # If settings are correct we create a new game.
-        new_game, error_game = get_new_game(db)
+        new_game, error_game = await get_new_game(db)
         if error_game is not None:
             print('Game creation failed.')
             return web.Response(

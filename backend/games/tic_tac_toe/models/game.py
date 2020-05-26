@@ -1,4 +1,3 @@
-import asyncio
 import json
 from typing import Callable, Dict, List, Optional, Tuple, Union
 
@@ -53,8 +52,7 @@ class Game(BaseGame):
             'rows': self.rows,
             'cols': self.cols,
             'currentPlayer': self.current_player_index,
-            'players': [player.to_frontend(token=asyncio.get_event_loop().run_until_complete(player.get_token(db=db)),
-                                           points=self.get_player_score(player)) for player in self.player_list],
+            'players': [player.to_frontend(points=self.get_player_score(player)) for player in self.player_list],
             'plays': [play.to_frontend() for play in self.play_list],
             'id': None if self.id is None else str(self.id),
             'description': description,
