@@ -11,11 +11,16 @@ from ..models.player import Player
 
 
 async def create_game(request: web.Request) -> web.Response:
-    async def get_new_game(rows: int, cols: int,
-                           npc: int, pc: int,
-                           gravity: bool,
-                           token: str,
-                           db: asyncpg.Connection) -> Tuple[Optional[Game], Optional[Dict]]:
+    # Get params.
+    rows = int(request.rel_url.query['rows'])
+    cols = int(request.rel_url.query['cols'])
+    npc = int(request.rel_url.query['npc'])
+    pc = int(request.rel_url.query['pc'])
+    gravity = True if request.rel_url.query['gravity'] == 'true' else False
+
+    token = request.rel_url.query['token']
+
+    async def get_new_game(db: asyncpg.Connection) -> Tuple[Optional[Game], Optional[Dict]]:
         # Check correctness of input data.
         dummy_game = Game(rows=0, cols=0, current_player_index=0, gravity=gravity,
                           play_list=[], player_list=[], id_=None)
@@ -66,11 +71,5 @@ async def create_game(request: web.Request) -> web.Response:
                          new_game.gravity)
 
     return await general_create_game(pool=request.app['db'],
-                                     token=request.rel_url.query['token'],
                                      get_new_game=get_new_game,
-                                     add_new_game_to_database=add_new_game_to_database,
-                                     rows=int(request.rel_url.query['rows']),
-                                     cols=int(request.rel_url.query['cols']),
-                                     npc=int(request.rel_url.query['npc']),
-                                     pc=int(request.rel_url.query['pc']),
-                                     gravity=True if request.rel_url.query['gravity'] == 'true' else False)
+                                     add_new_game_to_database=add_new_game_to_database)

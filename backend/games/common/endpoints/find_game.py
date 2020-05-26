@@ -8,16 +8,16 @@ from backend.games.common.models.game import Game
 from backend.registration.identify import get_name_from_token
 
 
-async def find_game(game_id: str, token: str, pool: asyncpg.pool.Pool,
-                    active_games_database: str,
-                    get_game_from_database: Callable[[asyncpg.Connection, str], Awaitable[Game]],
-                    get_dummy_frontend_game: Callable[[str], Dict]) -> web.Response:
+async def find_game(token: str, pool: asyncpg.pool.Pool,
+                    active_games_table: str,
+                    get_game_from_database: Callable[[asyncpg.Connection], Awaitable[Game]],
+                    get_dummy_frontend_game: Callable[[], Dict]) -> web.Response:
     async with pool.acquire() as db:
         async with db.transaction():
-            out_game = await get_game_from_database(db, game_id)
+            out_game = await get_game_from_database(db)
 
             if out_game is None:
-                dummy_game = get_dummy_frontend_game(game_id)
+                dummy_game = get_dummy_frontend_game()
                 return web.Response(
                     status=200,
                     body=json.dumps(dummy_game)
@@ -29,7 +29,7 @@ async def find_game(game_id: str, token: str, pool: asyncpg.pool.Pool,
                 out_game.add_new_player_name(name=name)
                 database_player_list = json.dumps([player.to_database() for player in out_game.player_list])
                 await db.execute(f"""
-                                 UPDATE {active_games_database}
+                                 UPDATE {active_games_table}
                                  SET last_updated = now(), players = $1
                                  WHERE id = $2
                                  """, database_player_list, out_game.id)

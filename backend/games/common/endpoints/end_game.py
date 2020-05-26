@@ -9,13 +9,12 @@ from backend.registration.identify import get_name_from_token
 
 
 async def end_game(pool: asyncpg.pool.Pool, game_id: str, token: str,
-                   get_game_from_database: Callable[[asyncpg.Connection, str], Awaitable[Game]],
+                   get_game_from_database: Callable[[asyncpg.Connection], Awaitable[Game]],
                    leader_board_database: str) -> web.Response:
 
     async with pool.acquire() as db:
-        db: asyncpg.Connection = db
         async with db.transaction():
-            game = await get_game_from_database(db, game_id)
+            game = await get_game_from_database(db)
 
             name = await get_name_from_token(token=token, db=db)
             player = game.get_player_from_name(name=name)

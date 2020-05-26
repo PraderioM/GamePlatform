@@ -38,13 +38,13 @@ class Game(BaseGame):
 
     def to_database(self) -> Dict[str, Union[str, int, bool, Dict]]:
         return {
-            'rows': self.rows,
-            'cols': self.cols,
-            'current_player_index': self.current_player_index,
-            'gravity': self.gravity,
-            'plays': json.dumps([play.to_database() for play in self.play_list]),
-            'players': json.dumps([player.to_database() for player in self.player_list]),
-            'id': self.id,
+            **{
+                'rows': self.rows,
+                'cols': self.cols,
+                'gravity': self.gravity,
+                'id': self.id,
+            },
+            **BaseGame.to_database(self)
         }
 
     def to_frontend(self, db: asyncpg.Connection,
@@ -76,10 +76,10 @@ class Game(BaseGame):
         plays = [play for play in self.play_list if play.player == player]
 
         # Compute lengths of all formed rows.
-        hor_lengths = self._get_row_lengths(plays[:], lambda row, col: (row, col+1))
-        diag_lengths = self._get_row_lengths(plays[:], lambda row, col: (row+1, col+1))
-        ver_lengths = self._get_row_lengths(plays[:], lambda row, col: (row+1, col))
-        anti_diag_lengths = self._get_row_lengths(plays[:], lambda row, col: (row+1, col-1))
+        hor_lengths = self._get_row_lengths(plays[:], lambda row, col: (row, col + 1))
+        diag_lengths = self._get_row_lengths(plays[:], lambda row, col: (row + 1, col + 1))
+        ver_lengths = self._get_row_lengths(plays[:], lambda row, col: (row + 1, col))
+        anti_diag_lengths = self._get_row_lengths(plays[:], lambda row, col: (row + 1, col - 1))
 
         # Join all lengths.
         all_lengths = hor_lengths + diag_lengths + ver_lengths + anti_diag_lengths
@@ -88,7 +88,7 @@ class Game(BaseGame):
         if len(all_lengths) == 0:
             return 0
         else:
-            return sum([(length - 1)**2 for length in all_lengths])
+            return sum([(length - 1) ** 2 for length in all_lengths])
 
     def pre_process_play(self, play: Play) -> Optional[Play]:
         if self.gravity:
@@ -149,4 +149,3 @@ class Game(BaseGame):
     @property
     def has_ended(self) -> bool:
         return len(self.play_list) >= self.rows * self.cols
-

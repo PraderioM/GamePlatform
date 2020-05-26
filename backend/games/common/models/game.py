@@ -1,5 +1,6 @@
 import abc
 import asyncpg
+import json
 from typing import Dict, List, Optional
 
 from .game_component import GameComponent
@@ -15,6 +16,14 @@ class Game(GameComponent):
         self.play_list = play_list[:]
         self.player_list = player_list[:]
         self.id = id_
+
+    def to_database(self) -> Dict:
+        return {
+            'current_player_index': self.current_player_index,
+            'plays': json.dumps([play.to_database() for play in self.play_list]),
+            'players': json.dumps([player.to_database() for player in self.player_list]),
+            'id': self.id,
+        }
 
     @abc.abstractmethod
     def to_display(self) -> Dict:

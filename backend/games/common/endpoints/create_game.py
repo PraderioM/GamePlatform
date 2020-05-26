@@ -8,13 +8,11 @@ from backend.games.common.models.game import Game
 
 
 async def create_game(pool: asyncpg.pool.Pool,
-                      token: str,
-                      get_new_game: Callable[[], Awaitable[Tuple[Game, Dict]]],
-                      add_new_game_to_database: Callable[[Game, asyncpg.Connection], Awaitable[None]],
-                      **kwargs) -> web.Response:
+                      get_new_game: Callable[[asyncpg.Connection], Awaitable[Tuple[Game, Dict]]],
+                      add_new_game_to_database: Callable[[Game, asyncpg.Connection], Awaitable[None]]) -> web.Response:
     async with pool.acquire() as db:
         # If settings are correct we create a new game.
-        new_game, error_game = get_new_game(**kwargs, db=db, token=token)
+        new_game, error_game = get_new_game(db)
         if error_game is not None:
             print('Game creation failed.')
             return web.Response(
