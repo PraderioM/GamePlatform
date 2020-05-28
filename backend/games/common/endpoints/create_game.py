@@ -14,7 +14,6 @@ async def create_game(pool: asyncpg.pool.Pool,
         # If settings are correct we create a new game.
         new_game, error_game = await get_new_game(db)
         if error_game is not None:
-            print('Game creation failed.')
             return web.Response(
                 status=200,
                 body=json.dumps(error_game)
