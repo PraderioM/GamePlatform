@@ -9,7 +9,8 @@ export class OptionsDisplayComponent implements OnInit {
   @Output() backToMenu = new EventEmitter<void>();
   @Input() gameId: string;
   showInstructions = false;
-  instructions = 'Contacta a Sergi Sanchez al número 650 38 79 93';
+  // Todo write correct instructions.
+  instructions = 'Call Sergi Sanchez (0034 650 38 79 93) he\'ll explain everything or die trying.';
 
   constructor() { }
 
