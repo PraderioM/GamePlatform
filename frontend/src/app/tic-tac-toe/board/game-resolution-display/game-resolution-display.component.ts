@@ -34,7 +34,7 @@ export class GameResolutionDisplayComponent implements OnInit {
       scope = '/observing-images';
       imageArray = ['img_1.png'];
     } else {
-      scope = '/assets/wtf-images';
+      scope = '/wtf-images';
       imageArray = ['wtf.png'];
     }
     return this.assetsScope.concat(scope).concat('/').concat(imageArray[Math.floor(Math.random() * imageArray.length)]);
