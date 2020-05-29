@@ -1,19 +1,20 @@
-import {Component, EventEmitter, Input, NgModule, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {StateService} from '../services/state.service';
 import {TicTacToeModule} from '../tic-tac-toe/tic-tac-toe.module';
+import {SudokuModule} from '../sudoku/sudoku.module';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  providers: [StateService, HttpClient, TicTacToeModule]
+  providers: [StateService, HttpClient, TicTacToeModule, SudokuModule]
 })
 export class HomeComponent {
   @Output() loggedOut = new EventEmitter<void>();
   @Input() token: string;
   @Input() name: string;
-  gameNames: string[] = ['tic-tac-toe'];
+  gameNames: string[] = ['tic-tac-toe', 'sudoku'];
   gameSelections: boolean[];
 
   constructor(private stateService: StateService) {

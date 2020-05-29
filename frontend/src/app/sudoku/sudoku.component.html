@@ -1,0 +1,18 @@
+<div class="ver-container">
+  <p class="hor-container">Insert SuDoKu values</p>
+
+  <table>
+    <tr *ngFor="let rowIndex of [0, 1, 2]">
+      <th *ngFor="let colIndex of [0, 1, 2]">
+        <app-block
+          [block]="getTableSlice(rowIndex, colIndex)"
+          (update)="updateTable($event, rowIndex, colIndex)"></app-block>
+      </th>
+    </tr>
+  </table>
+
+  <p class="hor-container">
+    <button class="btn" (click)="checkSuDoKu()">Solve SuDoKu</button>
+    <button class="btn" (click)="backToMenu.emit()">game selection</button>
+  </p>
+</div>
