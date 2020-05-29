@@ -1,7 +1,4 @@
-import asyncio
 from typing import Dict, Optional, Union
-
-import asyncpg
 
 from backend.games.common.models.player import Player as BasePlayer
 
