@@ -15,7 +15,6 @@ export class CellComponent implements OnInit {
   }
 
   updateValue(val: any) {
-    console.log(val);
     this.value = this.valueFromString(val);
     this.update.emit(this.value);
   }
@@ -25,8 +24,9 @@ export class CellComponent implements OnInit {
       return -1;
     } else {
       const newVal = parseInt(val, 10);
-      if (isNaN(newVal)) {
-        return -1;
+      // Only return value if it is an integer between  1 and 9 included.
+      if (isNaN(newVal) || newVal < 1 || newVal > 9) {
+        return this.value;
       } else {
         return newVal;
       }

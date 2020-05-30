@@ -1,11 +1,12 @@
 import {Component, OnInit, EventEmitter, Output} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {StateService} from './services/state.service';
 
 @Component({
   selector: 'app-sudoku',
   templateUrl: './sudoku.component.html',
   styleUrls: ['./sudoku.component.css'],
-  providers: [HttpClient],
+  providers: [StateService, HttpClient],
 })
 export class SudokuComponent implements OnInit {
   @Output() backToMenu = new EventEmitter<void>();
@@ -21,7 +22,7 @@ export class SudokuComponent implements OnInit {
     [-1, -1, -1, -1, -1, -1, -1, -1, -1]
   ];
 
-  constructor() { }
+  constructor(private stateService: StateService) { }
 
   ngOnInit(): void {
   }
@@ -48,8 +49,17 @@ export class SudokuComponent implements OnInit {
     }
   }
 
-  checkSuDoKu() {
-    // todo implement.
+  async solveSuDoKu() {
+    const fillResponse = await this.stateService.solveSuDoKu(this.table);
+    if (fillResponse.table != null) {
+      this.table = fillResponse.table;
+    } else {
+      if (fillResponse.fillStatus === -1) {
+        alert('There exist multiple solutions for the proposed sudoku.');
+      } else {
+        alert('There is no possible solution for the proposed sudoku.');
+      }
+    }
   }
 
 }

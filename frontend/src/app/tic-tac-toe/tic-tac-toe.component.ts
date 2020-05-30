@@ -28,7 +28,6 @@ export class TicTacToeComponent implements OnInit {
 
   startGame(description: GameDescription) {
     this.description = description;
-    console.log('starting game.');
     this.selectionMode = false;
   }
 
