@@ -1,7 +1,7 @@
 <p>Logged in as {{name}}</p>
 <app-tic-tac-toe [token]="token" [name]="name" (backToMenu)="deSelectGames()" *ngIf="isSelected('tic-tac-toe')">
 </app-tic-tac-toe>
-<app-sudoku (backToMenu)="deSelectGames()" *ngIf="isSelected('sudoku')"> </app-sudoku>
+<app-sudoku (backToMenu)="deSelectGames()" *ngIf="isSelected('SuDoKu')"> </app-sudoku>
 <ul style="text-align:center" class="data-container" *ngIf="!isAnyGameSelected()">
   Select Game
   <li style="text-align:center" class="data-container">

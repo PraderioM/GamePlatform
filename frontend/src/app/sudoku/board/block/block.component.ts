@@ -19,4 +19,10 @@ export class BlockComponent implements OnInit {
     this.update.emit(this.block);
   }
 
+  getBlockSize() {
+    const rows = this.block.length;
+    const cols = this.block[0].length;
+    return rows * cols;
+  }
+
 }

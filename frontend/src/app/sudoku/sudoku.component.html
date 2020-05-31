@@ -1,31 +1,28 @@
 <div class="ver-container">
   <p class="hor-container">Insert SuDoKu values</p>
 
-  <table>
-    <tr *ngFor="let rowIndex of [0, 1, 2]">
-      <th *ngFor="let colIndex of [0, 1, 2]">
-        <app-block
-          [block]="getTableBlock(rowIndex, colIndex)"
-          (update)="updateTable($event, rowIndex, colIndex)"></app-block>
-      </th>
-    </tr>
-  </table>
+  <app-board class="hor-container"
 
-  <p class="hor-container">
-    <label>
-      cols
-      <input type="number" [value]="this.blockCols" (change)="updateBlockCols($event.target.value)">
-    </label>
-    <label>
-      rows
-      <input type="number" [value]="this.blockRows" (change)="updateBlockRows($event.target.value)">
-    </label>
+             [blockCols]="blockCols"
+             [blockRows]="blockRows"
+             [table]="table"
 
-    <button class="btn" (click)="clearTable()">Clear</button>
-    <button class="btn" (click)="hintSuDoKu()">Hint</button>
-    <button class="btn" (click)="solveSuDoKu()">Solve SuDoKu</button>
+             (update)="updateTable($event)">
 
-    <button class="btn" (click)="createSuDoKu()">Create</button>
-    <button class="btn" (click)="backToMenu.emit()">game selection</button>
-  </p>
+  </app-board>
+
+  <app-options class="hor-container"
+
+               (clearTable)="clearTable()"
+               (hintSuDoKu)="hintSuDoKu()"
+               (solveSuDoKu)="solveSuDoKu()"
+               (createSuDoKu)="createSuDoKu()"
+               (backToMenu)="backToMenu.emit()"
+               (update)="updateBlockShape($event)"
+
+               [blockCols]="blockCols"
+               [blockRows]="blockRows">
+
+  </app-options>
+
 </div>

@@ -1,0 +1,16 @@
+.options-container {
+  display: flex;
+  flex-direction: row;
+  flex-flow: wrap;
+  justify-content: space-around;
+  align-content: center;
+
+  width: 60%;
+}
+
+.val-input {
+  width: 15pt;
+  height: 15pt;
+  text-align: center;
+  vertical-align: center;
+}

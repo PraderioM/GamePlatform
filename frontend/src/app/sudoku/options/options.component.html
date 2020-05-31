@@ -1,0 +1,21 @@
+<p class="options-container">
+  <label>
+    block cols
+    <input type="text" class="val-input"
+           [value]="blockCols"
+           (change)="updateBlockCols($event.target.value)">
+  </label>
+  <label>
+    block rows
+    <input type="text" class="val-input"
+           [value]="blockRows"
+           (change)="updateBlockRows($event.target.value)">
+  </label>
+
+  <button class="btn" (click)="clearTable.emit()">Clear</button>
+  <button class="btn" (click)="hintSuDoKu.emit()">Hint</button>
+  <button class="btn" (click)="solveSuDoKu.emit()">Solve</button>
+
+  <button class="btn" (click)="createSuDoKu.emit()">Create</button>
+  <button class="btn" (click)="backToMenu.emit()">Game selection</button>
+</p>

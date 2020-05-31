@@ -19,27 +19,9 @@ export class SudokuComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  getTableBlock(rowIndex: number, colIndex: number) {
-    const outSlice: number[][] = this.getEmptyTable(this.blockRows, this.blockCols);
-
-    for (let row = 0; row < this.blockRows; row++) {
-      for (let col = 0; col < this.blockCols; col++) {
-        outSlice[row][col] = this.table[this.blockRows * rowIndex + row][this.blockCols * colIndex + col];
-      }
-    }
-    return outSlice;
-  }
-
-  updateTable(block: number[][], rowIndex: number, colIndex: number) {
-    for (let row = 0; row < this.blockRows; row++) {
-      for (let col = 0; col < this.blockCols; col++) {
-        this.table[this.blockRows * rowIndex + row][this.blockCols * colIndex + col] = block[row][col];
-      }
-    }
-  }
-
   async createSuDoKu() {
     const fillResponse = await this.stateService.createSuDoKu(this.blockRows, this.blockCols);
+    console.log(fillResponse);
     if (fillResponse.table != null) {
       this.table = fillResponse.table;
     } else {
@@ -49,6 +31,7 @@ export class SudokuComponent implements OnInit {
 
   async solveSuDoKu() {
     const fillResponse = await this.stateService.solveSuDoKu(this.table, this.blockRows, this.blockCols);
+    console.log(fillResponse);
     if (fillResponse.table != null) {
       this.table = fillResponse.table;
     } else {
@@ -78,6 +61,7 @@ export class SudokuComponent implements OnInit {
 
     // Solve sudoku.
     const fillResponse = await this.stateService.solveSuDoKu(this.table, this.blockRows, this.blockCols);
+    console.log(fillResponse);
     // If there is no possible solution or there are multiple such solutions we show an alert.
     if (fillResponse.table === null) {
       if (fillResponse.fillStatus === -1) {
@@ -91,6 +75,10 @@ export class SudokuComponent implements OnInit {
       const chosenCell = emptyIndexes[Math.floor(Math.random() * emptyIndexes.length)];
       this.table[chosenCell[0]][chosenCell[1]] = fillResponse.table[chosenCell[0]][chosenCell[1]];
     }
+  }
+
+  updateTable(table: number[][]) {
+    this.table = table;
   }
 
   clearTable() {
@@ -110,28 +98,13 @@ export class SudokuComponent implements OnInit {
     return table;
   }
 
-  updateBlockCols(val: number) {
-    const newVal = this.preProcessBlockDim(val, this.blockCols);
-    if (newVal !== this.blockCols) {
-      this.blockCols = newVal;
+  updateBlockShape(shape: number[]) {
+    const rows = shape[0];
+    const cols = shape[1];
+    if (this.blockCols !== cols || this.blockRows !== rows) {
+      this.blockCols = cols;
+      this.blockRows = rows;
       this.clearTable();
     }
-  }
-
-  updateBlockRows(val: number) {
-    const newVal = this.preProcessBlockDim(val, this.blockRows);
-    if (newVal !== this.blockRows) {
-      this.blockRows = newVal;
-      this.clearTable();
-    }
-  }
-
-  preProcessBlockDim(val: number, defaultVal: number) {
-    // If number is not an integer or is lower than 1 we return default value.
-    if (val < 1 || val % 1 !== 0) {
-      return defaultVal;
-    }
-
-    return val;
   }
 }

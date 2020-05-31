@@ -8,6 +8,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 export class CellComponent implements OnInit {
   @Output() update = new EventEmitter<number>();
   @Input() value: number;
+  @Input() maxValue: number;
 
   constructor() { }
 
@@ -25,7 +26,7 @@ export class CellComponent implements OnInit {
     } else {
       const newVal = parseInt(val, 10);
       // Only return value if it is an integer between  1 and 9 included.
-      if (isNaN(newVal) || newVal < 1 || newVal > 9) {
+      if (isNaN(newVal) || newVal < 1 || newVal > this.maxValue) {
         return this.value;
       } else {
         return newVal;

@@ -1,0 +1,9 @@
+<table>
+  <tr *ngFor="let rowIndex of getBlockRowIndexes()">
+    <th *ngFor="let colIndex of getBlockColIndexes()">
+      <app-block
+        [block]="getTableBlock(rowIndex, colIndex)"
+        (update)="updateTable($event, rowIndex, colIndex)"></app-block>
+    </th>
+  </tr>
+</table>

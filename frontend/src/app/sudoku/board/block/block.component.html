@@ -3,6 +3,7 @@
     <th *ngFor="let value of row; let colIndex = index">
       <app-cell
         [value]="value"
+        [maxValue]="getBlockSize()"
         (update)="updateBlock($event, rowIndex, colIndex)">
 
       </app-cell>
