@@ -7,8 +7,8 @@ def are_equal(table_1: List[List[int]], table_2: List[List[int]]) -> bool:
     if rows_1 != rows_2:
         return False
 
-    cols_1 = len(table_1)
-    cols_2 = len(table_2)
+    cols_1 = len(table_1[0])
+    cols_2 = len(table_2[0])
     if cols_1 != cols_2:
         return False
 

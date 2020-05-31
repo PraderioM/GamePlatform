@@ -4,7 +4,7 @@ import pulp
 
 
 def post_process_result(lp_problem: pulp.LpProblem, digits: int) -> List[List[int]]:
-    out_table: List[List[int]] = [[-1] * digits] * digits
+    out_table: List[List[int]] = [[-1 for _ in range(digits)] for _ in range(digits)]
     variables = lp_problem.variables()
     for row_index in range(digits):
         for col_index in range(digits):

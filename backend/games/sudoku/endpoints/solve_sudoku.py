@@ -36,8 +36,7 @@ async def solve_sudoku(request: web.Request) -> web.Response:
 
     # Check now if multiple solutions exist for the specified sudoku by minimizing instead of maximizing
     # the objective function.
-    aux_lp_sudoku_problem = get_lp_problem(table=table, block_rows=block_rows, block_cols=block_cols,
-                                           name='Aux SuDoKu solving', sense=pulp.LpMinimize)
+    aux_lp_sudoku_problem = get_lp_problem(table=table, block_rows=block_rows, block_cols=block_cols, sense=1)
     aux_lp_sudoku_problem.solve()
     aux_table = post_process_result(lp_problem=aux_lp_sudoku_problem, digits=block_rows * block_cols)
     if not are_equal(table_1=out_table, table_2=aux_table):

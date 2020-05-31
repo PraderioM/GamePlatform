@@ -4,10 +4,10 @@ import pulp
 
 
 def get_lp_problem(table: List[List[int]], block_rows: int, block_cols: int,
-                   name='SuDoKu solving', sense=pulp.LpMaximize) -> pulp.LpProblem:
-    lp_sudoku_problem = pulp.LpProblem(name=name, sense=sense)
+                   name='SuDoKu_solving', sense: int = 0) -> pulp.LpProblem:
+    lp_sudoku_problem = pulp.LpProblem(name=name, sense=pulp.LpMaximize)
     lp_variables = get_lp_variables(table=table, digits=block_rows * block_cols)
-    objective_func = get_objective_function(lp_variables=lp_variables)
+    objective_func = get_objective_function(lp_variables=lp_variables, sense=sense)
     lp_sudoku_problem += objective_func, 'Z'  # Objective function.
     return add_lp_constraints(lp_problem=lp_sudoku_problem,
                               lp_variables=lp_variables,
@@ -41,15 +41,11 @@ def add_lp_constraints(lp_problem: pulp.LpProblem,
         for index in range(digits):
             # Row constraints.
             row_vars = [lp_variables[number + digits * (i + digits * index)] for i in range(digits)]
-            var_sum = sum(row_vars)
-            lp_problem += var_sum <= 1
-            lp_problem += var_sum >= 1
+            lp_problem += sum(row_vars) == 1
 
             # Column constraints.
             col_vars = [lp_variables[number + digits * (index + digits * i)] for i in range(digits)]
-            var_sum = sum(col_vars)
-            lp_problem += var_sum <= 1
-            lp_problem += var_sum >= 1
+            lp_problem += sum(col_vars) == 1
 
         # Block constraints.
         for block_row_index in range(block_cols):
@@ -62,17 +58,25 @@ def add_lp_constraints(lp_problem: pulp.LpProblem,
                         col_index = block_col_index * block_cols + block_col
                         block_vars.append(lp_variables[number + digits * (col_index + digits * row_index)])
 
-                var_sum = sum(block_vars)
-                lp_problem += var_sum <= 1
-                lp_problem += var_sum >= 1
+                lp_problem += sum(block_vars) == 1
+
+    # Add constraints for filling SuDoKu.
+    for row in range(digits):
+        for col in range(digits):
+            cell_vars = [lp_variables[i + digits * (col + digits * row)] for i in range(digits)]
+            lp_problem += sum(cell_vars) == 1
 
     return lp_problem
 
 
-def get_objective_function(lp_variables: List[pulp.LpVariable]):
+def get_objective_function(lp_variables: List[pulp.LpVariable], sense: int = 0):
+    lp_variables = lp_variables[:]
+    if sense != 0:
+        lp_variables.reverse()
+
     out_val = 0
-    pow_val = 1
+    increasing_val = 1
     for var in lp_variables:
-        out_val += pow_val * var
-        pow_val *= 2
+        out_val += increasing_val * var
+        increasing_val += 2
     return out_val

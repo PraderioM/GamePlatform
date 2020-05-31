@@ -31,7 +31,6 @@ export class SudokuComponent implements OnInit {
 
   async solveSuDoKu() {
     const fillResponse = await this.stateService.solveSuDoKu(this.table, this.blockRows, this.blockCols);
-    console.log(fillResponse);
     if (fillResponse.table != null) {
       this.table = fillResponse.table;
     } else {
@@ -48,7 +47,7 @@ export class SudokuComponent implements OnInit {
     const emptyIndexes: number[][] = [];
     for (let row = 0; row < this.blockCols * this.blockRows; row++) {
       for (let col = 0; col < this.blockCols * this.blockRows; col++) {
-        if (this.table[row][col] !== -1) {
+        if (this.table[row][col] === -1) {
           emptyIndexes.push([row, col]);
         }
       }
@@ -61,7 +60,6 @@ export class SudokuComponent implements OnInit {
 
     // Solve sudoku.
     const fillResponse = await this.stateService.solveSuDoKu(this.table, this.blockRows, this.blockCols);
-    console.log(fillResponse);
     // If there is no possible solution or there are multiple such solutions we show an alert.
     if (fillResponse.table === null) {
       if (fillResponse.fillStatus === -1) {

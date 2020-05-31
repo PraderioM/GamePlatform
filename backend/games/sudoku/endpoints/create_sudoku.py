@@ -4,7 +4,6 @@ from random import randint, shuffle
 from typing import List
 
 from aiohttp import web
-import pulp
 
 from .utils.are_equal import are_equal
 from .utils.get_lp_problem import get_lp_problem
@@ -30,7 +29,7 @@ async def create_sudoku(request: web.Request) -> web.Response:
 
         # Check if the resulting table has multiple solutions.
         upper_problem = get_lp_problem(new_table, block_rows=block_rows, block_cols=block_cols)
-        lower_problem = get_lp_problem(new_table, block_rows=block_rows, block_cols=block_cols, sense=pulp.LpMinimize)
+        lower_problem = get_lp_problem(new_table, block_rows=block_rows, block_cols=block_cols, sense=1)
         upper_problem.solve()
         lower_problem.solve()
 
