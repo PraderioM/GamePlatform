@@ -10,47 +10,45 @@ import {StateService} from './services/state.service';
 })
 export class SudokuComponent implements OnInit {
   @Output() backToMenu = new EventEmitter<void>();
-  table: number[][] = [
-    [-1, -1, -1, -1, -1, -1, -1, -1, -1],
-    [-1, -1, -1, -1, -1, -1, -1, -1, -1],
-    [-1, -1, -1, -1, -1, -1, -1, -1, -1],
-    [-1, -1, -1, -1, -1, -1, -1, -1, -1],
-    [-1, -1, -1, -1, -1, -1, -1, -1, -1],
-    [-1, -1, -1, -1, -1, -1, -1, -1, -1],
-    [-1, -1, -1, -1, -1, -1, -1, -1, -1],
-    [-1, -1, -1, -1, -1, -1, -1, -1, -1],
-    [-1, -1, -1, -1, -1, -1, -1, -1, -1]
-  ];
+  blockRows = 3;
+  blockCols = 3;
+  table: number[][] = this.getEmptyTable(this.blockRows * this.blockCols, this.blockRows * this.blockCols);
 
   constructor(private stateService: StateService) { }
 
   ngOnInit(): void {
   }
 
-  getTableSlice(rowIndex: number, colIndex: number) {
-    const outSlice: number[][] = [
-      [-1, -1, -1],
-      [-1, -1, -1],
-      [-1, -1, -1]
-    ];
-    for (let row = 0; row < 3; row++) {
-      for (let col = 0; col < 3; col++) {
-        outSlice[row][col] = this.table[3 * rowIndex + row][3 * colIndex + col];
+  getTableBlock(rowIndex: number, colIndex: number) {
+    const outSlice: number[][] = this.getEmptyTable(this.blockRows, this.blockCols);
+
+    for (let row = 0; row < this.blockRows; row++) {
+      for (let col = 0; col < this.blockCols; col++) {
+        outSlice[row][col] = this.table[this.blockRows * rowIndex + row][this.blockCols * colIndex + col];
       }
     }
     return outSlice;
   }
 
   updateTable(block: number[][], rowIndex: number, colIndex: number) {
-    for (let row = 0; row < 3; row++) {
-      for (let col = 0; col < 3; col++) {
-        this.table[3 * rowIndex + row][3 * colIndex + col] = block[row][col];
+    for (let row = 0; row < this.blockRows; row++) {
+      for (let col = 0; col < this.blockCols; col++) {
+        this.table[this.blockRows * rowIndex + row][this.blockCols * colIndex + col] = block[row][col];
       }
     }
   }
 
+  async createSuDoKu() {
+    const fillResponse = await this.stateService.createSuDoKu(this.blockRows, this.blockCols);
+    if (fillResponse.table != null) {
+      this.table = fillResponse.table;
+    } else {
+      alert('An error occurred while attempting to create SuDoKu.');
+    }
+  }
+
   async solveSuDoKu() {
-    const fillResponse = await this.stateService.solveSuDoKu(this.table);
+    const fillResponse = await this.stateService.solveSuDoKu(this.table, this.blockRows, this.blockCols);
     if (fillResponse.table != null) {
       this.table = fillResponse.table;
     } else {
@@ -62,4 +60,78 @@ export class SudokuComponent implements OnInit {
     }
   }
 
+  async hintSuDoKu() {
+    // Get a list of all empty cell indexes.
+    const emptyIndexes: number[][] = [];
+    for (let row = 0; row < this.blockCols * this.blockRows; row++) {
+      for (let col = 0; col < this.blockCols * this.blockRows; col++) {
+        if (this.table[row][col] !== -1) {
+          emptyIndexes.push([row, col]);
+        }
+      }
+    }
+
+    // If there are no empty cells we end it here.
+    if (emptyIndexes.length === 0) {
+      return;
+    }
+
+    // Solve sudoku.
+    const fillResponse = await this.stateService.solveSuDoKu(this.table, this.blockRows, this.blockCols);
+    // If there is no possible solution or there are multiple such solutions we show an alert.
+    if (fillResponse.table === null) {
+      if (fillResponse.fillStatus === -1) {
+        alert('There exist multiple solutions for the proposed sudoku.');
+      } else {
+        alert('There is no possible solution for the proposed sudoku.');
+      }
+    // Otherwise we get a random value from the solution and place it in table.
+    } else {
+      // Chose a random value from the list of empty cells and update the table's value.
+      const chosenCell = emptyIndexes[Math.floor(Math.random() * emptyIndexes.length)];
+      this.table[chosenCell[0]][chosenCell[1]] = fillResponse.table[chosenCell[0]][chosenCell[1]];
+    }
+  }
+
+  clearTable() {
+    this.table = this.getEmptyTable(this.blockRows * this.blockCols, this.blockRows * this.blockCols);
+  }
+
+  getEmptyTable(rows: number, cols: number) {
+    const table: number[][] = [];
+    let row: number[];
+    for (let rowIndex = 0; rowIndex < rows; rowIndex++) {
+      row = [];
+      for (let colIndex = 0; colIndex < cols; colIndex++) {
+        row.push(-1);
+      }
+      table.push(row);
+    }
+    return table;
+  }
+
+  updateBlockCols(val: number) {
+    const newVal = this.preProcessBlockDim(val, this.blockCols);
+    if (newVal !== this.blockCols) {
+      this.blockCols = newVal;
+      this.clearTable();
+    }
+  }
+
+  updateBlockRows(val: number) {
+    const newVal = this.preProcessBlockDim(val, this.blockRows);
+    if (newVal !== this.blockRows) {
+      this.blockRows = newVal;
+      this.clearTable();
+    }
+  }
+
+  preProcessBlockDim(val: number, defaultVal: number) {
+    // If number is not an integer or is lower than 1 we return default value.
+    if (val < 1 || val % 1 !== 0) {
+      return defaultVal;
+    }
+
+    return val;
+  }
 }

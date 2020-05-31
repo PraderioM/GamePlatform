@@ -5,14 +5,27 @@
     <tr *ngFor="let rowIndex of [0, 1, 2]">
       <th *ngFor="let colIndex of [0, 1, 2]">
         <app-block
-          [block]="getTableSlice(rowIndex, colIndex)"
+          [block]="getTableBlock(rowIndex, colIndex)"
           (update)="updateTable($event, rowIndex, colIndex)"></app-block>
       </th>
     </tr>
   </table>
 
   <p class="hor-container">
+    <label>
+      cols
+      <input type="number" [value]="this.blockCols" (change)="updateBlockCols($event.target.value)">
+    </label>
+    <label>
+      rows
+      <input type="number" [value]="this.blockRows" (change)="updateBlockRows($event.target.value)">
+    </label>
+
+    <button class="btn" (click)="clearTable()">Clear</button>
+    <button class="btn" (click)="hintSuDoKu()">Hint</button>
     <button class="btn" (click)="solveSuDoKu()">Solve SuDoKu</button>
+
+    <button class="btn" (click)="createSuDoKu()">Create</button>
     <button class="btn" (click)="backToMenu.emit()">game selection</button>
   </p>
 </div>

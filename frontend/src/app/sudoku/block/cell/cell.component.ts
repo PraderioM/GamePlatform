@@ -14,7 +14,7 @@ export class CellComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  updateValue(val: any) {
+  updateValue(val: string) {
     this.value = this.valueFromString(val);
     this.update.emit(this.value);
   }
