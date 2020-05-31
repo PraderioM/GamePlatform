@@ -11,7 +11,7 @@ from .utils.get_lp_problem import get_lp_problem
 from .utils.processing import post_process_result
 
 
-async def solve_sudoku(request: web.Request) -> web.Response:
+async def create_sudoku(request: web.Request) -> web.Response:
     # Pre process inputs.
     block_rows = int(request.rel_url.query['block_rows'])
     block_cols = int(request.rel_url.query['block_cols'])
