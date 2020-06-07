@@ -4,9 +4,12 @@ import {FillResponse} from './models';
 
 @Injectable()
 export class StateService {
-  // urlPath = 'localhost:2121/sudoku';
+  // urlPath = 'http://localhost:2121/sudoku';
+  // urlPath = 'http://0.0.0.0:2121/sudoku';
   // urlPath = 'http://192.168.1.19:2121/sudoku';
-  urlPath = 'http://85.53.252.3:27182/sudoku';
+  // urlPath = 'http://85.53.2252.2:27182/sudoku';
+  urlPath = 'http://gameplatform.tetesake.site:27182/sudoku';
+
 
   constructor(private http: HttpClient) { }
 

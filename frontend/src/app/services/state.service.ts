@@ -21,9 +21,11 @@ class RegisteringResponse {
 
 @Injectable()
 export class StateService {
+    // urlPath = 'http://localhost:2121';
     // urlPath = 'http://0.0.0.0:2121';
     // urlPath = 'http://192.168.1.19:2121';
-    urlPath = 'http://85.53.252.3:27182';
+    // urlPath = 'http://85.53.252.2:27182';
+    urlPath = 'http://gameplatform.tetesake.site:27182';
     token?: string;
 
     constructor(private http: HttpClient) {

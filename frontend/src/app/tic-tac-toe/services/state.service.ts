@@ -4,9 +4,11 @@ import {ActiveGame, GameDescription, GameResolution, LeaderBoardPosition, Play} 
 
 @Injectable()
 export class StateService {
+  // urlPath = 'http://localhost:2121/tic-tac-toe';
+  // urlPath = 'http://0.0.0.0:2121/tic-tac-toe';
   // urlPath = 'http://192.168.1.19:2121/tic-tac-toe';
-  // urlPath = 'http://192.168.1.19:2121/tic-tac-toe';
-  urlPath = 'http://85.53.252.3:27182/tic-tac-toe';
+  // urlPath = 'http://85.53.252.2:27182/tic-tac-toe';
+  urlPath = 'http://gameplatform.tetesake.site:27182/tic-tac-toe';
 
     constructor(private http: HttpClient) {
     }
