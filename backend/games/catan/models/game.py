@@ -4,8 +4,8 @@ from typing import List, Optional, Set
 from backend.games.common.models.game import Game as BaseGame
 from .player import Player
 from .play import Play
-from . development_deck import DevelopmentDeck
-from . materials_deck import MaterialsDeck
+from .development_deck import DevelopmentDeck, DevelopmentType
+from .materials_deck import MaterialsDeck
 from .land import Land, LandType
 from .port import Port, PortType
 
@@ -40,18 +40,30 @@ class Game(BaseGame):
                      {7, 15, 16}, {6, 7, 15}, {5, 6, 15}, {-10, 5, 6}, {-11, -10, 5}, {-6, -5, 8}, {-7, -6, 8},
                      {-7, 7, 8}, {-8, -7, 7}, {-8, 6, 7}, {-9, -8, 6}, {-10, -9, 6}]
 
+    N_KNIGHT = 14
+    N_MONOPOLY = 2
+    N_RESOURCES = 2
+    N_ROADS = 2
+    N_POINT = 5
+
+    N_PER_PLAYER_CITIES = 8
+    N_PER_PLAYER_ROADS = 30
+    N_PER_PLAYER_SETTLEMENTS = 10
+
     def __init__(self, current_player_index: int,
-                 development_deck: DevelopmentDeck,
-                 materials_deck: MaterialsDeck,
-                 land_list: List[Land],
-                 play_list: List[Play], player_list: List[Player],
-                 id_: Optional[str]):
+                 play_list: List[Play],
+                 player_list: List[Player],
+                 id_: Optional[str],
+                 development_deck: Optional[DevelopmentDeck] = None,
+                 materials_deck: Optional[MaterialsDeck] = None,
+                 land_list: Optional[List[Land]] = None):
         BaseGame.__init__(self, current_player_index=current_player_index, player_list=player_list,
                           play_list=play_list, id_=id_)
-        self._development_deck = development_deck
-        self._materials_deck = materials_deck
-        self._land_list = land_list
+        self._development_deck = self.get_development_deck() if development_deck is None else development_deck
+        self._materials_deck = self.get_materials_deck() if materials_deck is None else materials_deck
+        self._land_list = self.get_random_land_list() if land_list is None else land_list[:]
 
+    # region initialization methods.
     def get_random_land_list(self, seed: Optional[float] = None) -> List[Land]:
         land_type_list = [LandType.Wood] * self.N_WOOD
         land_type_list += [LandType.Wheat] * self.N_WHEAT
@@ -62,9 +74,31 @@ class Game(BaseGame):
         shuffle(land_type_list, random=seed)
 
         start_index = choice(self.START_POSITIONS)
-        return [Land(land_type=land_type, number=number+start_index)
+        return [Land(land_type=land_type, number=number + start_index)
                 for land_type, number in zip(land_type_list, self.NUMBER_LIST)]
 
+    def get_development_deck(self) -> DevelopmentDeck:
+        return DevelopmentDeck(
+            cards_dict={
+                DevelopmentType.KNIGHT: self.N_KNIGHT,
+                DevelopmentType.MONOPOLY: self.N_MONOPOLY,
+                DevelopmentType.RESOURCES: self.N_RESOURCES,
+                DevelopmentType.ROADS: self.N_ROADS,
+                DevelopmentType.POINT: self.N_POINT
+            }
+        )
+
+    @staticmethod
+    def get_materials_deck() -> MaterialsDeck:
+        return MaterialsDeck()
+
+    # endregion.
+
+    # region.
+
+    # endregion.
+
+    # region distance methods.
     def get_segments(self) -> List[Set[int]]:
         found_segments: List[Set[int]] = []
         for intersection in self.INTERSECTIONS:
@@ -118,6 +152,7 @@ class Game(BaseGame):
             distance += 1
 
         return distance
+    # endregion.
 
 
 class ExpansionGame(Game):
@@ -131,3 +166,11 @@ class ExpansionGame(Game):
     N_BRICK = 3
     N_STONE = 3
     N_DESERT = 1
+
+    INTERSECTIONS = []
+
+    N_KNIGHT = 14
+    N_MONOPOLY = 2
+    N_RESOURCES = 2
+    N_ROADS = 2
+    N_POINT = 5

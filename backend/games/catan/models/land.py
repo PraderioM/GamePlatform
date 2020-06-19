@@ -8,7 +8,7 @@ class LandType(enum.Enum):
     Wheat = 2
     Brick = 3
     Stone = 4
-    Desert = 0
+    Desert = 5
 
 
 class Land:
