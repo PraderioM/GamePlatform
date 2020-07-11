@@ -1,5 +1,7 @@
 import enum
-from typing import Set
+from typing import Optional, Set
+
+from .land import LandType
 
 
 class PortType(enum.Enum):
@@ -15,3 +17,14 @@ class Port:
     def __init__(self, port_type: PortType, intersections: Set[Set[int]]):
         self._port_type = port_type
         self.intersections = intersections
+
+    @property
+    def port_type(self) -> PortType:
+        return self._port_type
+
+    @property
+    def land_type(self) -> Optional[LandType]:
+        for land_type in LandType:
+            if land_type.name == self._port_type.name:
+                return land_type
+        return None

@@ -15,6 +15,14 @@ class DevelopmentDeck:
     def __init__(self, cards_dict: Optional[Dict[DevelopmentType, int]] = None):
         self._deck = self.get_empty_deck() if cards_dict is None else cards_dict
 
+    @classmethod
+    def from_json(cls, json_data: Dict[int, int]) -> 'DevelopmentDeck':
+        return DevelopmentDeck(
+            {
+                development_type: json_data[development_type.value] for development_type in DevelopmentType
+            }
+        )
+
     def update(self, development_card: DevelopmentType, number: int):
         self._deck[development_card] += number
 
@@ -54,3 +62,10 @@ class DevelopmentDeck:
     @property
     def n_point(self) -> int:
         return self._deck[DevelopmentType.POINT]
+
+    @property
+    def n_cards(self) -> int:
+        return self.n_knight + self.n_monopoly + self.n_resources + self.n_roads + self.n_point
+
+    def to_json(self) -> Dict[int, int]:
+        return {development_type.value: n_developments for development_type, n_developments in self._deck.items()}

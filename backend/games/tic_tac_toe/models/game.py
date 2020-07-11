@@ -41,13 +41,12 @@ class Game(BaseGame):
                 'rows': self.rows,
                 'cols': self.cols,
                 'gravity': self.gravity,
-                'id': self.id,
             },
             **BaseGame.to_database(self)
         }
 
     def to_frontend(self, db: asyncpg.Connection,
-                    description: str = 'successfully obtained game.') -> Dict[str, Union[str, int]]:
+                    description: str = 'successfully obtained game.') -> Dict:
         return {
             'rows': self.rows,
             'cols': self.cols,
