@@ -1,4 +1,5 @@
 import enum
+import os
 from random import randint
 from typing import List, Tuple
 
@@ -21,11 +22,15 @@ class Player:
 
     def ask_human_play(self, n_plays: int) -> int:
         # Todo do stuff.
-        pass
+        return 1
 
 
 class Game:
-    def __init__(self, players: List[Player], n_plays: int, victory_criterion: VictoryCriterion):
+    def __init__(self, players: List[Player], n_plays: int = 3,
+                 victory_criterion: VictoryCriterion = VictoryCriterion.BY_PLAY):
+        assert n_plays % 2 == 1
+        assert n_plays >= 3
+        assert len(players) >= 2
         self._players = players[:]
         self.n_plays = n_plays
         self.victory_criterion = victory_criterion
