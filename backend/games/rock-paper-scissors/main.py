@@ -1,0 +1,205 @@
+import enum
+from random import randint
+from typing import List, Tuple
+
+
+class VictoryCriterion(enum.Enum):
+    BY_PLAY = 0
+    BY_PLAYER = 1
+
+
+class Player:
+    NAMED_PLAYS = ('rock', 'paper', 'scissors', 'lizard', 'Spock')
+
+    def __init__(self, name: str, is_bot: bool = False):
+        self.name = name
+        self.is_bot = is_bot
+
+    def make_play(self, n_plays: int) -> int:
+        if self.is_bot:
+            return randint(1, n_plays)
+        else:
+            self.ask_human_play(n_plays=n_plays)
+
+    def ask_human_play(self, n_plays: int) -> int:
+        # Define message for asking input.
+        input_message = f'What play do you wish to make {self.name}?'
+        named_plays = self.NAMED_PLAYS
+        for play_number in range(n_plays):
+            play_name = f'play_{play_number + 1}' if play_number < len(named_plays) else named_plays[play_number]
+            input_message += f'\n\t{play_number + 1}) {play_name}'
+
+        input_message += '\n'
+
+        # Ask play until input is correct.
+        while True:
+            selected_play_str = input(input_message)
+
+            # Check if input is correct.
+            if not selected_play_str.isnumeric():
+                print(f'Play must be an integer but got `{selected_play_str}`')
+                continue
+
+            selected_play = int(selected_play_str)
+            if selected_play < 1 or selected_play > n_plays:
+                print(f'{self.name} can you fucking read?'
+                      f'Please select une of the POSSIBLE options not whatever you like.')
+                continue
+
+            return selected_play
+
+
+class Game:
+
+    def __init__(self, players: List[Player], n_plays: int = 3,
+                 victory_criterion: VictoryCriterion = VictoryCriterion.BY_PLAY):
+        assert n_plays % 2 == 1, 'Number of plays must be odd.'
+        assert n_plays >= 3, f'Number of plays must be at least 3 but got {n_plays}'
+        assert len(players) >= 2, f'Number of players must be at least 2 but got {len(players)}'
+        assert isinstance(victory_criterion, VictoryCriterion)
+        self._players = players[:]
+        self.n_plays = n_plays
+        self._victory_criterion = victory_criterion
+
+    @classmethod
+    def from_cli_inputs(cls) -> 'Game':
+        human_players = cls.ask_human_players()
+        bots = cls.ask_bot_players(n_human_players=len(human_players))
+        n_plays = cls.ask_n_plays()
+        victory_criterion = cls.ask_victory_criterion()
+        return Game(players=human_players + bots, n_plays=n_plays, victory_criterion=victory_criterion)
+
+    def play(self):
+        while len(self._players) > 1:
+            winner_players = self.play_round()
+            self._players = winner_players
+
+        print(f'The winner is {self._players[0].name}.')
+
+    def play_round(self) -> List[Player]:
+        play_list = [(player, player.make_play(n_plays=self.n_plays)) for player in self._players]
+        return self._get_winner_players(play_list)
+
+    @staticmethod
+    def ask_human_players() -> List[Player]:
+        return Game._ask_players(min_players=0, is_bot=False)
+
+    @staticmethod
+    def ask_bot_players(n_human_players: int = 0) -> List[Player]:
+        min_players = max(0, 2 - n_human_players)
+        return Game._ask_players(min_players=min_players, is_bot=True)
+
+    @staticmethod
+    def ask_n_plays() -> int:
+        while True:
+            n_plays_str = input(f"Please insert number of plays:\t")
+
+            # Check that input is valid and if not repeat question.
+            if not n_plays_str.isnumeric():
+                print(f"`{n_plays_str} is not a valid number of players.")
+                continue
+
+            # Check that number of plays is an odd number greater or equal than 3.
+            n_plays = int(n_plays_str)
+
+            if n_plays % 2 == 0:
+                print(f'Number of plays must be odd but got {n_plays}')
+                continue
+            elif n_plays < 3:
+                print(f'Number of plays must be at least 3 but got {n_plays}')
+                continue
+
+            return n_plays
+
+    @staticmethod
+    def ask_victory_criterion() -> VictoryCriterion:
+        input_message = 'What victory, criterion do you wish to use?'
+        for criterion in VictoryCriterion:
+            input_message += f'\n\t{criterion.value}) {criterion.name.lower().replace("_", " ")}'
+
+        input_message += '\n'
+
+        while True:
+            selected = input(input_message)
+
+            for criterion in VictoryCriterion:
+                if str(criterion.value) == selected or criterion.name == selected.upper().replace(' ', '_'):
+                    return criterion
+
+            print(f'Cannot recognize criterion `{selected}`. Please repeat the desired victory criterion.')
+
+    @property
+    def players(self) -> List[Player]:
+        return self._players[:]
+
+    def _get_winner_players(self, play_list: List[Tuple[Player, int]]) -> List[Player]:
+        if self.victory_criterion == VictoryCriterion.BY_PLAY:
+            return self._get_winner_players_by_play(play_list=play_list)
+        elif self.victory_criterion == VictoryCriterion.BY_PLAYER:
+            return self._get_winner_players_by_players(play_list=play_list)
+        else:
+            raise NotImplementedError(f'Winners selection for victory criterion {self.victory_criterion} '
+                                      f'is not yet implemented.')
+
+    def _get_winner_players_by_play(self, play_list: List[Tuple[Player, int]]) -> List[Player]:
+        # Todo do stuff.
+        return [play_list[0][0]]
+
+    def _get_winner_players_by_players(self, play_list: List[Tuple[Player, int]]) -> List[Player]:
+        # Todo do stuff.
+        return [play_list[0][0]]
+
+    @staticmethod
+    def _ask_players(min_players: int, is_bot: bool) -> List[Player]:
+        player_type = 'bot' if is_bot else 'human'
+        player_list = []
+
+        while True:
+            n_players_str = input(f"Please insert number of {player_type} players:\t")
+
+            # Check that input is valid and if not repeat question.
+            if not n_players_str.isnumeric():
+                print(f"`{n_players_str} is not a valid number of players.")
+                continue
+
+            # Check that minimum number of players is reached.
+            n_players = int(n_players_str)
+            if n_players < min_players:
+                print(f'There must be at least {min_players} {player_type} players '
+                      f'but got {n_players} {player_type} players.')
+                continue
+
+            # Fill player list.
+            while len(player_list) < n_players:
+                # Ask name. Use default if necessary.
+                default_name = f'{player_type}_{len(player_list) + 1}'
+                name = input(f"Please provide name for {player_type} player {len(player_list) + 1}: "
+                             f"[{default_name}]\n\t")
+
+                if name == '':
+                    name = default_name
+
+                # Check for name repetition.
+                already_exists = False
+                for player in player_list:
+                    if player.name == name:
+                        already_exists = True
+                        break
+                if already_exists:
+                    print(f'Name {name} has already been used. Try a different name.')
+                    continue
+
+                # If name is new create a new player from it.
+                player = Player(name=name, is_bot=is_bot)
+                player_list.append(player)
+
+        return player_list
+
+    @property
+    def victory_criterion(self) -> VictoryCriterion:
+        return self._victory_criterion
+
+
+if __name__ == '__main__':
+    game = Game.from_cli_inputs()
+    game.play()
