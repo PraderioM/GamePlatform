@@ -1,5 +1,7 @@
 from typing import Dict
 
+from aiohttp import web
+
 from ..player import Player
 from .core import Play, register_play
 
@@ -27,6 +29,10 @@ class MoveThief(Play):
     def from_database(cls, json_data: Dict, *args, **kwargs) -> 'MoveThief':
         return MoveThief(player=Player.from_database(json_data=json_data['player']),
                          dst_index=json_data['dst_index'])
+
+    @classmethod
+    def pre_process_web_request(cls, request: web.Request) -> Dict:
+        return {'dst_index': request.rel_url.query['dst_index']}
 
     def to_frontend(self, *args, **kwargs) -> Dict:
         return {'player': self.player.to_frontend(),

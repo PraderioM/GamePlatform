@@ -98,17 +98,17 @@ class Game(BaseGame):
             play_list=play_list,
             player_list=players_list,
             id_=json_data['id'],
-            development_deck=DevelopmentDeck.from_json(json_data['development_deck']),
-            materials_deck=MaterialsDeck.from_json(json_data['materials_deck']),
-            land_list=[Land.from_json(land_data) for land_data in json_data['land_list']],
-            offer=None if json_data['offer'] is None else Offer.from_database(json_data=json_data['offer'],
+            development_deck=DevelopmentDeck.from_json(json.loads(json_data['development_deck'])),
+            materials_deck=MaterialsDeck.from_json(json.loads(json_data['materials_deck'])),
+            land_list=[Land.from_json(land_data) for land_data in json.loads(json_data['land_list'])],
+            offer=None if json_data['offer'] is None else Offer.from_database(json_data=json.loads(json_data['offer']),
                                                                               all_players=players_list),
             extended=json_data['extended'],
             knight_player=None if json_data['knight_player'] is None else Player.from_database(
-                json_data=json_data['knight_player']
+                json_data=json.loads(json_data['knight_player'])
             ),
             long_road_player=None if json_data['long_road_player'] is None else Player.from_database(
-                json_data=json_data['long_road_player']
+                json_data=json.loads(json_data['long_road_player'])
             ),
             discard_cards=json_data['discard_cards'],
             thief_moved=json_data['thief_moved'],
@@ -518,6 +518,10 @@ class Game(BaseGame):
     def has_thrown_dice(self) -> bool:
         current_player: Player = self.player_list[self.current_player_index]
         return current_player.dice_thrown
+
+    @property
+    def extended(self) -> bool:
+        return self._extended
 
     # endregion
 

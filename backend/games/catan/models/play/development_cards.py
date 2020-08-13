@@ -1,6 +1,8 @@
 import abc
 from typing import Dict
 
+from aiohttp import web
+
 from .core import Play, register_play
 from ..player import Player
 from ..land import LandType
@@ -24,6 +26,10 @@ class BuyDevelopment(Play):
     @classmethod
     def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'BuyDevelopment':
         return BuyDevelopment(player=Player.from_frontend(json_data['player']))
+
+    @classmethod
+    def pre_process_web_request(cls, request: web.Request) -> Dict:
+        return {}
 
     def can_update_game(self, game) -> bool:
         # If base game tells that game cannot be updated then game cannot be updated.
@@ -55,6 +61,10 @@ class BuyDevelopment(Play):
 
 
 class DevelopmentPlay(Play):
+    @classmethod
+    def pre_process_web_request(cls, request: web.Request) -> Dict:
+        return {}
+
     def can_update_game(self, game) -> bool:
         if not game.is_current_player(self.player):
             return False
@@ -142,6 +152,13 @@ class PlayResources(DevelopmentPlay):
                              resource_1=cls._resource_from_name(json_data['resource_1']),
                              resource_2=cls._resource_from_name(json_data['resource_2']))
 
+    @classmethod
+    def pre_process_web_request(cls, request: web.Request) -> Dict:
+        return {
+            'resource_1': request.rel_url.query['resource_1'],
+            'resource_2': request.rel_url.query['resource_2']
+        }
+
     def update_game(self, game):
         player = game.get_player_by_name(self.player.name)
 
@@ -185,16 +202,20 @@ class PlayMonopoly(DevelopmentPlay):
         self.material = material
 
     @classmethod
-    def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'PlayResources':
-        return PlayResources(player=Player.from_frontend(json_data['player']),
-                             resource_1=cls._resource_from_name(json_data['resource1']),
-                             resource_2=cls._resource_from_name(json_data['resource2']))
+    def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'PlayMonopoly':
+        return PlayMonopoly(player=Player.from_frontend(json_data['player']),
+                            material=cls._resource_from_name(json_data['material']))
 
     @classmethod
-    def from_database(cls, json_data: Dict, *args, **kwargs) -> 'PlayResources':
-        return PlayResources(player=Player.from_database(json_data['player']),
-                             resource_1=cls._resource_from_name(json_data['resource_1']),
-                             resource_2=cls._resource_from_name(json_data['resource_2']))
+    def from_database(cls, json_data: Dict, *args, **kwargs) -> 'PlayMonopoly':
+        return PlayMonopoly(player=Player.from_database(json_data['player']),
+                            material=cls._resource_from_name(json_data['material']))
+
+    @classmethod
+    def pre_process_web_request(cls, request: web.Request) -> Dict:
+        return {
+            'material': request.rel_url.query['material']
+        }
 
     def update_game(self, game):
         game.monopolize_materials(player_name=self.player.name, material=self.material)

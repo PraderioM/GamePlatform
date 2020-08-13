@@ -1,4 +1,7 @@
+import json
 from typing import Dict
+
+from aiohttp import web
 
 from .core import Play, register_play
 from ..offer import Offer
@@ -21,6 +24,10 @@ class MakeOffer(Play):
     def from_database(cls, json_data: Dict, *args, **kwargs) -> 'MakeOffer':
         return MakeOffer(player=Player.from_database(json_data['player']),
                          offer=Offer.from_database(json_data['offer']))
+
+    @classmethod
+    def pre_process_web_request(cls, request: web.Request) -> Dict:
+        return {'offer': json.loads(request.rel_url.query['offer'])}
 
     def can_update_game(self, game) -> bool:
         # Check previous conditions.
@@ -53,6 +60,10 @@ class WithdrawOffer(Play):
     def from_database(cls, json_data: Dict, *args, **kwargs) -> 'WithdrawOffer':
         return WithdrawOffer(player=Player.from_database(json_data['player']))
 
+    @classmethod
+    def pre_process_web_request(cls, request: web.Request) -> Dict:
+        return {}
+
     def update_game(self, game):
         game.reset_offer()
 
@@ -66,6 +77,10 @@ class AcceptOffer(Play):
     @classmethod
     def from_database(cls, json_data: Dict, *args, **kwargs) -> 'AcceptOffer':
         return AcceptOffer(player=Player.from_database(json_data['player']))
+
+    @classmethod
+    def pre_process_web_request(cls, request: web.Request) -> Dict:
+        return {}
 
     def can_update_game(self, game) -> bool:
         if game.offer is None:
@@ -123,6 +138,10 @@ class RejectOffer(Play):
     def from_database(cls, json_data: Dict, *args, **kwargs) -> 'RejectOffer':
         return RejectOffer(player=Player.from_database(json_data['player']))
 
+    @classmethod
+    def pre_process_web_request(cls, request: web.Request) -> Dict:
+        return {}
+
     def can_update_game(self, game) -> bool:
         if game.offer is None:
             return False
@@ -167,6 +186,10 @@ class CommerceWithBank(Play):
     def from_database(cls, json_data: Dict, *args, **kwargs) -> 'MakeOffer':
         return MakeOffer(player=Player.from_database(json_data['player']),
                          offer=Offer.from_database(json_data['offer']))
+
+    @classmethod
+    def pre_process_web_request(cls, request: web.Request) -> Dict:
+        return {'offer': json.loads(request.rel_url.query['offer'])}
 
     def can_update_game(self, game) -> bool:
         # Check previous conditions.

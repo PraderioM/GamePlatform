@@ -1,5 +1,8 @@
+import json
 from math import floor
 from typing import Dict
+
+from aiohttp import web
 
 from .core import Play, register_play
 from ..materials_deck import MaterialsDeck
@@ -21,6 +24,10 @@ class DiscardCards(Play):
     def from_database(cls, json_data: Dict, *args, **kwargs) -> 'DiscardCards':
         return DiscardCards(player=Player.from_database(json_data['player']),
                             materials_deck=MaterialsDeck.from_json(json_data['materials_deck']))
+
+    @classmethod
+    def pre_process_web_request(cls, request: web.Request) -> Dict:
+        return {'materials_deck': json.loads(request.rel_url.query['materials_deck'])}
 
     def to_frontend(self) -> Dict:
         return {'player': self.player.to_frontend(),

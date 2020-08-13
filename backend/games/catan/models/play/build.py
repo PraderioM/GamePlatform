@@ -1,5 +1,8 @@
 import abc
+import json
 from typing import Set, Dict
+
+from aiohttp import web
 
 from .core import Play, register_play
 from ..player import Player
@@ -25,6 +28,10 @@ class BuildPlay(Play):
     @abc.abstractmethod
     def is_number_of_plays_correct(n_plays: int, turn_index: int) -> bool:
         raise NotImplementedError('`is_number_of_plays_correct` method must be implemented.')
+
+    @classmethod
+    def pre_process_web_request(cls, request: web.Request) -> Dict:
+        return {'position': json.loads(request.rel_url.query['position'])}
 
     def can_update_game(self, game) -> bool:
         if game.discard_cards:

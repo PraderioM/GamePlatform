@@ -1,4 +1,5 @@
 import json
+from random import shuffle
 from typing import Awaitable, Callable, Dict
 
 from aiohttp import web
@@ -11,7 +12,8 @@ from backend.registration.identify import get_name_from_token
 async def find_game(token: str, pool: asyncpg.pool.Pool,
                     active_games_table: str,
                     get_game_from_database: Callable[[asyncpg.Connection], Awaitable[Game]],
-                    get_dummy_frontend_game: Callable[[], Dict]) -> web.Response:
+                    get_dummy_frontend_game: Callable[[], Dict],
+                    shuffle_before_start: bool = False) -> web.Response:
     async with pool.acquire() as db:
         async with db.transaction():
             out_game = await get_game_from_database(db)
@@ -27,12 +29,14 @@ async def find_game(token: str, pool: asyncpg.pool.Pool,
             if out_game.n_missing > 0:
                 name = await get_name_from_token(token=token, db=db)
                 out_game.add_new_player_name(name=name)
-                database_player_list = json.dumps([player.to_database() for player in out_game.player_list])
+                database_player_list = [player.to_database() for player in out_game.player_list]
+                if shuffle_before_start and out_game.n_missing == 0:
+                    shuffle(database_player_list)
                 await db.execute(f"""
                                  UPDATE {active_games_table}
                                  SET last_updated = now(), players = $1
                                  WHERE id = $2
-                                 """, database_player_list, out_game.id)
+                                 """, json.dumps(database_player_list), out_game.id)
 
             frontend_out_game = out_game.to_frontend(db=db)
             return web.Response(

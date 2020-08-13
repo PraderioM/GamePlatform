@@ -38,7 +38,7 @@ async def make_play(pool: asyncpg.pool.Pool,
             # Make bot plays.
             while game.current_player.is_bot:
                 if get_bot_play is None:
-                    raise NotImplementedError
+                    raise NotImplementedError('Artificial intelligence is not yet implemented.')
                 else:
                     play = get_bot_play(game, game.current_player)
                     game.add_play(play)
