@@ -12,12 +12,14 @@ import {HomeComponent} from './home/home.component';
 import {TicTacToeModule} from './tic-tac-toe/tic-tac-toe.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {SudokuModule} from './sudoku/sudoku.module';
+import {CatanModule} from './catan/catan.module';
 
 const MODULES: any[] = [
   NgbModule,
   BrowserModule,
   HttpClientModule,
   TicTacToeModule,
+  CatanModule,
   SudokuModule,
 ];
 
