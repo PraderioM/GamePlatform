@@ -156,14 +156,24 @@ class Game:
         player_type = 'bot' if is_bot else 'human'
         player_list = []
 
-
-        n_players_str = input(f"Please insert number of {player_type} players:\t")
-
         # Check if input is valid. If not, repeat question.
-        if not n_players_str.isnumeric():
-            print(f"'{n_players_str}' is not a valid number of players.")
+        while True:
+            n_players_str = input(f"Please insert number of {player_type} players:\t")
+            if not n_players_str.isnumeric():
+                print(f"'{n_players_str}' is not a valid number of players.")
+            elif int(n_players_str) < min_players:
+                print("At least 2 players are needed.")
+                break
+            elif n_players_str.isnumeric() and int(n_players_str) >= min_players:
+                break
 
-        # # Check that minimum number of players is reached.
+        # If number of humans + bots is < 2, start again asking for number of human players.
+        if int(n_players_str) < min_players:
+            Game.from_cli_inputs()
+
+
+
+        # Check that minimum number of players is reached.
         n_players = int(n_players_str)
         # if n_players < min_players:
         #     print(f'There must be at least {min_players} {player_type} players '
@@ -171,7 +181,7 @@ class Game:
         #     continue
 
         # Fill player list.
-        while len(player_list) < n_players:
+        while len(player_list) < n_players and is_bot == False:
             # Ask name. Use default if necessary.
             name = input(f"Please provide name for {player_type} player {len(player_list) + 1}: ")
                          #f"[{default_name}]\n\t")
