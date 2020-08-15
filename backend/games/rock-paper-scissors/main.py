@@ -42,8 +42,8 @@ class Player:
 
             selected_play = int(selected_play_str)
             if selected_play < 1 or selected_play > n_plays:
-                print(f'{self.name} can you fucking read?'
-                      f'Please select une of the POSSIBLE options not whatever you like.')
+                print(f'{self.name}, you troll...'
+                      f'Please select one of the possible options.')
                 continue
 
             return selected_play
@@ -143,10 +143,12 @@ class Game:
 
     def _get_winner_players_by_play(self, play_list: List[Tuple[Player, int]]) -> List[Player]:
         # Todo do stuff.
+
         return [play_list[0][0]]
 
     def _get_winner_players_by_players(self, play_list: List[Tuple[Player, int]]) -> List[Player]:
         # Todo do stuff.
+
         return [play_list[0][0]]
 
     @staticmethod
@@ -157,17 +159,17 @@ class Game:
         while True:
             n_players_str = input(f"Please insert number of {player_type} players:\t")
 
-            # Check that input is valid and if not repeat question.
+            # Check if input is valid. If not, repeat question.
             if not n_players_str.isnumeric():
-                print(f"`{n_players_str} is not a valid number of players.")
+                print(f"'{n_players_str}' is not a valid number of players.")
                 continue
 
-            # Check that minimum number of players is reached.
+            # # Check that minimum number of players is reached.
             n_players = int(n_players_str)
-            if n_players < min_players:
-                print(f'There must be at least {min_players} {player_type} players '
-                      f'but got {n_players} {player_type} players.')
-                continue
+            # if n_players < min_players:
+            #     print(f'There must be at least {min_players} {player_type} players '
+            #           f'but got {n_players} {player_type} players.')
+            #     continue
 
             # Fill player list.
             while len(player_list) < n_players:
