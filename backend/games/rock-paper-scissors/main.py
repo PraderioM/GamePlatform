@@ -176,7 +176,7 @@ class Game:
                 # Ask name. Use default if necessary.
                 default_name = f'{player_type}_{len(player_list) + 1}'
                 name = input(f"Please provide name for {player_type} player {len(player_list) + 1}: "
-                             f"[{default_name}]\n\t")
+                             # f"[{default_name}]\n\t")
 
                 if name == '':
                     name = default_name
