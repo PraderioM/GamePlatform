@@ -156,44 +156,43 @@ class Game:
         player_type = 'bot' if is_bot else 'human'
         player_list = []
 
-        while True:
-            n_players_str = input(f"Please insert number of {player_type} players:\t")
 
-            # Check if input is valid. If not, repeat question.
-            if not n_players_str.isnumeric():
-                print(f"'{n_players_str}' is not a valid number of players.")
+        n_players_str = input(f"Please insert number of {player_type} players:\t")
+
+        # Check if input is valid. If not, repeat question.
+        if not n_players_str.isnumeric():
+            print(f"'{n_players_str}' is not a valid number of players.")
+
+        # # Check that minimum number of players is reached.
+        n_players = int(n_players_str)
+        # if n_players < min_players:
+        #     print(f'There must be at least {min_players} {player_type} players '
+        #           f'but got {n_players} {player_type} players.')
+        #     continue
+
+        # Fill player list.
+        while len(player_list) < n_players:
+            # Ask name. Use default if necessary.
+            name = input(f"Please provide name for {player_type} player {len(player_list) + 1}: ")
+                         #f"[{default_name}]\n\t")
+
+            default_name = f'{player_type}_{len(player_list) + 1}'
+            if name == '':
+               name = default_name
+
+            # Check for name repetition.
+            already_exists = False
+            for player in player_list:
+                if player.name == name:
+                    already_exists = True
+                    break
+            if already_exists:
+                print(f'Name {name} has already been used. Try a different name.')
                 continue
 
-            # # Check that minimum number of players is reached.
-            n_players = int(n_players_str)
-            # if n_players < min_players:
-            #     print(f'There must be at least {min_players} {player_type} players '
-            #           f'but got {n_players} {player_type} players.')
-            #     continue
-
-            # Fill player list.
-            while len(player_list) < n_players:
-                # Ask name. Use default if necessary.
-                default_name = f'{player_type}_{len(player_list) + 1}'
-                name = input(f"Please provide name for {player_type} player {len(player_list) + 1}: "
-                             # f"[{default_name}]\n\t")
-
-                if name == '':
-                    name = default_name
-
-                # Check for name repetition.
-                already_exists = False
-                for player in player_list:
-                    if player.name == name:
-                        already_exists = True
-                        break
-                if already_exists:
-                    print(f'Name {name} has already been used. Try a different name.')
-                    continue
-
-                # If name is new create a new player from it.
-                player = Player(name=name, is_bot=is_bot)
-                player_list.append(player)
+            # If name is new, create a new player from it.
+            player = Player(name=name, is_bot=is_bot)
+            player_list.append(player)
 
         return player_list
 
