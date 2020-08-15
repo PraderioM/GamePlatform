@@ -85,7 +85,7 @@ class Game:
         return Game._ask_players(min_players=0, is_bot=False)
 
     @staticmethod
-    def ask_bot_players(n_human_players: int = 0) -> List[Player]:
+    def ask_bot_players(n_human_players: int) -> List[Player]:
         min_players = max(0, 2 - n_human_players)
         return Game._ask_players(min_players=min_players, is_bot=True)
 
@@ -171,8 +171,6 @@ class Game:
         if int(n_players_str) < min_players:
             Game.from_cli_inputs()
 
-
-
         # Check that minimum number of players is reached.
         n_players = int(n_players_str)
         # if n_players < min_players:
@@ -180,15 +178,17 @@ class Game:
         #           f'but got {n_players} {player_type} players.')
         #     continue
 
-        # Fill player list.
+        # Fill player list (humans).
+
+        default_name = f'{player_type}_{len(player_list) + 1}'
+
         while len(player_list) < n_players and is_bot == False:
             # Ask name. Use default if necessary.
             name = input(f"Please provide name for {player_type} player {len(player_list) + 1}: ")
-                         #f"[{default_name}]\n\t")
+            # f"[{default_name}]\n\t")
 
-            default_name = f'{player_type}_{len(player_list) + 1}'
             if name == '':
-               name = default_name
+                name = default_name
 
             # Check for name repetition.
             already_exists = False
@@ -201,6 +201,12 @@ class Game:
                 continue
 
             # If name is new, create a new player from it.
+            player = Player(name=name, is_bot=is_bot)
+            player_list.append(player)
+
+        # Generating  default names for bot players.
+        while len(player_list) < n_players and is_bot == True:
+            name = default_name
             player = Player(name=name, is_bot=is_bot)
             player_list.append(player)
 
