@@ -1,5 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {GameDescription, GameResolution} from '../../services/models';
+import {GameDescription} from '../../services/models';
+import { GameResolution } from '../../../services/models';
+import {assetsPath} from '../../../services/constants';
 
 @Component({
   selector: 'app-game-resolution-display',
@@ -10,8 +12,6 @@ export class GameResolutionDisplayComponent implements OnInit {
   @Output() backToMenu = new EventEmitter<void>();
   @Input() gameDescription: GameDescription;
   @Input() gameResolution: GameResolution;
-
-  assetsScope = '/app/tic-tac-toe/assets';
 
   constructor() { }
 
@@ -37,7 +37,7 @@ export class GameResolutionDisplayComponent implements OnInit {
       scope = '/wtf-images';
       imageArray = ['wtf.png'];
     }
-    return this.assetsScope.concat(scope).concat('/').concat(imageArray[Math.floor(Math.random() * imageArray.length)]);
+    return assetsPath.concat(scope).concat('/').concat(imageArray[Math.floor(Math.random() * imageArray.length)]);
 
   }
 

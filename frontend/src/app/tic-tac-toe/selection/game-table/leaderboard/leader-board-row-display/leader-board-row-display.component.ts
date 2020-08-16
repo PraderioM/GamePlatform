@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {LeaderBoardPosition} from '../../../../services/models';
+import {LeaderBoardPosition} from '../../../../../services/models';
 
 @Component({
   selector: 'app-leader-board-position-display',

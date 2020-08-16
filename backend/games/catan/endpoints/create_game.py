@@ -14,7 +14,7 @@ async def create_game(request: web.Request) -> web.Response:
     # Get params.
     npc = int(request.rel_url.query['npc'])
     pc = int(request.rel_url.query['pc'])
-    extended = True if request.rel_url.query['expansion'] == 'true' else False
+    extended = True if request.rel_url.query['expansion'] == 'true' else 'false'
 
     token = request.rel_url.query['token']
 

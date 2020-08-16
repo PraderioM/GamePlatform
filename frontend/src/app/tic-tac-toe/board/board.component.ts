@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {GameDescription, GameResolution, Play} from '../services/models';
+import {GameDescription, Play} from '../services/models';
+import {GameResolution} from '../../services/models';
 import {StateService} from '../services/state.service';
 
 @Component({
