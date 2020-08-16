@@ -1,31 +1,38 @@
-export class Play {
-  constructor(public row: number, public col: number, public symbol: string) { }
-}
+import {Player as BasePlayer} from '../../services/models';
+import {GameDescription as BaseGameDescription, ActiveGame as BaseActiveGame} from '../../services/models';
+import {BuildPlay} from './plays/build';
 
-export class Player {
-  constructor(public isBot: boolean, public symbol: string, public points: number,
-              public name?: string) { }
-}
-
-export class GameDescription {
-  constructor(public rows: number, public cols: number, public players: Player[],
-              public currentPlayer: number, public description: string,
-              public id?: string, public plays: Play[] = []) { }
-}
-
-export class ActiveGame {
-  constructor(public gameId: string, public nPlayers: number, public nBots: number,
-              public gravity: boolean,
-              public currentPlayers: number, public rows: number, public cols: number) { }
-}
-
-export class LeaderBoardPosition {
-  constructor(public playerName: string, public totalPlayed: number,
-              public wins: number, public points: number) {
+export class Player extends BasePlayer {
+  constructor(public isBot: boolean, public color: string, public points: number,
+              public name?: string, public materialsDeck?: MaterialsDeck,
+              public developmentDeck?: DevelopmentDeck) {
+    super(isBot, points, name);
   }
 }
 
-export class GameResolution {
-  constructor(public isObserver: boolean = false, public isVictorious: boolean = false,
-              public isLoser: boolean = false, public isTie: boolean = false) { }
+export class GameDescription extends BaseGameDescription {
+  constructor(public players: Player[],
+              public currentPlayer: number, public description: string,
+              public id?: string, public plays: BuildPlay[] = []) {
+    super(players, currentPlayer, description, id, plays);
+  }
+}
+
+export class ActiveGame extends BaseActiveGame {
+  constructor(public gameId: string, public nPlayers: number, public nBots: number,
+              public currentPlayers: number) {
+    super(gameId, nPlayers, nBots, currentPlayers);
+  }
+}
+
+export class MaterialsDeck {
+  // Todo implement.
+}
+
+export class DevelopmentDeck {
+  // Todo implement.
+}
+
+export class Offer {
+  // Todo implement.
 }
