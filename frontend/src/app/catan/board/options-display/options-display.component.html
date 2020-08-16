@@ -1,0 +1,4 @@
+<p> Game id: {{gameId}}</p>
+<button (click)="toggleShowInstructions()">{{getInstructionsHeader()}}</button>
+<p *ngIf="showInstructions">{{instructions}}</p>
+<button (click)="backToMenu.emit()">Back to menu</button>

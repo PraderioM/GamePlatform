@@ -1,0 +1,8 @@
+<p *ngIf="selected">
+  <b [style.color]="player.color">
+    {{player.name}} ({{player.points}})
+  </b>
+</p>
+<p *ngIf="!selected" [style.color]="player.color">
+  {{player.name}} ({{player.points}})
+</p>

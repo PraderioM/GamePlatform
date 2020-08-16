@@ -12,15 +12,30 @@ export class Player extends BasePlayer {
 
 export class GameDescription extends BaseGameDescription {
   constructor(public players: Player[],
-              public currentPlayer: number, public description: string,
-              public id?: string, public plays: BuildPlay[] = []) {
+              public plays: BuildPlay[],
+              public currentPlayer: number,
+              public turn: number,
+              public developmentDeck: DevelopmentDeck,
+              public materialsDeck: MaterialsDeck,
+              public landList: string[],
+              public extended: boolean,
+              public description: string,
+              public knightPlayer?: Player,
+              public longRoadPlayer?: Player,
+              public discardCards: boolean = false,
+              public thiefMoved: boolean = true,
+              public toBuildRoads: number = 0,
+              public lastDiceResult: number = 7,
+              public hasEnded: boolean = false,
+              public offer?: Offer,
+              public id?: string) {
     super(players, currentPlayer, description, id, plays);
   }
 }
 
 export class ActiveGame extends BaseActiveGame {
   constructor(public gameId: string, public nPlayers: number, public nBots: number,
-              public currentPlayers: number) {
+              public currentPlayers: number, public extended: boolean) {
     super(gameId, nPlayers, nBots, currentPlayers);
   }
 }

@@ -75,6 +75,7 @@ class Game(BaseGame):
             'toBuildRoads': self.to_build_roads,
             'lastDiceResult': self.last_dice_result,
             'description': description,
+            'hasEnded': self.has_ended,
         }
 
     def to_display(self) -> Dict:
