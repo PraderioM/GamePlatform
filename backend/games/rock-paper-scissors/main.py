@@ -46,6 +46,7 @@ class Player:
                       f'Please select one of the possible options.')
                 continue
 
+            # Todo clear console. (Put a lot of spaces?).
             return selected_play
 
 
