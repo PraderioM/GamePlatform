@@ -26,7 +26,7 @@ class Player:
         input_message = f'What play do you wish to make {self.name}?'
         named_plays = self.NAMED_PLAYS
         for play_number in range(n_plays):
-            play_name = f'play_{play_number + 1}' if play_number < len(named_plays) else named_plays[play_number]
+            play_name = f'play_{play_number + 1}' if play_number >= len(named_plays) else named_plays[play_number]
             input_message += f'\n\t{play_number + 1}) {play_name}'
 
         input_message += '\n'
@@ -152,7 +152,7 @@ class Game:
         return [play_list[0][0]]
 
     @staticmethod
-    def _ask_players(min_players: int, is_bot: bool) -> List[Player]:
+    def _ask_players(min_players: int, is_bot: bool, min_automatic: int = 10) -> List[Player]:
         player_type = 'bot' if is_bot else 'human'
         player_list = []
 
@@ -161,31 +161,43 @@ class Game:
             n_players_str = input(f"Please insert number of {player_type} players:\t")
             if not n_players_str.isnumeric():
                 print(f"'{n_players_str}' is not a valid number of players.")
+                continue
             elif int(n_players_str) < min_players:
-                print("At least 2 players are needed.")
-                break
+                print(f"At least {min_players} players are needed.")
+                continue
             elif n_players_str.isnumeric() and int(n_players_str) >= min_players:
                 break
 
-        # If number of humans + bots is < 2, start again asking for number of human players.
-        if int(n_players_str) < min_players:
-            Game.from_cli_inputs()
-
-        # Check that minimum number of players is reached.
+        # Parse string.
         n_players = int(n_players_str)
-        # if n_players < min_players:
-        #     print(f'There must be at least {min_players} {player_type} players '
-        #           f'but got {n_players} {player_type} players.')
-        #     continue
+
+        # Give an option of automatic naming if number of players is greater than a fixed value.
+        name_automatically = False
+        if n_players >= min_automatic:
+            while True:
+                answer = input(f"Do you wish for the {player_type} players to be named automatically?: [Y/n]\t")
+                if answer.lower in ('', 'y', 'yes'):
+                    name_automatically = True
+                    break
+                elif answer.lower in ('n', 'no'):
+                    name_automatically = False
+                    break
+                else:
+                    print(f"I do not understand the answer `{answer}` please answer with `yes` or `no`.")
+                    continue
 
         # Fill player list (humans).
+        while len(player_list) < n_players:
+            default_name = f'{player_type}_{len(player_list) + 1}'
 
-        default_name = f'{player_type}_{len(player_list) + 1}'
+            # If automatic naming mode is enabled we automatically name the players and continue.
+            if name_automatically:
+                player_list.append(Player(name=default_name, is_bot=is_bot))
+                continue
 
-        while len(player_list) < n_players and is_bot == False:
             # Ask name. Use default if necessary.
-            name = input(f"Please provide name for {player_type} player {len(player_list) + 1}: ")
-            # f"[{default_name}]\n\t")
+            name = input(f"Please provide name for {player_type} player {len(player_list) + 1}: "
+                         f"[{default_name}]\n\t")
 
             if name == '':
                 name = default_name
@@ -201,12 +213,6 @@ class Game:
                 continue
 
             # If name is new, create a new player from it.
-            player = Player(name=name, is_bot=is_bot)
-            player_list.append(player)
-
-        # Generating  default names for bot players.
-        while len(player_list) < n_players and is_bot == True:
-            name = default_name
             player = Player(name=name, is_bot=is_bot)
             player_list.append(player)
 
