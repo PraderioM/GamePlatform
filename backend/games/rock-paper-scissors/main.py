@@ -28,11 +28,11 @@ class Player:
         # generated_play_name = ''
         for play_number in range(n_plays):
             if play_number <= len(named_plays):
-                play_name = named_plays[play_number-1]
+                play_name = named_plays[play_number - 1]
             else:
-                play_name = f'play_{play_number}'
+                play_name = f'play_{play_number + 1}'
 
-            input_message += f'\n\t{play_name}'
+            input_message += f'\n\t{play_number + 1}) {play_name}'
 
         input_message += '\n'
 
