@@ -176,10 +176,10 @@ class Game:
         if n_players >= min_automatic:
             while True:
                 answer = input(f"Do you wish for the {player_type} players to be named automatically?: [Y/n]\t")
-                if answer.lower in ('', 'y', 'yes'):
+                if answer.lower() in ('', 'y', 'yes'):
                     name_automatically = True
                     break
-                elif answer.lower in ('n', 'no'):
+                elif answer.lower() in ('n', 'no'):
                     name_automatically = False
                     break
                 else:
