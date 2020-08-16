@@ -9,7 +9,7 @@ class VictoryCriterion(enum.Enum):
 
 
 class Player:
-    NAMED_PLAYS = ('rock', 'paper', 'scissors', 'lizard', 'Spock')
+    NAMED_PLAYS = ('Rock', 'Paper', 'Scissors', 'Lizard', 'Spock')
 
     def __init__(self, name: str, is_bot: bool = False):
         self.name = name
@@ -23,7 +23,7 @@ class Player:
 
     def ask_human_play(self, n_plays: int) -> int:
         # Define message for asking input.
-        input_message = f'What play do you wish to make {self.name}?'
+        input_message = f'What play do you wish to make, {self.name}?'
         named_plays = self.NAMED_PLAYS
         for play_number in range(n_plays):
             play_name = f'play_{play_number + 1}' if play_number >= len(named_plays) else named_plays[play_number]
@@ -94,12 +94,12 @@ class Game:
         while True:
             n_plays_str = input(f"Please insert number of plays:\t")
 
-            # Check that input is valid and if not repeat question.
+            # Check if input is valid. If not, repeat question.
             if not n_plays_str.isnumeric():
                 print(f"`{n_plays_str} is not a valid number of players.")
                 continue
 
-            # Check that number of plays is an odd number greater or equal than 3.
+            # Check if number of plays is an odd number, greater than or equal to 3.
             n_plays = int(n_plays_str)
 
             if n_plays % 2 == 0:
@@ -113,7 +113,7 @@ class Game:
 
     @staticmethod
     def ask_victory_criterion() -> VictoryCriterion:
-        input_message = 'What victory, criterion do you wish to use?'
+        input_message = 'What victory criterion do you wish to use?'
         for criterion in VictoryCriterion:
             input_message += f'\n\t{criterion.value}) {criterion.name.lower().replace("_", " ")}'
 
