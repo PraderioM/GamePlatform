@@ -1,5 +1,5 @@
 import enum
-from typing import Optional, Set
+from typing import Optional, Set, Tuple
 
 from .land import LandType
 
@@ -14,7 +14,7 @@ class PortType(enum.Enum):
 
 
 class Port:
-    def __init__(self, port_type: PortType, intersections: Set[Set[int]]):
+    def __init__(self, port_type: PortType, intersections: Tuple[Set[int], Set[int]]):
         self._port_type = port_type
         self.intersections = intersections
 

@@ -9,7 +9,8 @@ class MaterialsDeck:
         self._deck = self.get_empty_deck() if cards_dict is None else cards_dict
 
     @classmethod
-    def from_json(cls, json_data: Dict[int, int]) -> 'MaterialsDeck':
+    def from_json(cls, json_data: Dict[Union[int, str], int]) -> 'MaterialsDeck':
+        json_data = {int(key): val for key, val in json_data.items()}
         return MaterialsDeck(
             {
                 land_type: json_data[land_type.value] for land_type in LandType

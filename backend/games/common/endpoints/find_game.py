@@ -34,7 +34,7 @@ async def find_game(token: str, pool: asyncpg.pool.Pool,
                     shuffle(database_player_list)
                 await db.execute(f"""
                                  UPDATE {active_games_table}
-                                 SET last_updated = now(), players = $1
+                                 SET last_updated = now(), player_list = $1
                                  WHERE id = $2
                                  """, json.dumps(database_player_list), out_game.id)
 

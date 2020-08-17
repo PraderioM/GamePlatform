@@ -23,6 +23,8 @@ async def create_game(pool: asyncpg.pool.Pool,
             await add_new_game_to_database(new_game, db)
 
             frontend_new_game = new_game.to_frontend(db=db)
+            print('game created.')
+            print(frontend_new_game)
             return web.Response(
                 status=200,
                 body=json.dumps(frontend_new_game)

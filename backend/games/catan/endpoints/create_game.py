@@ -14,7 +14,7 @@ async def create_game(request: web.Request) -> web.Response:
     # Get params.
     npc = int(request.rel_url.query['npc'])
     pc = int(request.rel_url.query['pc'])
-    extended = True if request.rel_url.query['expansion'] == 'true' else 'false'
+    extended = True if request.rel_url.query['expansion'] == 'true' else False
 
     token = request.rel_url.query['token']
 
@@ -48,6 +48,7 @@ async def create_game(request: web.Request) -> web.Response:
         color_list = ['red', 'blue', 'green', 'yellow', 'white', 'brown'][:npc+pc]
         # is_bot_list = [False] * pc + [True] * npc
         player_list = [Player(name=name, color=color) for name, color in zip(name_list, color_list)]
+
         return Game(current_player_index=0, turn_index=0, play_list=[],
                     player_list=player_list, id_=str(uuid4()), extended=extended), None
 
@@ -56,8 +57,8 @@ async def create_game(request: web.Request) -> web.Response:
         # Inset name in database.
 
         await db.execute("""
-                         INSERT INTO catan_active_games (id, player_list, play_list, extended, development_deck, materials_deck,
-                                                         land_list)
+                         INSERT INTO catan_active_games (id, player_list, play_list, extended, development_deck,
+                                                         materials_deck, land_list)
                          VALUES ($1, $2, $3, $4, $5, $6, $7)
                          """,
                          new_game.id,

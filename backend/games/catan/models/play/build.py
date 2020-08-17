@@ -7,7 +7,6 @@ from aiohttp import web
 from .core import Play, register_play
 from ..player import Player
 from ..land import LandType
-from ..game import Game
 
 
 class BuildPlay(Play):
@@ -194,7 +193,7 @@ class BuildSettlement(BuildPlay):
         built_settlements = len(player_settlement_building_plays)
         return built_settlements < game.board.n_per_player_settlements
 
-    def is_position_valid(self, game: Game) -> bool:
+    def is_position_valid(self, game) -> bool:
         # If some settlement is posted too close then position is invalid.
         settlement_plays = [play for play in game.play_list
                             if isinstance(play, BuildSettlement) or isinstance(play, BuildCity)]

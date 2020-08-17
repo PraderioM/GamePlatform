@@ -41,11 +41,11 @@ class Game(BaseGame):
         self.last_dice_result = last_dice_result
         self.thief_moved = thief_moved
         self.to_build_roads = to_build_roads
+        self._extended = extended
         self._development_deck = self.get_empty_development_deck() if development_deck is None else development_deck
         self._materials_deck = self.get_empty_materials_deck() if materials_deck is None else materials_deck
         self._land_list = self.get_random_land_list() if land_list is None else land_list[:]
         self.offer = offer
-        self._extended = extended
         self._knight_player = knight_player
         self._long_road_player = long_road_player
 
@@ -118,15 +118,18 @@ class Game(BaseGame):
         )
 
     def to_database(self) -> Dict[str, Union[str, int, bool, Dict]]:
+        offer = None if self.offer is None else json.dumps(self.offer.to_database())
+        knight_player = None if self._knight_player is None else json.dumps(self._knight_player.to_frontend())
+        long_road_player = None if self._long_road_player is None else json.dumps(self._long_road_player.to_frontend())
         return {
             **BaseGame.to_database(self),
             **{
-                'development_deck': self._development_deck.to_json(),
-                'materials_deck': self._materials_deck.to_json(),
-                'land_list': [land.to_json() for land in self._land_list],
-                'offer': None if self.offer is None else self.offer.to_database(),
-                'knight_player': None if self._knight_player is None else self._knight_player.to_frontend(),
-                'long_road_player': None if self._long_road_player is None else self._long_road_player.to_frontend(),
+                'development_deck': json.dumps(self._development_deck.to_json()),
+                'materials_deck': json.dumps(self._materials_deck.to_json()),
+                'land_list': json.dumps([land.to_json() for land in self._land_list]),
+                'offer': offer,
+                'knight_player': knight_player,
+                'long_road_player': long_road_player,
                 'turn_index': self.turn_index,
                 'discard_cards': self.discard_cards,
                 'thief_moved': self.thief_moved,
@@ -454,9 +457,10 @@ class Game(BaseGame):
         player_ports: List[Port] = []
         for port in all_ports:
             for play in player_settlements:
-                if play.position == port.intersections:
-                    player_ports.append(port)
-                    break
+                for intersection in port.intersections:
+                    if play.position == intersection:
+                        player_ports.append(port)
+                        break
 
         return player_ports
 

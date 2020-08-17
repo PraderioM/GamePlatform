@@ -60,20 +60,23 @@ class Play(BasePlay):
         return {'player': self.player.to_frontend()}
 
 
-def register_play(cls: Type[Play], play_name: str):
-    if play_name in Play.PLAY_TYPES.keys():
-        raise ValueError(f'Repeated key {play_name}.')
-    Play.PLAY_TYPES[play_name] = cls
+def register_play(play_name: str):
+    def _register_play(cls: Type[Play]) -> Type[Play]:
+        if play_name in Play.PLAY_TYPES.keys():
+            raise ValueError(f'Repeated key {play_name}.')
+        Play.PLAY_TYPES[play_name] = cls
 
-    def to_database(self) -> Dict:
-        out_dict = self.to_database()
-        if not isinstance(out_dict, Dict):
-            raise ValueError('`to_database` method must return a dictionary.')
-        elif 'play_name' in out_dict.keys():
-            raise ValueError('`to_database` method cannot return a dictionary with a key named `play_name`.')
+        def to_database(self) -> Dict:
+            out_dict = self.to_database()
+            if not isinstance(out_dict, Dict):
+                raise ValueError('`to_database` method must return a dictionary.')
+            elif 'play_name' in out_dict.keys():
+                raise ValueError('`to_database` method cannot return a dictionary with a key named `play_name`.')
 
-        return {**out_dict, **{'play_name': play_name}}
+            return {**out_dict, **{'play_name': play_name}}
 
-    cls.to_database = to_database
+        cls.to_database = to_database
 
-    return cls
+        return cls
+
+    return _register_play

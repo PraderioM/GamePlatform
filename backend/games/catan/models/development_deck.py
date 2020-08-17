@@ -1,6 +1,6 @@
 import enum
 from random import choice
-from typing import Dict, Optional
+from typing import Dict, Optional, Union
 
 
 class DevelopmentType(enum.Enum):
@@ -16,7 +16,8 @@ class DevelopmentDeck:
         self._deck = self.get_empty_deck() if cards_dict is None else cards_dict
 
     @classmethod
-    def from_json(cls, json_data: Dict[int, int]) -> 'DevelopmentDeck':
+    def from_json(cls, json_data: Dict[Union[int, str], int]) -> 'DevelopmentDeck':
+        json_data = {int(key): val for key, val in json_data.items()}
         return DevelopmentDeck(
             {
                 development_type: json_data[development_type.value] for development_type in DevelopmentType
