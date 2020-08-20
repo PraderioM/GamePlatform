@@ -1,2 +1,7 @@
-<p>board-display works!</p>
-<!--todo implement board viewing-->
+<p *ngIf="description.toBuildRoads > 0">
+  {{description.getCurrentPlayer().name}} must build {{description.toBuildRoads}} roads
+</p>
+<p *ngIf="!description.thiefMoved">
+  {{description.getCurrentPlayer().name}} must move thief
+</p>
+<canvas #canvas height="100%" width="100%" (click)="processClick($event)"></canvas>

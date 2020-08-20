@@ -1,8 +1,14 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {GameDescription} from '../services/models';
+import {DevelopmentDeck, GameDescription, MaterialsDeck, Offer} from '../services/models';
 import {GameResolution} from '../../services/models';
 import {StateService} from '../services/state.service';
-import {BasePlay} from '../services/plays/base.play';
+import {MoveThiefPlay} from '../services/plays/move.thief';
+import {BuildCity, BuildRoad, BuildSettlement} from '../services/plays/build';
+import {ThrowDicePlay} from '../services/plays/throw.dice';
+import {BuyDevelopment, PlayKnight, PlayMonopoly, PlayResources, PlayRoads} from '../services/plays/development';
+import {EndTurnPlay} from '../services/plays/end.turn';
+import {AcceptOffer, CommerceWithBank, MakeOffer, RejectOffer, WithdrawOffer} from '../services/plays/commerce';
+import {DiscardPlay} from '../services/plays/discard';
 
 @Component({
   selector: 'app-board',
@@ -16,10 +22,17 @@ export class BoardComponent implements OnInit {
   @Input() description: GameDescription;
 
   interval;
+  playerMaterials: MaterialsDeck;
+  playerDevelopment: DevelopmentDeck;
   gameResolution: GameResolution;
   isPlaying = true;
+  buildingElement?: string = null;
 
   constructor(private stateService: StateService) { }
+
+  resetVariables() {
+    this.buildingElement = null;
+  }
 
   ngOnInit() {
 
@@ -32,15 +45,117 @@ export class BoardComponent implements OnInit {
     const description = await this.stateService.findGame(this.token, this.description.id);
     if (description.id != null) {
       this.description = description;
+      this.playerMaterials = description.getPlayerMaterialsByName(this.name);
+      this.playerDevelopment = description.getPlayerDevelopmentDeckByName(this.name);
       if (description.hasEnded) {
         await this.endGame();
       }
     }
   }
 
-  async makePlay(play: BasePlay) {
-    // Todo implement for different plays.
-    // await this.stateService.makePlay(this.token, play, this.description.id);
+  async onClickLand(landNumber: number) {
+    this.resetVariables();
+    if (!this.description.thiefMoved && this.description.getCurrentPlayer().name === name) {
+      await this.stateService.moveThief(this.token, new MoveThiefPlay(landNumber), this.description.id);
+    }
+  }
+
+  async onClickSegment(position: number[]) {
+    if ((this.description.toBuildRoads > 0 || this.buildingElement === 'road') && this.isCurrentPlayer()) {
+      await this.stateService.makeBuildPlay(this.token,
+        new BuildRoad(this.description.getCurrentPlayer().color, position),
+        this.description.id);
+    }
+    this.resetVariables();
+  }
+
+  async onClickIntersection(position: number[]) {
+    if (this.buildingElement === 'settlement' && this.isCurrentPlayer()) {
+      await this.stateService.makeBuildPlay(this.token,
+        new BuildSettlement(this.description.getCurrentPlayer().color, position),
+        this.description.id);
+    } else if (this.buildingElement === 'city' && this.isCurrentPlayer()) {
+      await this.stateService.makeBuildPlay(this.token,
+        new BuildCity(this.description.getCurrentPlayer().color, position),
+        this.description.id);
+    }
+    this.resetVariables();
+  }
+
+  async buyDevelopment() {
+    this.resetVariables();
+    if (this.isCurrentPlayer() && this.description.getCurrentPlayer().diceThrown) {
+      await this.stateService.buyDevelopment(this.token, new BuyDevelopment(), this.description.id);
+    }
+  }
+
+  async throwDice() {
+    this.resetVariables();
+    if (this.isCurrentPlayer() && !this.description.getCurrentPlayer().diceThrown) {
+      await this.stateService.throwDice(this.token, new ThrowDicePlay(), this.description.id);
+    }
+  }
+
+  async makeOffer(offer: Offer) {
+    this.resetVariables();
+    await  this.stateService.makeOffer(this.token, new MakeOffer(offer), this.description.id);
+  }
+  async commerceWithBank(offer: Offer) {
+    this.resetVariables();
+    await  this.stateService.makeOffer(this.token, new CommerceWithBank(offer), this.description.id);
+  }
+  async acceptOffer() {
+    this.resetVariables();
+    await  this.stateService.acceptOffer(this.token, new AcceptOffer(), this.description.id);
+  }
+  async rejectOffer() {
+    this.resetVariables();
+    await  this.stateService.acceptOffer(this.token, new RejectOffer(), this.description.id);
+  }
+  async withdrawOffer() {
+    this.resetVariables();
+    await  this.stateService.acceptOffer(this.token, new WithdrawOffer(), this.description.id);
+  }
+
+  async discardCards(discardedMaterials: MaterialsDeck) {
+    this.resetVariables();
+    await  this.stateService.discardPlay(this.token, new DiscardPlay(discardedMaterials), this.description.id);
+  }
+
+  async endTurn() {
+    this.resetVariables();
+    if (this.isCurrentPlayer() && !this.description.getCurrentPlayer().diceThrown) {
+      await this.stateService.endTurn(this.token, new EndTurnPlay(), this.description.id);
+    }
+  }
+
+
+  async onPlayKnight(play: PlayKnight) {
+    this.resetVariables();
+    if (this.isCurrentPlayer()) {
+      await this.stateService.playKnight(this.token, play, this.description.id);
+    }
+  }
+
+  async onPlayMonopoly(play: PlayMonopoly) {
+    this.resetVariables();
+    if (this.isCurrentPlayer()) {
+      await this.stateService.playMonopoly(this.token, play, this.description.id);
+    }
+  }
+
+  async onPlayResources(play: PlayResources) {
+    this.resetVariables();
+    if (this.isCurrentPlayer()) {
+      await this.stateService.playResources(this.token, play, this.description.id);
+    }
+  }
+
+  async onPlayRoads(play: PlayRoads) {
+    this.resetVariables();
+    if (this.isCurrentPlayer()) {
+      await this.stateService.playRoads(this.token, play, this.description.id);
+    }
   }
 
   async endGame() {
@@ -49,8 +164,19 @@ export class BoardComponent implements OnInit {
     this.isPlaying = false;
   }
 
+  updateBuildingElement(newBuildingElement: string) {
+    this.resetVariables();
+    if (this.isCurrentPlayer()) {
+      this.buildingElement = newBuildingElement;
+    }
+  }
+
   onBackToMenu() {
     clearInterval(this.interval);
     this.backToMenu.emit();
+  }
+
+  isCurrentPlayer() {
+    return this.description.getCurrentPlayer().name === name;
   }
 }

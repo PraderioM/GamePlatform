@@ -19,6 +19,15 @@ import {GameResolutionDisplayComponent} from './board/game-resolution-display/ga
 import {OptionsDisplayComponent} from './board/options-display/options-display.component';
 import {PlayersDisplayComponent} from './board/players-display/players-display.component';
 import {PlayerDisplayComponent} from './board/players-display/player-display/player-display.component';
+import {BuyComponent} from './board/buy/buy.component';
+import {CommerceComponent} from './board/commerce/commerce.component';
+import {MaterialsDeckComponent} from './board/materials-deck/materials-deck.component';
+import {PlayerDevelopmentDeckComponent} from './board/player-development-deck/player-development-deck.component';
+import {DiscardCardsDisplayComponent} from './board/discard-cards-display/discard-cards-display.component';
+import {KnightPlayingComponent} from './board/player-development-deck/knight-playing/knight-playing.component';
+import {MonopolyPlayingComponent} from './board/player-development-deck/monopoly-playing/monopoly-playing.component';
+import {ResourcesPlayingComponent} from './board/player-development-deck/resources-playing/resources-playing.component';
+import {RoadsPlayingComponent} from './board/player-development-deck/roads-playing/roads-playing.component';
 
 
 const DECLARATIONS: any[] = [
@@ -37,6 +46,15 @@ const DECLARATIONS: any[] = [
   OptionsDisplayComponent,
   PlayersDisplayComponent,
   PlayerDisplayComponent,
+  BuyComponent,
+  CommerceComponent,
+  MaterialsDeckComponent,
+  PlayerDevelopmentDeckComponent,
+  DiscardCardsDisplayComponent,
+  KnightPlayingComponent,
+  MonopolyPlayingComponent,
+  ResourcesPlayingComponent,
+  RoadsPlayingComponent,
 ];
 
 const MODULES: any[] = [

@@ -1,12 +1,21 @@
 import {Injectable} from '@angular/core';
-import {HttpParams} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {ActiveGame, GameDescription} from './models';
+import {BasePlay} from './plays/base.play';
+import {CommonStateService} from '../../services/common.state.service';
 import {BuildPlay} from './plays/build';
-import {StateService as BaseStateService} from '../../services/common.state.service';
+import {AcceptOffer, CommercePlay, RejectOffer, WithdrawOffer} from './plays/commerce';
+import {BuyDevelopment, PlayKnight, PlayMonopoly, PlayResources, PlayRoads} from './plays/development';
+import {DiscardPlay} from './plays/discard';
+import {EndTurnPlay} from './plays/end.turn';
+import {MoveThiefPlay} from './plays/move.thief';
+import {ThrowDicePlay} from './plays/throw.dice';
 
 @Injectable()
-export class StateService extends BaseStateService {
-    scope = 'catan';
+export class StateService extends CommonStateService {
+  constructor(http: HttpClient) {
+    super(http, 'catan');
+  }
 
     async createGame(token: string, npc: number, pc: number, expansion: boolean) {
       let expansionStr: string;
@@ -30,19 +39,158 @@ export class StateService extends BaseStateService {
         .toPromise();
     }
 
-    async makePlay(token: string, play: BuildPlay, gameId: string) {
-      // return await this.http
-      //   .get<GameDescription>(this.urlPath + '/make-play',
-      //     {params: new HttpParams().set('token', token).set('game_id', gameId)
-      //                                     .set('row', play.row.toString()).set('col', play.col.toString())})
-      //   .toPromise();
+    async makeBuildPlay(token: string, play: BuildPlay, gameId: string) {
+      return await this.http
+        .get<GameDescription>(this.backendURL + '/make-play',
+          {
+            params: this.initPlayParams(token, play, gameId).set('position', JSON.stringify(play.position))
+          }
+        )
+        .toPromise();
     }
+
+    async makeOffer(token: string, play: CommercePlay, gameId: string) {
+      return await this.http
+        .get<GameDescription>(this.backendURL + '/make-play',
+          {
+            params: this.initPlayParams(token, play, gameId).set('offer', JSON.stringify(play.offer))
+          }
+        )
+        .toPromise();
+    }
+
+    async acceptOffer(token: string, play: AcceptOffer, gameId: string) {
+      return await this.http
+        .get<GameDescription>(this.backendURL + '/make-play',
+          {
+            params: this.initPlayParams(token, play, gameId)
+          }
+        )
+        .toPromise();
+    }
+
+    async rejectOffer(token: string, play: RejectOffer, gameId: string) {
+      return await this.http
+        .get<GameDescription>(this.backendURL + '/make-play',
+          {
+            params: this.initPlayParams(token, play, gameId)
+          }
+        )
+        .toPromise();
+    }
+
+    async withdrawOffer(token: string, play: WithdrawOffer, gameId: string) {
+      return await this.http
+        .get<GameDescription>(this.backendURL + '/make-play',
+          {
+            params: this.initPlayParams(token, play, gameId)
+          }
+        )
+        .toPromise();
+    }
+
+  async buyDevelopment(token: string, play: BuyDevelopment, gameId: string) {
+    return await this.http
+      .get<GameDescription>(this.backendURL + '/make-play',
+        {
+          params: this.initPlayParams(token, play, gameId)
+        }
+      )
+      .toPromise();
+  }
+
+  async playKnight(token: string, play: PlayKnight, gameId: string) {
+    return await this.http
+      .get<GameDescription>(this.backendURL + '/make-play',
+        {
+          params: this.initPlayParams(token, play, gameId)
+        }
+      )
+      .toPromise();
+  }
+
+  async playRoads(token: string, play: PlayRoads, gameId: string) {
+    return await this.http
+      .get<GameDescription>(this.backendURL + '/make-play',
+        {
+          params: this.initPlayParams(token, play, gameId)
+        }
+      )
+      .toPromise();
+  }
+
+  async playResources(token: string, play: PlayResources, gameId: string) {
+    return await this.http
+      .get<GameDescription>(this.backendURL + '/make-play',
+        {
+          params: this.initPlayParams(token, play, gameId).set('resource1', play.resource1).set('resource2', play.resource2)
+        }
+      )
+      .toPromise();
+  }
+
+  async playMonopoly(token: string, play: PlayMonopoly, gameId: string) {
+    return await this.http
+      .get<GameDescription>(this.backendURL + '/make-play',
+        {
+          params: this.initPlayParams(token, play, gameId).set('material', play.material)
+        }
+      )
+      .toPromise();
+  }
+
+  async discardPlay(token: string, play: DiscardPlay, gameId: string) {
+    return await this.http
+      .get<GameDescription>(this.backendURL + '/make-play',
+        {
+          params: this.initPlayParams(token, play, gameId).set('materials_deck', JSON.stringify(play.discardedDeck))
+        }
+      )
+      .toPromise();
+  }
+
+  async endTurn(token: string, play: EndTurnPlay, gameId: string) {
+    return await this.http
+      .get<GameDescription>(this.backendURL + '/make-play',
+        {
+          params: this.initPlayParams(token, play, gameId)
+        }
+      )
+      .toPromise();
+  }
+
+  async moveThief(token: string, play: MoveThiefPlay, gameId: string) {
+    return await this.http
+      .get<GameDescription>(this.backendURL + '/make-play',
+        {
+          params: this.initPlayParams(token, play, gameId).set('dst_index', play.position.toString())
+        }
+      )
+      .toPromise();
+  }
+
+  async throwDice(token: string, play: ThrowDicePlay, gameId: string) {
+    return await this.http
+      .get<GameDescription>(this.backendURL + '/make-play',
+        {
+          params: this.initPlayParams(token, play, gameId)
+        }
+      )
+      .toPromise();
+  }
 
     async getActiveGames(token: string) {
       return await this.http
         .get<ActiveGame[]>(this.backendURL + '/get-active-games',
           {params: new HttpParams().set('token', token)})
         .toPromise();
+    }
+
+  initPlayParams(token: string, play: BasePlay, gameId: string) {
+      let params = new HttpParams();
+      params = params.set('token', token);
+      params = params.set('game_id', gameId);
+      return params.set('play_name', play.playName);
     }
 
 }

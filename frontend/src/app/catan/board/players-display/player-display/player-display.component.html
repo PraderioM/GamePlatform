@@ -2,7 +2,11 @@
   <b [style.color]="player.color">
     {{player.name}} ({{player.points}})
   </b>
+  <img *ngIf="hasArmy" [src]="armyURL" class="extra-points-card">
+  <img *ngIf="hasCommercialRoute" [src]="routeURL" class="extra-points-card">
 </p>
 <p *ngIf="!selected" [style.color]="player.color">
   {{player.name}} ({{player.points}})
+  <img *ngIf="hasArmy" [src]="armyURL" class="extra-points-card">
+  <img *ngIf="hasCommercialRoute" [src]="routeURL" class="extra-points-card">
 </p>

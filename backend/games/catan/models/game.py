@@ -76,6 +76,7 @@ class Game(BaseGame):
             'lastDiceResult': self.last_dice_result,
             'description': description,
             'hasEnded': self.has_ended,
+            'thiefPosition': self.thief_land_index,
         }
 
     def to_display(self) -> Dict:

@@ -1,11 +1,13 @@
 import {Injectable} from '@angular/core';
-import {HttpParams} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {ActiveGame, GameDescription, Play} from './models';
-import {StateService as BaseStateService} from '../../services/common.state.service';
+import {CommonStateService} from '../../services/common.state.service';
 
 @Injectable()
-export class StateService extends BaseStateService {
-    scope = 'tic-tac-toe';
+export class StateService extends CommonStateService {
+    constructor(http: HttpClient) {
+      super(http, 'tic-tac-toe');
+    }
 
     async createGame(token: string, rows: number, cols: number, npc: number, pc: number, gravity: boolean) {
       let gravityStr: string;

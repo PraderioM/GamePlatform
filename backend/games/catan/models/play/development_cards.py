@@ -133,6 +133,12 @@ class PlayRoads(DevelopmentPlay):
         return player.n_available_roads > 0
 
 
+def _resource_from_name(land_name: str) -> LandType:
+    for land_type in LandType:
+        if land_type.value == land_name:
+            return land_type
+
+
 @register_play(play_name='play_resources')
 class PlayResources(DevelopmentPlay):
     def __init__(self, player: Player, resource_1: LandType, resource_2: LandType):
@@ -143,14 +149,14 @@ class PlayResources(DevelopmentPlay):
     @classmethod
     def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'PlayResources':
         return PlayResources(player=Player.from_frontend(json_data['player']),
-                             resource_1=cls._resource_from_name(json_data['resource1']),
-                             resource_2=cls._resource_from_name(json_data['resource2']))
+                             resource_1=_resource_from_name(json_data['resource1']),
+                             resource_2=_resource_from_name(json_data['resource2']))
 
     @classmethod
     def from_database(cls, json_data: Dict, *args, **kwargs) -> 'PlayResources':
         return PlayResources(player=Player.from_database(json_data['player']),
-                             resource_1=cls._resource_from_name(json_data['resource_1']),
-                             resource_2=cls._resource_from_name(json_data['resource_2']))
+                             resource_1=_resource_from_name(json_data['resource_1']),
+                             resource_2=_resource_from_name(json_data['resource_2']))
 
     @classmethod
     def pre_process_web_request(cls, request: web.Request) -> Dict:
@@ -188,12 +194,6 @@ class PlayResources(DevelopmentPlay):
     def resource_dict(self) -> Dict[LandType, int]:
         return {self._resource_1: 1, self._resource_2: 1}
 
-    @staticmethod
-    def _resource_from_name(land_name: str) -> LandType:
-        for land_type in LandType:
-            if land_type.value == land_name:
-                return land_type
-
 
 @register_play(play_name='play_monopoly')
 class PlayMonopoly(DevelopmentPlay):
@@ -204,12 +204,12 @@ class PlayMonopoly(DevelopmentPlay):
     @classmethod
     def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'PlayMonopoly':
         return PlayMonopoly(player=Player.from_frontend(json_data['player']),
-                            material=cls._resource_from_name(json_data['material']))
+                            material=_resource_from_name(json_data['material']))
 
     @classmethod
     def from_database(cls, json_data: Dict, *args, **kwargs) -> 'PlayMonopoly':
         return PlayMonopoly(player=Player.from_database(json_data['player']),
-                            material=cls._resource_from_name(json_data['material']))
+                            material=_resource_from_name(json_data['material']))
 
     @classmethod
     def pre_process_web_request(cls, request: web.Request) -> Dict:

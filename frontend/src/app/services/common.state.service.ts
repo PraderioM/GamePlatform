@@ -1,16 +1,13 @@
-import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {GameResolution, LeaderBoardPosition} from './models';
 import {backendURL} from './constants';
 
 
-@Injectable()
-export class StateService {
-  scope: string;
+export class CommonStateService {
   backendURL: string;
 
-  constructor(protected http: HttpClient) {
-    this.backendURL = backendURL + '/' + this.scope;
+  constructor(protected http: HttpClient, private scope: string) {
+    this.backendURL = backendURL + '/' + scope;
   }
 
   async getLeaderBoard(token: string) {

@@ -9,7 +9,6 @@ export class OptionsDisplayComponent implements OnInit {
   @Output() backToMenu = new EventEmitter<void>();
   @Input() gameId: string;
   showInstructions = false;
-  instructions = 'I refuse to write the full instructions view this link https://www.eljuegodemesa.com/colonos-de-catan/';
 
   constructor() { }
 

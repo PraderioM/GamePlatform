@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Player} from '../../services/models';
+import {assetsPath} from '../../services/constants';
 
 @Component({
   selector: 'app-players-display',
@@ -8,7 +9,11 @@ import {Player} from '../../services/models';
 })
 export class PlayersDisplayComponent implements OnInit {
   @Input() players: Player[];
+  @Input() knightPlayer?: Player;
+  @Input() longRoadPlayer?: Player;
   @Input() currentPlayer: number;
+
+  thiefPath = assetsPath.concat('/special_cards/instructions.png');
 
   constructor() { }
 

@@ -1,4 +1,8 @@
 <p> Game id: {{gameId}}</p>
 <button (click)="toggleShowInstructions()">{{getInstructionsHeader()}}</button>
-<p *ngIf="showInstructions">{{instructions}}</p>
+<p *ngIf="showInstructions">
+  Follow this
+  <a href="https://www.eljuegodemesa.com/colonos-de-catan/">link</a>
+  for instructions on how to play CATAN.
+</p>
 <button (click)="backToMenu.emit()">Back to menu</button>

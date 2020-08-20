@@ -1,20 +1,71 @@
 <p *ngIf="description == null">Game session has expired</p>
-<div *ngIf="description != null && isPlaying" class="container">
-  <app-players-display [players]="description.players"
-                       [currentPlayer]="description.currentPlayer">
+<div *ngIf="description != null && isPlaying" class="ver-container">
+  <div class="first-row-container">
+    <app-players-display [players]="description.players"
+                         [knightPlayer]="description.knightPlayer"
+                         [longRoadPlayer]="description.longRoadPlayer"
+                         [currentPlayer]="description.currentPlayer"
+                         style="width: 10%">
 
-  </app-players-display>
-  <app-board-display (makePlay)="makePlay($event)"
-                     [token]="token"
-                     [name]="name"
-                     [description]="description">
+    </app-players-display>
+    <app-board-display (clickLand)="onClickLand($event)"
+                       (clickSegment)="onClickSegment($event)"
+                       (clickIntersection)="onClickIntersection($event)"
+                       [description]="description"
+                       style="width: 80%">
 
-  </app-board-display>
-  <app-options-display (backToMenu)="onBackToMenu()"
-                       [gameId]="description.id">
+    </app-board-display>
+    <div class="ver-container" style="width: 10%">
+      <app-materials-deck [materialsDeck]="description.materialsDeck">
 
-  </app-options-display>
+      </app-materials-deck>
+      <app-options-display (backToMenu)="onBackToMenu()"
+                           [gameId]="description.id">
+
+      </app-options-display>
+    </div>
+  </div>
+
+  <div *ngIf="description.discardCards && playerMaterials.nMaterials > 7" class="second-row-container">
+    <app-discard-cards-display [materialsDeck]="playerMaterials"
+                               (discardCards)="discardCards($event)">
+    </app-discard-cards-display>
+  </div>
+
+  <div *ngIf="!(description.discardCards && playerMaterials.nMaterials > 7)" class="second-row-container">
+    <app-materials-deck [materialsDeck]="playerMaterials">
+
+    </app-materials-deck>
+    <app-commerce [materialsDeck]="playerMaterials"
+                  [isCurrentPlayer]="description.players[description.currentPlayer].name == name"
+                  [allPlayers]="description.players"
+                  [offer]="description.offer"
+                  [name]="name"
+                  (makeOffer)="makeOffer($event)"
+                  (commerceWithBank)="commerceWithBank($event)"
+                  (acceptOffer)="acceptOffer()"
+                  (rejectOffer)="rejectOffer()"
+                  (withdrawOffer)="withdrawOffer()">
+
+    </app-commerce>
+    <app-buy [materialsDeck]="playerMaterials"
+             [buildingElement]="buildingElement"
+             (updateBuildingElement)="updateBuildingElement($event)"
+             (buyDevelopment)="buyDevelopment()">
+
+    </app-buy>
+    <app-player-development-deck [developmentDeck]="playerDevelopment"
+                                 (playKnight)="onPlayKnight($event)"
+                                 (playMonopoly)="onPlayMonopoly($event)"
+                                 (playResources)="onPlayResources($event)"
+                                 (playRoads)="onPlayRoads($event)">
+
+    </app-player-development-deck>
+    <button *ngIf="description.players[description.currentPlayer].name == name" (click)="endTurn()">End Turn</button>
+    <button (click)="throwDice()">{{description.lastDiceResult}}</button>
+  </div>
 </div>
+
 <app-game-resolution-display *ngIf="description != null && !isPlaying"
                              [gameDescription]="description"
                              [gameResolution]="gameResolution"
