@@ -1,0 +1,18 @@
+<div class="container">
+  <img [src]="roadImgPath"
+       [ngClass]="{'logo': true, 'selected': buildingElement == 'road'}"
+       (click)="onRoadClick()"
+       alt="1 wood, 1 brick">
+  <img [src]="settlementImgPath"
+       [ngClass]="{'logo': true, 'selected': buildingElement == 'settlement'}"
+       (click)="onSettlementClick()"
+       alt="1 wood, 1 brick, 1 sheep, 1 wheat">
+  <img [src]="cityImgPath"
+       [ngClass]="{'logo': true, 'selected': buildingElement == 'city'}"
+       (click)="onCityClick()"
+       class="logo" alt="2 wheat, 3 stone">
+  <img [src]="developmentImgPath"
+       (click)="onDevelopmentClick()"
+       class="logo"
+       alt="1 sheep, 1 wheat, 1 stone">
+</div>

@@ -1,0 +1,19 @@
+.container {
+  width: 100%;
+  height: 80%;
+
+  display: flex;
+  flex-direction: row;
+  flex-flow: wrap;
+  justify-content: center;
+  align-content: center;
+}
+
+.logo {
+  width: 5pt;
+  height: 5pt;
+}
+
+.selected {
+  border: black;
+}

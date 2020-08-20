@@ -1,0 +1,22 @@
+<div class="container">
+  <label *ngIf="materialsDeck.nWood > 0" class="card-label">
+    wood: {{materialsDeck.nWood}}
+    <img [src]="woodImgPath" class="card" alt="wood">
+  </label>
+  <label *ngIf="materialsDeck.nBrick > 0" class="card-label">
+    brick: {{materialsDeck.nBrick}}
+    <img [src]="brickImgPath" class="card" alt="brick">
+  </label>
+  <label *ngIf="materialsDeck.nSheep > 0" class="card-label">
+    sheep: {{materialsDeck.nSheep}}
+    <img [src]="sheepImgPath" class="card" alt="sheep">
+  </label>
+  <label *ngIf="materialsDeck.nWheat > 0" class="card-label">
+    wheat: {{materialsDeck.nWheat}}
+    <img [src]="wheatImgPath" class="card" alt="wheat">
+  </label>
+  <label *ngIf="materialsDeck.nStone > 0" class="card-label">
+    stone: {{materialsDeck.nStone}}
+    <img [src]="stoneImgPath" class="card" alt="stone">
+  </label>
+</div>

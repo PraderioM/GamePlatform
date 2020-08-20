@@ -1,0 +1,43 @@
+<div class="ver-container">
+  <p>select materials</p>
+  <div class="hor-container">
+    <img [src]="woodImgPath"
+         [ngClass]="{'card': true,
+                     'selected-card': (resource1 == 'wood' && resource2 != 'wood') || (resource1 != 'wood' && resource2 == 'wood'),
+                     'doubly-selected-card': resource1 == 'wood' && resource2 == 'wood',
+                     }"
+         alt="wood"
+         (click)="updateResources('wood')">
+    <img [src]="brickImgPath"
+         [ngClass]="{'card': true,
+                     'selected-card': (resource1 == 'brick' && resource2 != 'brick') || (resource1 != 'brick' && resource2 == 'brick'),
+                     'doubly-selected-card': resource1 == 'brick' && resource2 == 'brick',
+                     }"
+         alt="brick"
+         (click)="updateResources('brick')">
+    <img [src]="sheepImgPath"
+         [ngClass]="{'card': true,
+                     'selected-card': (resource1 == 'sheep' && resource2 != 'sheep') || (resource1 != 'sheep' && resource2 == 'sheep'),
+                     'doubly-selected-card': resource1 == 'sheep' && resource2 == 'sheep',
+                     }"
+         alt="sheep"
+         (click)="updateResources('sheep')">
+    <img [src]="wheatImgPath"
+         [ngClass]="{'card': true,
+                     'selected-card': (resource1 == 'wheat' && resource2 != 'wheat') || (resource1 != 'wheat' && resource2 == 'wheat'),
+                     'doubly-selected-card': resource1 == 'wheat' && resource2 == 'wheat',
+                     }"
+         alt="wheat"
+         (click)="updateResources('wheat')">
+    <img [src]="stoneImgPath"
+         [ngClass]="{'card': true,
+                     'selected-card': (resource1 == 'stone' && resource2 != 'stone') || (resource1 != 'stone' && resource2 == 'stone'),
+                     'doubly-selected-card': resource1 == 'stone' && resource2 == 'stone',
+                     }"
+         alt="stone"
+         (click)="updateResources('stone')">
+  </div>
+  <button (click)="submit()">get resources</button>
+  <button (click)="goBack()">back</button>
+</div>
+

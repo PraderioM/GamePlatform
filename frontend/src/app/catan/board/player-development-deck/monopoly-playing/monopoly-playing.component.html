@@ -1,0 +1,12 @@
+<div class="ver-container">
+  <p>select material</p>
+  <div class="hor-container">
+      <img [src]="woodImgPath" class="card" alt="wood" (click)="submit('wood')">
+      <img [src]="brickImgPath" class="card" alt="brick" (click)="submit('brick')">
+      <img [src]="sheepImgPath" class="card" alt="sheep" (click)="submit('sheep')">
+      <img [src]="wheatImgPath" class="card" alt="wheat" (click)="submit('wheat')">
+      <img [src]="stoneImgPath" class="card" alt="stone" (click)="submit('stone')">
+  </div>
+  <button (click)="goBack()">back</button>
+</div>
+

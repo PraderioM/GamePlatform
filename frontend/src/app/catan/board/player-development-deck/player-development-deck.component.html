@@ -1,0 +1,27 @@
+<div *ngIf="!(this.playingKnight || this.playingMonopoly || this.playingResources || this.playingRoads)"
+     class="container">
+  <label *ngIf="developmentDeck.nKnight > 0" class="card-label">
+    knight: {{developmentDeck.nKnight}}
+    <img [src]="knightImgPath" class="card" alt="knight" (click)="selectKnight()">
+  </label>
+  <label *ngIf="developmentDeck.nMonopoly > 0" class="card-label">
+    brick: {{developmentDeck.nMonopoly}}
+    <img [src]="monopolyImgPath" class="card" alt="monopoly" (click)="selectMonopoly()">
+  </label>
+  <label *ngIf="developmentDeck.nResources > 0" class="card-label">
+    sheep: {{developmentDeck.nResources}}
+    <img [src]="resourcesImgPath" class="card" alt="resources" (click)="selectResources()">
+  </label>
+  <label *ngIf="developmentDeck.nRoads > 0" class="card-label">
+    wheat: {{developmentDeck.nRoads}}
+    <img [src]="roadsImgPath" class="card" alt="roads" (click)="selectRoads()">
+  </label>
+  <label *ngIf="developmentDeck.nPoint > 0" class="card-label">
+    stone: {{developmentDeck.nPoint}}
+    <img [src]="pointImgPath" class="card" alt="point">
+  </label>
+</div>
+<app-knight-playing (back)="resetIsPlayingCard()" (makePlay)="playKnight.emit($event)"></app-knight-playing>
+<app-monopoly-playing (back)="resetIsPlayingCard()" (makePlay)="playMonopoly.emit($event)"></app-monopoly-playing>
+<app-resources-playing (back)="resetIsPlayingCard()" (makePlay)="playResources.emit($event)"></app-resources-playing>
+<app-roads-playing (back)="resetIsPlayingCard()" (makePlay)="playRoads.emit($event)"></app-roads-playing>
