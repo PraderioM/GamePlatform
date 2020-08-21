@@ -86,11 +86,14 @@ class Game:
         return Game(players=human_players + bots, n_plays=n_plays, victory_criterion=victory_criterion)
 
     def play(self):
+        round = 0
         while len(self._players) > 1:
+            round += 1
+            print(f'[ROUND {str(round)}]')
             winner_players = self.play_round()
             self._players = winner_players
 
-        print(f'The winner is {self._players[0].name}.')
+        print(f'The winner is {self._players[0].name}')
 
     def play_round(self) -> List[Player]:
         play_list = [(player, player.make_play(n_plays=self.n_plays)) for player in self._players]
