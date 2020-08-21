@@ -34,7 +34,7 @@ class Player:
         if self.is_bot:
             return randint(1, n_plays)
         else:
-            self.ask_human_play(n_plays=n_plays)
+            return self.ask_human_play(n_plays=n_plays)
 
     def ask_human_play(self, n_plays: int) -> int:
         # Define message for asking input.
