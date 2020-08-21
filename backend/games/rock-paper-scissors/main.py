@@ -3,6 +3,21 @@ from random import randint
 from typing import List, Tuple
 
 
+def first_wins_second(first_play: int, second_play: int) -> bool:
+    if first_play > second_play and first_play % 2 == 1 and second_play % 2 == 1:
+        first_wins = False
+    elif first_play < second_play and first_play % 2 == 1 and second_play % 2 == 0:
+        first_wins = False
+    elif first_play > second_play and first_play % 2 == 0 and second_play % 2 == 0:
+        first_wins = False
+    elif first_play < second_play and first_play % 2 == 0 and second_play % 2 == 1:
+        first_wins = False
+    else:
+        first_wins = True
+
+    return first_wins
+
+
 class VictoryCriterion(enum.Enum):
     BY_PLAY = 0
     BY_PLAYER = 1
