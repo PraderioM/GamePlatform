@@ -358,7 +358,7 @@ class Game(BaseGame):
         shuffle(land_type_list, random=seed)
 
         start_index = choice(self.board.start_positions)
-        desert_passed = False
+
         land_list: List[Land] = []
         index = 0
         for land_type in land_type_list:
@@ -369,6 +369,7 @@ class Game(BaseGame):
 
             number = self.board.number_list[(index + start_index) % len(self.board.number_list)]
             land_list.append(Land(land_type=land_type, number=number))
+            index += 1
         return land_list
 
     def get_empty_development_deck(self) -> DevelopmentDeck:
