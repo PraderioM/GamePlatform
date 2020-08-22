@@ -1,1 +1,1 @@
-export const assetsPath = '/app/catan/assets';
+export const assetsPath = '/assets/catan';

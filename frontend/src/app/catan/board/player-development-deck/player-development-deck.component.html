@@ -21,7 +21,23 @@
     <img [src]="pointImgPath" class="card" alt="point">
   </label>
 </div>
-<app-knight-playing (back)="resetIsPlayingCard()" (makePlay)="playKnight.emit($event)"></app-knight-playing>
-<app-monopoly-playing (back)="resetIsPlayingCard()" (makePlay)="playMonopoly.emit($event)"></app-monopoly-playing>
-<app-resources-playing (back)="resetIsPlayingCard()" (makePlay)="playResources.emit($event)"></app-resources-playing>
-<app-roads-playing (back)="resetIsPlayingCard()" (makePlay)="playRoads.emit($event)"></app-roads-playing>
+<app-knight-playing *ngIf="this.playingKnight"
+                    (back)="resetIsPlayingCard()"
+                    (makePlay)="playKnight.emit($event)">
+
+</app-knight-playing>
+<app-monopoly-playing *ngIf="this.playingMonopoly"
+                      (back)="resetIsPlayingCard()"
+                      (makePlay)="playMonopoly.emit($event)">
+
+</app-monopoly-playing>
+<app-resources-playing *ngIf="this.playingResources"
+                       (back)="resetIsPlayingCard()"
+                       (makePlay)="playResources.emit($event)">
+
+</app-resources-playing>
+<app-roads-playing *ngIf="this.playingRoads"
+                   (back)="resetIsPlayingCard()"
+                   (makePlay)="playRoads.emit($event)">
+
+</app-roads-playing>

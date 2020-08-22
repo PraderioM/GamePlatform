@@ -10,16 +10,28 @@ export class BuildRoad extends BuildPlay {
   constructor(public color: string, public position: number[]) {
     super('build_road', color, position);
   }
+
+  static fromJSON(jsonData: any) {
+    return new BuildRoad(jsonData.color, jsonData.position);
+  }
 }
 
 export class BuildSettlement extends BuildPlay {
   constructor(public color: string, public position: number[]) {
     super('build_settlement', color, position);
   }
+
+  static fromJSON(jsonData: any) {
+    return new BuildSettlement(jsonData.color, jsonData.position);
+  }
 }
 
 export class BuildCity extends BuildPlay {
   constructor(public color: string, public position: number[]) {
     super('build_city', color, position);
+  }
+
+  static fromJSON(jsonData: any) {
+    return new BuildCity(jsonData.color, jsonData.position);
   }
 }

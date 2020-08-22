@@ -35,6 +35,8 @@ export class BoardComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.playerMaterials = this.description.getPlayerMaterialsByName(this.name);
+    this.playerDevelopment = this.description.getPlayerDevelopmentDeckByName(this.name);
 
     this.interval = setInterval(() => {
       this.updateGame();
@@ -110,11 +112,11 @@ export class BoardComponent implements OnInit {
   }
   async rejectOffer() {
     this.resetVariables();
-    await  this.stateService.acceptOffer(this.token, new RejectOffer(), this.description.id);
+    await  this.stateService.rejectOffer(this.token, new RejectOffer(), this.description.id);
   }
   async withdrawOffer() {
     this.resetVariables();
-    await  this.stateService.acceptOffer(this.token, new WithdrawOffer(), this.description.id);
+    await  this.stateService.withdrawOffer(this.token, new WithdrawOffer(), this.description.id);
   }
 
   async discardCards(discardedMaterials: MaterialsDeck) {

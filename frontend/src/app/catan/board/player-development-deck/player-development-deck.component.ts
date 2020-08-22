@@ -17,11 +17,11 @@ export class PlayerDevelopmentDeckComponent implements OnInit {
   @Output() playRoads = new EventEmitter<PlayRoads>();
 
   developmentCardsPath = assetsPath.concat('/development_cards');
-  knightImgPath = this.developmentCardsPath.concat('knight.png');
-  monopolyImgPath = this.developmentCardsPath.concat('monopoly.png');
-  resourcesImgPath = this.developmentCardsPath.concat('resources.png');
-  roadsImgPath = this.developmentCardsPath.concat('roads.png');
-  pointImgPath = this.developmentCardsPath.concat('point.png');
+  knightImgPath = this.developmentCardsPath.concat('/knight.png');
+  monopolyImgPath = this.developmentCardsPath.concat('/monopoly.png');
+  resourcesImgPath = this.developmentCardsPath.concat('/resources.png');
+  roadsImgPath = this.developmentCardsPath.concat('/roads.png');
+  pointImgPath = this.developmentCardsPath.concat('/point.png');
 
   playingKnight = false;
   playingMonopoly = false;

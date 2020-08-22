@@ -9,8 +9,8 @@ async def get_game_data(game_id: str, db: asyncpg.Connection) -> Optional[Dict]:
                                     rows AS rows,
                                     cols AS cols,
                                     current_player_index AS current_player_index,
-                                    players AS players, 
-                                    plays AS plays,
+                                    player_list AS players, 
+                                    play_list AS plays,
                                     gravity AS gravity
                              FROM tic_tac_toe_active_games
                              WHERE id = $1

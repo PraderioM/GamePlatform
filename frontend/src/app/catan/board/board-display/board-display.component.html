@@ -4,4 +4,5 @@
 <p *ngIf="!description.thiefMoved">
   {{description.getCurrentPlayer().name}} must move thief
 </p>
-<canvas #canvas height="100%" width="100%" (click)="processClick($event)"></canvas>
+
+<canvas #catanBoard style="height:100%; width:100%" (click)="processClick($event)"></canvas>

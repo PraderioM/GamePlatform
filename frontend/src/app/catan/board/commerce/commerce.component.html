@@ -65,21 +65,21 @@
 
 <div *ngIf="!isCurrentPlayer && offer != null && isOfferTarget()" class="hor-container">
   <div class="big-ver-container">
-    <p>Give</p>
-    <p> Wood: {{offer.requestedDeck.nWood}}</p>
-    <p> Brick: {{offer.requestedDeck.nBrick}}</p>
-    <p> Sheep: {{offer.requestedDeck.nSheep}}</p>
-    <p> Wheat: {{offer.requestedDeck.nWheat}}</p>
-    <p> Stone: {{offer.requestedDeck.nStone}}</p>
+    <p>You give to {{offer.offerMaker.name}}</p>
+    <p *ngIf="offer.requestedDeck.nWood > 0"> Wood: {{offer.requestedDeck.nWood}}</p>
+    <p *ngIf="offer.requestedDeck.nBrick > 0"> Brick: {{offer.requestedDeck.nBrick}}</p>
+    <p *ngIf="offer.requestedDeck.nSheep > 0"> Sheep: {{offer.requestedDeck.nSheep}}</p>
+    <p *ngIf="offer.requestedDeck.nWheat > 0"> Wheat: {{offer.requestedDeck.nWheat}}</p>
+    <p *ngIf="offer.requestedDeck.nStone > 0"> Stone: {{offer.requestedDeck.nStone}}</p>
   </div>
 
   <div class="big-ver-container">
-    <p>Obtain</p>
-    <p> Wood: {{offer.offeredDek.nWood}}</p>
-    <p> Brick: {{offer.offeredDek.nBrick}}</p>
-    <p> Sheep: {{offer.offeredDek.nSheep}}</p>
-    <p> Wheat: {{offer.offeredDek.nWheat}}</p>
-    <p> Stone: {{offer.offeredDek.nStone}}</p>
+    <p>You obtain from {{offer.offerMaker.name}}</p>
+    <p *ngIf="offer.offeredDeck.nWood > 0"> Wood: {{offer.offeredDeck.nWood}}</p>
+    <p *ngIf="offer.offeredDeck.nBrick > 0"> Brick: {{offer.offeredDeck.nBrick}}</p>
+    <p *ngIf="offer.offeredDeck.nSheep > 0"> Sheep: {{offer.offeredDeck.nSheep}}</p>
+    <p *ngIf="offer.offeredDeck.nWheat > 0"> Wheat: {{offer.offeredDeck.nWheat}}</p>
+    <p *ngIf="offer.offeredDeck.nStone > 0"> Stone: {{offer.offeredDeck.nStone}}</p>
   </div>
 
   <div class="big-ver-container">

@@ -13,7 +13,7 @@ export class PlayersDisplayComponent implements OnInit {
   @Input() longRoadPlayer?: Player;
   @Input() currentPlayer: number;
 
-  thiefPath = assetsPath.concat('/special_cards/instructions.png');
+  instructionsPath = assetsPath.concat('/special_cards/instructions.png');
 
   constructor() { }
 

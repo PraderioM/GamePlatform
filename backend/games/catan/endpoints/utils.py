@@ -20,7 +20,8 @@ async def get_game_data(game_id: str, db: asyncpg.Connection) -> Optional[Dict]:
                                     discard_cards as discard_cards,
                                     thief_moved as thief_moved,
                                     to_build_roads as to_build_roads,
-                                    last_dice_result as last_dice_result
+                                    last_dice_result as last_dice_result,
+                                    thief_position as thief_position
                              FROM catan_active_games
                              WHERE id = $1
                              """, game_id)

@@ -1,5 +1,5 @@
 import enum
-from typing import Dict, Optional
+from typing import Dict, Optional, Union
 
 
 class LandType(enum.Enum):
@@ -17,9 +17,15 @@ class Land:
         self._number = number
 
     @classmethod
-    def from_json(cls, json_data: Dict[str, int]) -> 'Land':
+    def from_json(cls, json_data: Dict[str, Union[int]]) -> 'Land':
         for land_type in LandType:
-            if land_type.value == json_data['land_type']:
+            value = json_data['land_type']
+            if isinstance(value, int):
+                is_land = land_type.value == value
+            else:
+                is_land = land_type.name.lower() == str(value).lower()
+
+            if is_land:
                 return Land(land_type=land_type, number=json_data['number'])
 
         return Land(land_type=LandType.Desert, number=0)
@@ -33,6 +39,10 @@ class Land:
     def to_json(self) -> Dict[str, int]:
         return {'land_type': self._land_type.value,
                 'number': self._number}
+
+    def to_frontend(self) -> Dict[str, int]:
+        return {'landType': self._land_type.name.lower(),
+                'value': self._number}
 
     @property
     def land_type(self) -> LandType:

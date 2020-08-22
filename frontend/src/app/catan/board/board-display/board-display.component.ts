@@ -1,5 +1,16 @@
-import {Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
-import {GameDescription} from '../../services/models';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
+import {GameDescription, NumberedLand} from '../../services/models';
 import {assetsPath} from '../../services/constants';
 import {BuildPlay} from '../../services/plays/build';
 
@@ -59,7 +70,6 @@ const originalExternalLandPositionList = [
   new LandPosition(0.1, 0.7),
   new LandPosition(0.1, 0.8),
 ];
-const originalValueList = [5, 2, 6, 3, 8, 10, 9, 12, 11, 4, 8, 10, 9, 4, 5, 6, 3, 11];
 
 // Todo write real port position.
 const extendedPortList = [new Port('port_stone', 4 * Math.PI / 3, 0.5, 0.5)];
@@ -123,58 +133,60 @@ const extendedExternalLandPositionList = [
   new LandPosition(0.2, 0.6),
   new LandPosition(0.2, 0.7),
 ];
-const extendedValueList = [2, 5, 4, 6, 3, 9, 8, 11, 11, 10, 6, 3, 8, 4, 8, 10, 11, 12, 10, 5, 4, 9, 5, 9, 12, 3, 12, 6];
 
 @Component({
   selector: 'app-board-display',
   templateUrl: './board-display.component.html',
   styleUrls: ['./board-display.component.css']
 })
-export class BoardDisplayComponent implements OnInit, OnChanges {
+export class BoardDisplayComponent implements OnInit, AfterViewInit, OnChanges {
   @Output() clickLand = new EventEmitter<number>();
   @Output() clickSegment = new EventEmitter<number[]>();
   @Output() clickIntersection = new EventEmitter<number[]>();
   @Input() description: GameDescription;
 
-  @ViewChild('canvas', {static: false})
-  canvas: ElementRef<HTMLCanvasElement>;
+  @ViewChild('catanBoard', {static: false})
+  catanBoard: ElementRef<HTMLCanvasElement>;
   landPositionList: LandPosition[];
   externalLandPositionList: LandPosition[];
   portList: Port[];
-  valueList: number[];
 
   landsFracSize = 0.1;
   portsFracSize = this.landsFracSize / 2;
   thiefFracSize = 0.09;
 
-  constructor() {
+  constructor() { }
+
+  ngOnInit() {
     if (this.description.extended) {
-      this.landPositionList = originalLandPositionList;
-      this.externalLandPositionList = originalExternalLandPositionList;
-      this.portList = originalPortList;
-      this.valueList = originalValueList;
-    } else {
       this.landPositionList = extendedLandPositionList;
       this.externalLandPositionList = extendedExternalLandPositionList;
       this.portList = extendedPortList;
-      this.valueList = extendedValueList;
+    } else {
+      this.landPositionList = originalLandPositionList;
+      this.externalLandPositionList = originalExternalLandPositionList;
+      this.portList = originalPortList;
     }
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this.drawFullCanvas(this.description);
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    if (changes.description.firstChange) {
+      return;
+    }
+
     const currentDescription: GameDescription = changes.description.currentValue;
     const previousDescription: GameDescription = changes.description.previousValue;
 
     // If thief position has changed we need to remove it and that means re-drawing full canvas.
     // It can be done more efficiently but I do not care.
-    if (currentDescription.thiefPosition !== previousDescription.thiefPosition) {
+    if (previousDescription == null || currentDescription.thiefPosition !== previousDescription.thiefPosition) {
       this.drawFullCanvas(currentDescription, false);
     } else {
-        const canvas = this.canvas.nativeElement;
+        const canvas = this.catanBoard.nativeElement;
         const ctx = canvas.getContext('2d');
 
         // If no change was made on thief we just add the new plays.
@@ -224,7 +236,7 @@ export class BoardDisplayComponent implements OnInit, OnChanges {
   }
 
   drawFullCanvas(gameDescription: GameDescription, drawPorts: boolean = true) {
-    const canvas = this.canvas.nativeElement;
+    const canvas = this.catanBoard.nativeElement;
     const ctx = canvas.getContext('2d');
     if (drawPorts) {
       this.resetCanvas(ctx, canvas.height, canvas.width);
@@ -232,7 +244,7 @@ export class BoardDisplayComponent implements OnInit, OnChanges {
     }
     this.drawLands(gameDescription.landList, ctx, canvas.height, canvas.width);
     this.drawThief(gameDescription.thiefPosition, ctx, canvas.height, canvas.width);
-    this.drawValues(gameDescription.thiefPosition, ctx, canvas.height, canvas.width);
+    this.drawValues(gameDescription.landList, gameDescription.thiefPosition, ctx, canvas.height, canvas.width);
     for (const play of gameDescription.plays) {
       this.drawPlay(play, ctx, canvas.height, canvas.width);
     }
@@ -245,14 +257,14 @@ export class BoardDisplayComponent implements OnInit, OnChanges {
     ctx.stroke();
   }
 
-  drawLands(landList: string[], ctx: CanvasRenderingContext2D, canvasHeight: number, canvasWidth: number) {
+  drawLands(landList: NumberedLand[], ctx: CanvasRenderingContext2D, canvasHeight: number, canvasWidth: number) {
     const meanSize = (canvasWidth + canvasHeight) / 2;
     const imgHeight = meanSize * this.landsFracSize;
     const imgWidth = meanSize * this.landsFracSize;
 
     for (let i = 0; i < landList.length; i++) {
       const image = new Image();
-      image.src = this.getLandURL(landList[i]);
+      image.src = this.getLandURL(landList[i].landType);
 
       const landPosition = this.landPositionList[i];
       ctx.drawImage(image,
@@ -297,7 +309,7 @@ export class BoardDisplayComponent implements OnInit, OnChanges {
         imgWidth, imgHeight);
   }
 
-  drawValues(thiefPosition: number, ctx: CanvasRenderingContext2D, canvasHeight: number, canvasWidth: number) {
+  drawValues(landList: NumberedLand[], thiefPosition: number, ctx: CanvasRenderingContext2D, canvasHeight: number, canvasWidth: number) {
     ctx.textAlign = 'center';
     for (let i = 0; i < this.landPositionList.length; i++) {
       // Skip desert.
@@ -307,24 +319,53 @@ export class BoardDisplayComponent implements OnInit, OnChanges {
 
       // Get land and value associated to it.
       const landPosition = this.landPositionList[i];
-      let value: number;
-      // After thief we must go back by one in the valueList since we have skipped one value.
-      if (thiefPosition < i) {
-        value = this.valueList[i - 1];
-      } else {
-        value = this.valueList[i];
-      }
+      const numberedLand = landList[i];
 
       // Actual drawing of value.
-      ctx.font = this.getFontFromValue(value, canvasHeight, canvasWidth);
-      ctx.fillStyle = this.getFillStyleFromValue(value);
-      ctx.fillText(value.toString(), canvasWidth * landPosition.widthFrac, canvasHeight * landPosition.heightFrac);
+      ctx.font = this.getFontFromValue(numberedLand.value, canvasHeight, canvasWidth);
+      ctx.fillStyle = this.getFillStyleFromValue(numberedLand.value);
+      ctx.fillText(numberedLand.value.toString(), canvasWidth * landPosition.widthFrac, canvasHeight * landPosition.heightFrac);
     }
   }
 
-  processClick(input) {
-    // Todo implement.
-    console.log(input);
+  processClick(event) {
+    const x = event.layerX / this.catanBoard.nativeElement.width;
+    const y = event.layerY / this.catanBoard.nativeElement.height;
+
+    const singleClickedLands: number[] = [];
+    const singleSquareDistThreshold = Math.pow(this.landsFracSize / 3, 2);
+    const doubleClickedLands: number[] = [];
+    const doubleSquareDistThreshold = Math.pow(this.landsFracSize / 2, 2);
+    const tripleClickedLands: number[] = [];
+    const tripleSquareDistThreshold = Math.pow(this.landsFracSize, 2);
+
+    // Iterate over all lands checking clicks.
+    for (let i = 0; i < this.landPositionList.length; i++) {
+      const land = this.landPositionList[i];
+      const landSquareDist = Math.pow((land.widthFrac - x), 2) + Math.pow((land.heightFrac - y), 2);
+      if (landSquareDist < singleSquareDistThreshold) {
+        singleClickedLands.push(i);
+      }
+      if (landSquareDist < doubleSquareDistThreshold) {
+        doubleClickedLands.push(i);
+      }
+      if (landSquareDist < tripleSquareDistThreshold) {
+        tripleClickedLands.push(i);
+      }
+    }
+
+    // Emit click events only one at a time.
+    if (singleClickedLands.length === 1) {
+      // If single clicked was successful we emit the result.
+      this.clickLand.emit(singleClickedLands[0]);
+    } else if (doubleClickedLands.length === 2) {
+      // If double clicked was successful we emit the result.
+      this.clickSegment.emit(doubleClickedLands);
+    } else if (tripleClickedLands.length === 3) {
+      // If double clicked was successful we emit the result.
+      this.clickIntersection.emit(tripleClickedLands);
+    }
+
   }
 
   getLandURL(landName: string) {

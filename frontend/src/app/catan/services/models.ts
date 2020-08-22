@@ -1,6 +1,7 @@
 import {Player as BasePlayer} from '../../services/models';
 import {GameDescription as BaseGameDescription, ActiveGame as BaseActiveGame} from '../../services/models';
-import {BuildPlay} from './plays/build';
+import {BuildCity, BuildPlay, BuildRoad, BuildSettlement} from './plays/build';
+
 
 export class Player extends BasePlayer {
   constructor(public isBot: boolean, public color: string, public points: number,
@@ -9,6 +10,34 @@ export class Player extends BasePlayer {
               public diceThrown: boolean = false,
               public cardsDiscarded: boolean = true) {
     super(isBot, points, name);
+  }
+
+  public static fromJSON(jsonData: any) {
+    let materialsDeck: MaterialsDeck;
+    if (jsonData.materialsDeck == null) {
+      materialsDeck = null;
+    } else {
+      materialsDeck = MaterialsDeck.fromJSON(jsonData.materialsDeck);
+    }
+
+    let developmentDeck: DevelopmentDeck;
+    if (jsonData.developmentDeck == null) {
+      materialsDeck = null;
+    } else {
+      developmentDeck = DevelopmentDeck.fromJSON(jsonData.developmentDeck);
+    }
+
+    return new Player(jsonData.isBot, jsonData.color, jsonData.points, jsonData.name,
+                      materialsDeck, developmentDeck, jsonData.diceThrown, jsonData.cardsDiscarded);
+  }
+}
+
+export class NumberedLand {
+  constructor(public landType: string, public value: number) {
+  }
+
+  public static fromJSON(jsonData: any) {
+    return new NumberedLand(jsonData.landType, jsonData.value);
   }
 }
 
@@ -19,7 +48,7 @@ export class GameDescription extends BaseGameDescription {
               public turn: number,
               public developmentDeck: DevelopmentDeck,
               public materialsDeck: MaterialsDeck,
-              public landList: string[],
+              public landList: NumberedLand[],
               public extended: boolean,
               public description: string,
               public thiefPosition: number,
@@ -35,11 +64,63 @@ export class GameDescription extends BaseGameDescription {
     super(players, currentPlayer, description, id, plays);
   }
 
-  getCurrentPlayer() {
+  public static fromJSON(jsonData: any) {
+    const players: Player[] = [];
+    for (const playerData of jsonData.players) {
+      players.push(Player.fromJSON(playerData));
+    }
+
+    const plays: BuildPlay[] = [];
+    for (const playData of jsonData.plays) {
+      if (playData.playName === 'build_road') {
+        plays.push(BuildRoad.fromJSON(playData));
+      } else if (playData.playName === 'build_settlement') {
+        plays.push(BuildSettlement.fromJSON(playData));
+      } else if (playData.playName === 'build_city') {
+        plays.push(BuildCity.fromJSON(playData));
+      }
+    }
+
+    const landList: NumberedLand[] = [];
+    for (const landData of jsonData.landList) {
+      landList.push(NumberedLand.fromJSON(landData));
+    }
+
+    let knightPlayer: Player;
+    if (jsonData.knightPlayer === null) {
+      knightPlayer = null;
+    } else {
+      knightPlayer = Player.fromJSON(jsonData.knightPlayer);
+    }
+
+    let longRoadPlayer: Player;
+    if (jsonData.knightPlayer === null) {
+      longRoadPlayer = null;
+    } else {
+      longRoadPlayer = Player.fromJSON(jsonData.knightPlayer);
+    }
+
+    const developmentDeck = DevelopmentDeck.fromJSON(jsonData.developmentDeck);
+    const materialsDeck = MaterialsDeck.fromJSON(jsonData.materialsDeck);
+
+    let offer: Offer;
+    if (jsonData.offer == null) {
+      offer = null;
+    } else {
+      offer = Offer.fromJSON(jsonData.offer);
+    }
+
+    return new GameDescription(players, plays, jsonData.currentPlayer, jsonData.turn,
+                               developmentDeck, materialsDeck, landList, jsonData.extended, jsonData.description,
+                               jsonData.thiefPosition, knightPlayer, longRoadPlayer, jsonData.discardCards, jsonData.thiefMoved,
+                               jsonData.toBuildRoads, jsonData.lastDiceResult, jsonData.hasEnded, offer, jsonData.id);
+  }
+
+  public getCurrentPlayer() {
     return this.players[this.currentPlayer];
   }
 
-  getPlayerMaterialsByName(name: string) {
+  public getPlayerMaterialsByName(name: string) {
     for (const player of this.players) {
       if (player.name === name) {
         return player.materialsDeck;
@@ -49,7 +130,7 @@ export class GameDescription extends BaseGameDescription {
     return new MaterialsDeck();
   }
 
-  getPlayerDevelopmentDeckByName(name: string) {
+  public getPlayerDevelopmentDeckByName(name: string) {
     for (const player of this.players) {
       if (player.name === name) {
         return player.developmentDeck;
@@ -65,6 +146,10 @@ export class ActiveGame extends BaseActiveGame {
               public currentPlayers: number, public extended: boolean) {
     super(gameId, nPlayers, nBots, currentPlayers);
   }
+
+  public static fromJSON(jsonData: any) {
+    return new ActiveGame(jsonData.gameId, jsonData.nPlayers, jsonData.nBots, jsonData.currentPlayers, jsonData.extended);
+  }
 }
 
 export class MaterialsDeck {
@@ -73,6 +158,11 @@ export class MaterialsDeck {
               public nWheat: number = 0, public nStone: number = 0) {
     this.nMaterials = nWood + nBrick + nSheep + nWheat + nStone;
   }
+
+  public static fromJSON(jsonData: any) {
+    return new MaterialsDeck(jsonData.nWood, jsonData.nBrick, jsonData.nSheep, jsonData.nWheat, jsonData.nStone);
+  }
+
   getNMaterials() {
     return this.nWood + this.nBrick + this.nSheep + this.nWheat + this.nStone;
   }
@@ -81,10 +171,30 @@ export class MaterialsDeck {
 export class DevelopmentDeck {
   constructor(public nKnight: number = 0, public nMonopoly: number = 0, public nResources: number = 0,
               public nRoads: number = 0, public nPoint: number = 0) { }
+
+  public static fromJSON(jsonData: any) {
+    return new DevelopmentDeck(jsonData.nKnight, jsonData.nMonopoly, jsonData.nResources,
+                               jsonData.nRoads, jsonData.nPoint);
+  }
+
+  getNDevelopments() {
+    return this.nKnight + this.nMonopoly + this.nResources + this.nRoads + this.nPoint;
+  }
 }
 
 export class Offer {
   constructor(public offerMaker: Player, public targetPlayerList: Player[],
-              public offeredDek: MaterialsDeck, public requestedDeck: MaterialsDeck) {
+              public offeredDeck: MaterialsDeck, public requestedDeck: MaterialsDeck) {
+  }
+
+  public static fromJSON(jsonData: any) {
+    const targetPlayerList: Player[] = [];
+    for (const playerData of jsonData.targetPlayerList) {
+      targetPlayerList.push(Player.fromJSON(playerData));
+    }
+
+    return new Offer(Player.fromJSON(jsonData.offerMaker), targetPlayerList,
+                     MaterialsDeck.fromJSON(jsonData.offeredDeck),
+                     MaterialsDeck.fromJSON(jsonData.requestedDeck));
   }
 }

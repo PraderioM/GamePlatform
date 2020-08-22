@@ -33,7 +33,8 @@ class Game(BaseGame):
                  thief_moved: bool = True,
                  to_build_roads: int = 0,
                  extended: bool = False,
-                 last_dice_result: int = 7):
+                 last_dice_result: int = 7,
+                 thief_position: Optional[int] = None):
         BaseGame.__init__(self, current_player_index=current_player_index, player_list=player_list,
                           play_list=play_list, id_=id_)
         self.turn_index = turn_index
@@ -48,6 +49,7 @@ class Game(BaseGame):
         self.offer = offer
         self._knight_player = knight_player
         self._long_road_player = long_road_player
+        self._thief_position = thief_position
 
     # region frontend conversion.1
     @classmethod
@@ -64,7 +66,7 @@ class Game(BaseGame):
             'plays': [play.to_frontend() for play in self.play_list],
             'developmentDeck': self._development_deck.to_json(),
             'materialsDeck': self._materials_deck.to_json(),
-            'landList': [land.to_json() for land in self._land_list],
+            'landList': [land.to_frontend() for land in self._land_list],
             'offer': None if self.offer is None else self.offer.to_frontend(),
             'id': None if self.id is None else str(self.id),
             'extended': self._extended,
@@ -76,7 +78,7 @@ class Game(BaseGame):
             'lastDiceResult': self.last_dice_result,
             'description': description,
             'hasEnded': self.has_ended,
-            'thiefPosition': self.thief_land_index,
+            'thiefPosition': self.thief_position,
         }
 
     def to_display(self) -> Dict:
@@ -92,30 +94,58 @@ class Game(BaseGame):
     @classmethod
     def from_database(cls, json_data: Dict) -> 'Game':
         players_list = [Player.from_database(json_data=player_data) for player_data in json.loads(json_data['players'])]
-        play_list = [Play.from_database(json_data=player_data,
-                                        all_players=players_list) for player_data in json.loads(json_data['plays'])]
+        play_list = [
+            Play.from_database(json_data=player_data, all_players=players_list)
+            for player_data in json.loads(json_data.get('plays', []))
+        ]
+        if 'development_deck' in json_data:
+            development_deck = DevelopmentDeck.from_json(json.loads(json_data['development_deck']))
+        else:
+            development_deck = None
+
+        if 'materials_deck' in json_data:
+            materials_deck = MaterialsDeck.from_json(json.loads(json_data['materials_deck']))
+        else:
+            materials_deck = None
+
+        if 'land_list' in json_data:
+            land_list = [Land.from_json(land_data) for land_data in json.loads(json_data['land_list'])]
+        else:
+            land_list = None
+
+        if json_data.get('offer', None) is None:
+            offer = None
+        else:
+            offer = Offer.from_database(json_data=json.loads(json_data['offer']), all_players=players_list)
+
+        if json_data.get('knight_player', None) is None:
+            knight_player = None
+        else:
+            knight_player = Player.from_database(json_data=json.loads(json_data['knight_player']))
+
+        if json_data.get('long_road_player', None) is None:
+            long_road_player = None
+        else:
+            long_road_player = Player.from_database(json_data=json.loads(json_data['long_road_player']))
+
         return Game(
-            current_player_index=json_data['current_player_index'],
-            turn_index=json_data['turn_index'],
+            current_player_index=json_data.get('current_player_index', 0),
+            turn_index=json_data.get('turn_index', 0),
             play_list=play_list,
             player_list=players_list,
             id_=json_data['id'],
-            development_deck=DevelopmentDeck.from_json(json.loads(json_data['development_deck'])),
-            materials_deck=MaterialsDeck.from_json(json.loads(json_data['materials_deck'])),
-            land_list=[Land.from_json(land_data) for land_data in json.loads(json_data['land_list'])],
-            offer=None if json_data['offer'] is None else Offer.from_database(json_data=json.loads(json_data['offer']),
-                                                                              all_players=players_list),
-            extended=json_data['extended'],
-            knight_player=None if json_data['knight_player'] is None else Player.from_database(
-                json_data=json.loads(json_data['knight_player'])
-            ),
-            long_road_player=None if json_data['long_road_player'] is None else Player.from_database(
-                json_data=json.loads(json_data['long_road_player'])
-            ),
-            discard_cards=json_data['discard_cards'],
-            thief_moved=json_data['thief_moved'],
-            to_build_roads=json_data['to_build_roads'],
-            last_dice_result=json_data['last_dice_result'],
+            development_deck=development_deck,
+            materials_deck=materials_deck,
+            land_list=land_list,
+            offer=offer,
+            extended=json_data.get('extended', False),
+            knight_player=knight_player,
+            long_road_player=long_road_player,
+            discard_cards=json_data.get('discard_cards', False),
+            thief_moved=json_data.get('thief_moved', True),
+            to_build_roads=json_data.get('to_build_roads', 0),
+            last_dice_result=json_data.get('last_dice_result', 7),
+            thief_position=json_data.get('thief_position', None),
         )
 
     def to_database(self) -> Dict[str, Union[str, int, bool, Dict]]:
@@ -137,6 +167,7 @@ class Game(BaseGame):
                 'to_build_roads': self.to_build_roads,
                 'last_dice_result': self.last_dice_result,
                 'extended': self._extended,
+                'thief_position': self.thief_position,
             },
         }
 
@@ -182,7 +213,7 @@ class Game(BaseGame):
 
     # region materials.
     def give_materials(self, dice_number: int):
-        thief_land_index = self.thief_land_index
+        thief_land_index = self.thief_position
         for land_index, (number, land_type) in enumerate(zip(self.board.number_list, self._land_list)):
             if land_index == thief_land_index:
                 continue
@@ -242,18 +273,8 @@ class Game(BaseGame):
     # endregion.
 
     def move_thief(self, move_thief: MoveThief):
-        # Get all previous thief moves and remove them. There should be at most one.
-        previous_thief_moves = [play_index for play_index, play in enumerate(self.play_list)
-                                if isinstance(play, MoveThief)]
-        if len(previous_thief_moves) > 1:
-            raise ValueError('More than one thief position registered.')
-
-        # Remove previous thief movements. There should be at most one of them.
-        for play_index in previous_thief_moves:
-            self.play_list.pop(play_index)
-
         # Add last thief move.
-        self.play_list.add(move_thief)
+        self._thief_position = move_thief.dst_index
         self.thief_moved = True
 
     # region game resolution.
@@ -337,8 +358,18 @@ class Game(BaseGame):
         shuffle(land_type_list, random=seed)
 
         start_index = choice(self.board.start_positions)
-        return [Land(land_type=land_type, number=number + start_index)
-                for land_type, number in zip(land_type_list, self.board.number_list)]
+        desert_passed = False
+        land_list: List[Land] = []
+        index = 0
+        for land_type in land_type_list:
+            # Add desert if needed.
+            if land_type == LandType.Desert:
+                land_list.append(Land(land_type=land_type, number=7))
+                continue
+
+            number = self.board.number_list[(index + start_index) % len(self.board.number_list)]
+            land_list.append(Land(land_type=land_type, number=number))
+        return land_list
 
     def get_empty_development_deck(self) -> DevelopmentDeck:
         return DevelopmentDeck(
@@ -492,18 +523,17 @@ class Game(BaseGame):
         self._discard_cards = discard
 
     @property
-    def thief_land_index(self) -> int:
-        for play in self.play_list:
-            if isinstance(play, MoveThief):
-                return play.dst_index
+    def thief_position(self) -> int:
+        if self._thief_position is not None:
+            return self._thief_position
 
         return sorted([index for index in self.desert_land_indexes])[0]
 
     @property
     def desert_land_indexes(self) -> Set[int]:
         indexes: Set[int] = set([])
-        for land_index, land_type in enumerate(self._land_list):
-            if land_type == LandType.Desert:
+        for land_index, land in enumerate(self._land_list):
+            if land.land_type == LandType.Desert:
                 indexes.add(land_index)
 
         return indexes
