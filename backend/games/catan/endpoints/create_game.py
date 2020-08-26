@@ -54,8 +54,8 @@ async def create_game(request: web.Request) -> web.Response:
 
     async def add_new_game_to_database(new_game: Game, db: asyncpg.Connection):
         database_game = new_game.to_database()
-        # Inset name in database.
 
+        # Insert game in database.
         await db.execute("""
                          INSERT INTO catan_active_games (id, player_list, play_list, extended, development_deck,
                                                          materials_deck, land_list)
