@@ -12,7 +12,7 @@
                        (clickSegment)="onClickSegment($event)"
                        (clickIntersection)="onClickIntersection($event)"
                        [description]="description"
-                       style="width: 80%; height: 50%">
+                       style="width: 80%; height: 80%">
 
     </app-board-display>
     <div class="ver-container" style="width: 10%">
@@ -20,7 +20,9 @@
 
       </app-materials-deck>
       <app-options-display (backToMenu)="onBackToMenu()"
-                           [gameId]="description.id">
+                           [gameId]="description.id"
+                           [materialsDeck]="description.materialsDeck"
+                           [developmentDeck]="description.developmentDeck">
 
       </app-options-display>
     </div>

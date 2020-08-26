@@ -15,10 +15,20 @@ export class PlayerDisplayComponent implements OnInit {
 
   armyURL = assetsPath.concat('/special_cards/army.png');
   routeURL = assetsPath.concat('/special_cards/commercial_route.png');
+  boldText: string;
+  plainText: string;
 
   constructor() { }
 
   ngOnInit() {
+    const showText = this.player.name + ' (' + this.player.points + ')';
+    if (this.selected) {
+      this.boldText = showText;
+      this.plainText = '';
+    } else {
+      this.boldText = '';
+      this.plainText = showText;
+    }
   }
 
 }

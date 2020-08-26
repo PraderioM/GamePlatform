@@ -1,12 +1,10 @@
-<p *ngIf="selected">
+<div class="container" [style.color]="player.color">
+  <div class="player-info">
   <b [style.color]="player.color">
-    {{player.name}} ({{player.points}})
+    {{boldText}}
   </b>
+  {{plainText}}
+  </div>
   <img *ngIf="hasArmy" [src]="armyURL" class="extra-points-card">
   <img *ngIf="hasCommercialRoute" [src]="routeURL" class="extra-points-card">
-</p>
-<p *ngIf="!selected" [style.color]="player.color">
-  {{player.name}} ({{player.points}})
-  <img *ngIf="hasArmy" [src]="armyURL" class="extra-points-card">
-  <img *ngIf="hasCommercialRoute" [src]="routeURL" class="extra-points-card">
-</p>
+</div>
