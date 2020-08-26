@@ -160,7 +160,7 @@ export class MaterialsDeck {
   }
 
   public static fromJSON(jsonData: any) {
-    return new MaterialsDeck(jsonData.nWood, jsonData.nBrick, jsonData.nSheep, jsonData.nWheat, jsonData.nStone);
+    return new MaterialsDeck(jsonData[0], jsonData[3], jsonData[1], jsonData[2], jsonData[4]);
   }
 
   getNMaterials() {
@@ -173,8 +173,7 @@ export class DevelopmentDeck {
               public nRoads: number = 0, public nPoint: number = 0) { }
 
   public static fromJSON(jsonData: any) {
-    return new DevelopmentDeck(jsonData.nKnight, jsonData.nMonopoly, jsonData.nResources,
-                               jsonData.nRoads, jsonData.nPoint);
+    return new DevelopmentDeck(jsonData[0], jsonData[1], jsonData[2], jsonData[3], jsonData[4]);
   }
 
   getNDevelopments() {
