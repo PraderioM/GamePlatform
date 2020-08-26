@@ -21,7 +21,8 @@ export class PlayerDisplayComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    const showText = this.player.name + ' (' + this.player.points + ')';
+    const playerName = this.player.name == null ? '' : this.player.name;
+    const showText = playerName + ' (' + this.player.points + ')';
     if (this.selected) {
       this.boldText = showText;
       this.plainText = '';
