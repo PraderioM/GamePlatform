@@ -5,13 +5,13 @@
   display: flex;
   flex-direction: row;
   flex-flow: wrap;
-  justify-content: center;
+  justify-content: space-around;
   align-content: center;
 }
 
 .logo {
-  width: 5pt;
-  height: 5pt;
+  height: 30pt;
+  width: 30pt;
 }
 
 .selected {

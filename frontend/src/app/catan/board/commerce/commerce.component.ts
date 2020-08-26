@@ -22,18 +22,6 @@ export class CommerceComponent implements OnInit {
   possiblePLayers: Player[];
   targetPlayers: Player[] = [];
 
-  giveWood = 0;
-  giveBrick = 0;
-  giveSheep = 0;
-  giveWheat = 0;
-  giveStone = 0;
-
-  getWood = 0;
-  getBrick = 0;
-  getSheep = 0;
-  getWheat = 0;
-  getStone = 0;
-
 
   constructor() { }
 
@@ -77,13 +65,19 @@ export class CommerceComponent implements OnInit {
     return canAfford;
   }
 
-  onMakeOffer() {
-    const offer = this.getOffer(this.targetPlayers);
+  onMakeOffer(giveWood: number, giveBrick: number, giveSheep: number, giveWheat: number, giveStone: number,
+              getWood: number, getBrick: number, getSheep: number, getWheat: number, getStone: number) {
+    const offer = this.getOffer(this.targetPlayers,
+      giveWood, giveBrick, giveSheep, giveWheat, giveStone,
+      getWood, getBrick, getSheep, getWheat, getStone);
     this.makeOffer.emit(offer);
   }
 
-  onCommerceWithBank() {
-    const offer = this.getOffer([]);
+  onCommerceWithBank(giveWood: number, giveBrick: number, giveSheep: number, giveWheat: number, giveStone: number,
+                     getWood: number, getBrick: number, getSheep: number, getWheat: number, getStone: number) {
+    const offer = this.getOffer([],
+      giveWood, giveBrick, giveSheep, giveWheat, giveStone,
+      getWood, getBrick, getSheep, getWheat, getStone);
     this.commerceWithBank.emit(offer);
   }
 
@@ -111,10 +105,28 @@ export class CommerceComponent implements OnInit {
     return false;
   }
 
-  getOffer(targetPlayers: Player[]) {
-    const offeredDeck = new MaterialsDeck(this.giveWood, this.giveBrick, this.giveSheep, this.giveWheat, this.giveStone);
-    const requestedDeck = new MaterialsDeck(this.getWood, this.getBrick, this.getSheep, this.getWheat, this.getStone);
+  getOffer(targetPlayers: Player[],
+           giveWood: number, giveBrick: number, giveSheep: number, giveWheat: number, giveStone: number,
+           getWood: number, getBrick: number, getSheep: number, getWheat: number, getStone: number) {
+    const offeredDeck = new MaterialsDeck(this.preProcessNumber(giveWood),
+      this.preProcessNumber(giveBrick),
+      this.preProcessNumber(giveSheep),
+      this.preProcessNumber(giveWheat),
+      this.preProcessNumber(giveStone));
+    const requestedDeck = new MaterialsDeck(this.preProcessNumber(getWood),
+      this.preProcessNumber(getBrick),
+      this.preProcessNumber(getSheep),
+      this.preProcessNumber(getWheat),
+      this.preProcessNumber(getStone));
     return new Offer(new Player(false, 'black', 0, name), targetPlayers, offeredDeck, requestedDeck);
+  }
+
+  preProcessNumber(val: number): number {
+    if (isNaN(val) || val < 0) {
+      return 0;
+    } else {
+      return val;
+    }
   }
 
   onWithdrawOffer() {
@@ -129,65 +141,6 @@ export class CommerceComponent implements OnInit {
 
   onReject() {
     this.rejectOffer.emit();
-  }
-
-  updateGiveWood(val: string) {
-    this.giveWood = this.valueFromString(val, this.giveWood, this.materialsDeck.nWood);
-  }
-
-  updateGiveBrick(val: string) {
-    this.giveBrick = this.valueFromString(val, this.giveBrick, this.materialsDeck.nBrick);
-  }
-
-  updateGiveSheep(val: string) {
-    this.giveSheep = this.valueFromString(val, this.giveSheep, this.materialsDeck.nSheep);
-  }
-
-  updateGiveWheat(val: string) {
-    this.giveWheat = this.valueFromString(val, this.giveWheat, this.materialsDeck.nWheat);
-  }
-
-  updateGiveStone(val: string) {
-    this.giveStone = this.valueFromString(val, this.giveStone, this.materialsDeck.nStone);
-  }
-
-  updateGetWood(val: string) {
-    this.getWood = this.valueFromString(val, this.getWood);
-  }
-
-  updateGetBrick(val: string) {
-    this.getBrick = this.valueFromString(val, this.getBrick);
-  }
-
-  updateGetSheep(val: string) {
-    this.getSheep = this.valueFromString(val, this.getSheep);
-  }
-
-  updateGetWheat(val: string) {
-    this.getWheat = this.valueFromString(val, this.getWheat);
-  }
-
-  updateGetStone(val: string) {
-    this.getStone = this.valueFromString(val, this.getStone);
-  }
-
-  valueFromString(val: string, defaultValue: number, maxValue?: number, minValue: number = 0) {
-    if (val === '') {
-      return -1;
-    } else {
-      const newVal = parseInt(val, 10);
-
-      // Only return value if it is an integer between the minimum and the maximum.
-      if (isNaN(newVal)) {
-        return defaultValue;
-      } else if (newVal < minValue) {
-        return minValue;
-      } else if (maxValue != null && newVal > maxValue) {
-        return maxValue;
-      } else {
-        return newVal;
-      }
-    }
   }
 
 }

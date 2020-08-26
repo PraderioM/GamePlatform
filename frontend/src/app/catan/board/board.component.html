@@ -15,17 +15,13 @@
                        style="width: 80%; height: 80%">
 
     </app-board-display>
-    <div class="ver-container" style="width: 10%">
-      <app-materials-deck [materialsDeck]="description.materialsDeck">
+    <app-options-display (backToMenu)="onBackToMenu()"
+                         [gameId]="description.id"
+                         [materialsDeck]="description.materialsDeck"
+                         [developmentDeck]="description.developmentDeck"
+                         style="width: 10%">
 
-      </app-materials-deck>
-      <app-options-display (backToMenu)="onBackToMenu()"
-                           [gameId]="description.id"
-                           [materialsDeck]="description.materialsDeck"
-                           [developmentDeck]="description.developmentDeck">
-
-      </app-options-display>
-    </div>
+    </app-options-display>
   </div>
 
   <div *ngIf="description.discardCards && playerMaterials.nMaterials > 7" class="second-row-container">
@@ -34,8 +30,8 @@
     </app-discard-cards-display>
   </div>
 
-  <div *ngIf="!(description.discardCards && playerMaterials.nMaterials > 7)" class="second-row-container">
-    <app-materials-deck [materialsDeck]="playerMaterials">
+  <p *ngIf="!(description.discardCards && playerMaterials.nMaterials > 7)" class="second-row-container">
+    <app-materials-deck [materialsDeck]="playerMaterials" style="height: 100%">
 
     </app-materials-deck>
     <app-commerce [materialsDeck]="playerMaterials"
@@ -47,26 +43,29 @@
                   (commerceWithBank)="commerceWithBank($event)"
                   (acceptOffer)="acceptOffer()"
                   (rejectOffer)="rejectOffer()"
-                  (withdrawOffer)="withdrawOffer()">
+                  (withdrawOffer)="withdrawOffer()"
+                  style="height: 100%; width: 30%">
 
     </app-commerce>
     <app-buy [materialsDeck]="playerMaterials"
              [developmentDeck]="description.developmentDeck"
              [buildingElement]="buildingElement"
              (updateBuildingElement)="updateBuildingElement($event)"
-             (buyDevelopment)="buyDevelopment()">
+             (buyDevelopment)="buyDevelopment()"
+             style="height: 100%">
 
     </app-buy>
     <app-player-development-deck [developmentDeck]="playerDevelopment"
                                  (playKnight)="onPlayKnight($event)"
                                  (playMonopoly)="onPlayMonopoly($event)"
                                  (playResources)="onPlayResources($event)"
-                                 (playRoads)="onPlayRoads($event)">
+                                 (playRoads)="onPlayRoads($event)"
+                                 style="height: 100%">
 
     </app-player-development-deck>
     <button *ngIf="description.players[description.currentPlayer].name == name" (click)="endTurn()">End Turn</button>
-    <button (click)="throwDice()">{{description.lastDiceResult}}</button>
-  </div>
+    <button  class="dice" (click)="throwDice()"> {{description.lastDiceResult}} </button>
+  </p>
 </div>
 
 <app-game-resolution-display *ngIf="description != null && !isPlaying"

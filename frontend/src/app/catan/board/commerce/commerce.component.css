@@ -5,28 +5,34 @@
   display: flex;
   flex-direction: row;
   flex-flow: wrap;
-  justify-content: center;
+  justify-content: space-around;
   align-content: center;
 }
 
-.small-ver-container {
-  width: 25%;
+.ver-container {
   height: 100%;
 
   display: flex;
   flex-direction: column;
-  flex-flow: wrap;
-  justify-content: center;
-  align-content: center;
+  justify-content: space-around;
+  align-items: center;
+  align-self: center;
 }
 
-.big-ver-container {
-  width: 30%;
-  height: 100%;
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
 
-  display: flex;
-  flex-direction: column;
-  flex-flow: wrap;
-  justify-content: center;
-  align-content: center;
+.number-input {
+  width: 10pt;
+}
+
+.ver-list-item {
+  float: left;
+  clear: left;
+}
+
+.ver-spaced {
+  padding-top: 2pt;
+  padding-bottom: 2pt;
 }

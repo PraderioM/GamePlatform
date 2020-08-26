@@ -16,6 +16,6 @@
   display: flex;
   flex-direction: row;
   flex-flow: wrap;
-  justify-content: center;
+  justify-content: space-around;
   align-content: center;
 }

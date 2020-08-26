@@ -1,22 +1,27 @@
 <div class="container">
-  <label *ngIf="materialsDeck.nWood > 0" class="card-label">
-    wood: {{materialsDeck.nWood}}
+  <label *ngIf="materialsDeck.nWood > 0" class="card-label tooltip">
+    <span class="tooltiptext">wood</span>
     <img [src]="woodImgPath" class="card" alt="wood">
+    {{materialsDeck.nWood}}
   </label>
-  <label *ngIf="materialsDeck.nBrick > 0" class="card-label">
-    brick: {{materialsDeck.nBrick}}
+  <label *ngIf="materialsDeck.nBrick > 0" class="card-label tooltip">
+    <span class="tooltiptext">brick</span>
     <img [src]="brickImgPath" class="card" alt="brick">
+    {{materialsDeck.nBrick}}
   </label>
-  <label *ngIf="materialsDeck.nSheep > 0" class="card-label">
-    sheep: {{materialsDeck.nSheep}}
+  <label *ngIf="materialsDeck.nSheep > 0" class="card-label tooltip">
+    <span class="tooltiptext">sheep</span>
     <img [src]="sheepImgPath" class="card" alt="sheep">
+    {{materialsDeck.nSheep}}
   </label>
-  <label *ngIf="materialsDeck.nWheat > 0" class="card-label">
-    wheat: {{materialsDeck.nWheat}}
+  <label *ngIf="materialsDeck.nWheat > 0" class="card-label tooltip">
+    <span class="tooltiptext">wheat</span>
     <img [src]="wheatImgPath" class="card" alt="wheat">
+    {{materialsDeck.nWheat}}
   </label>
-  <label *ngIf="materialsDeck.nStone > 0" class="card-label">
-    stone: {{materialsDeck.nStone}}
+  <label *ngIf="materialsDeck.nStone > 0" class="card-label tooltip">
+    <span class="tooltiptext">stone</span>
     <img [src]="stoneImgPath" class="card" alt="stone">
+    {{materialsDeck.nStone}}
   </label>
 </div>

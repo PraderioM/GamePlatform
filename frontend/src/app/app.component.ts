@@ -9,13 +9,12 @@ import {HttpClient} from '@angular/common/http';
   providers: [StateService, HttpClient]
 })
 export class AppComponent {
-  // token?: string;
-  // name?: string;
-  // loggedIn = false;
-  // Todo change back, just for testing.
-  token = 'fe7166da-f0c8-4080-80d3-ef9a472334fd';
-  name = 'PraderioM';
-  loggedIn = true;
+  token?: string;
+  name?: string;
+  loggedIn = false;
+  // token = 'fe7166da-f0c8-4080-80d3-ef9a472334fd';
+  // name = 'PraderioM';
+  // loggedIn = true;
 
   logIn(loginResponse: LoginResponse) {
     this.token = loginResponse.token;
