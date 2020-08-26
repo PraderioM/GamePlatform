@@ -1,175 +1,97 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-  ViewChild
-} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {GameDescription, NumberedLand} from '../../services/models';
 import {assetsPath} from '../../services/constants';
 import {BuildPlay} from '../../services/plays/build';
+import {LandPosition, Port} from './utils/models';
+import {extension344ExternalLandPositionList, extension344LandPositionList, extension344PortList} from './utils/boards/extension.3.4.4';
+import {classicExternalLandPositionList, classicLandPositionList, classicPortList} from './utils/boards/classic';
 
-
-class LandPosition {
-  constructor(public heightFrac: number, public widthFrac: number) {
-  }
-}
-
-
-class Port {
-  constructor(public portName: string, public rotateRadians: number, public heightFrac: number, public widthFrac: number) {
-  }
-}
-
-const originalPortList = [new Port('port_brick', 2 * Math.PI / 3, 0.5, 0.5)];
-// Todo write real port position.
-const originalLandPositionList = [
-  new LandPosition(0., 0.),
-  new LandPosition(0., 0.1),
-  new LandPosition(0., 0.2),
-  new LandPosition(0., 0.3),
-  new LandPosition(0., 0.4),
-  new LandPosition(0., 0.5),
-  new LandPosition(0., 0.6),
-  new LandPosition(0., 0.7),
-  new LandPosition(0., 0.8),
-  new LandPosition(0., 0.9),
-  new LandPosition(0.1, 0.0),
-  new LandPosition(0.1, 0.1),
-  new LandPosition(0.1, 0.2),
-  new LandPosition(0.1, 0.3),
-  new LandPosition(0.1, 0.4),
-  new LandPosition(0.1, 0.5),
-  new LandPosition(0.1, 0.6),
-  new LandPosition(0.1, 0.7),
-  new LandPosition(0.1, 0.8),
-];
-const originalExternalLandPositionList = [
-  new LandPosition(0., 0.),
-  new LandPosition(0., 0.1),
-  new LandPosition(0., 0.2),
-  new LandPosition(0., 0.3),
-  new LandPosition(0., 0.4),
-  new LandPosition(0., 0.5),
-  new LandPosition(0., 0.6),
-  new LandPosition(0., 0.7),
-  new LandPosition(0., 0.8),
-  new LandPosition(0., 0.9),
-  new LandPosition(0.1, 0.0),
-  new LandPosition(0.1, 0.1),
-  new LandPosition(0.1, 0.2),
-  new LandPosition(0.1, 0.3),
-  new LandPosition(0.1, 0.4),
-  new LandPosition(0.1, 0.5),
-  new LandPosition(0.1, 0.6),
-  new LandPosition(0.1, 0.7),
-  new LandPosition(0.1, 0.8),
-];
-
-// Todo write real port position.
-const extendedPortList = [new Port('port_stone', 4 * Math.PI / 3, 0.5, 0.5)];
-const extendedLandPositionList = [
-  new LandPosition(0., 0.),
-  new LandPosition(0., 0.1),
-  new LandPosition(0., 0.2),
-  new LandPosition(0., 0.3),
-  new LandPosition(0., 0.4),
-  new LandPosition(0., 0.5),
-  new LandPosition(0., 0.6),
-  new LandPosition(0., 0.7),
-  new LandPosition(0., 0.8),
-  new LandPosition(0., 0.9),
-  new LandPosition(0.1, 0.0),
-  new LandPosition(0.1, 0.1),
-  new LandPosition(0.1, 0.2),
-  new LandPosition(0.1, 0.3),
-  new LandPosition(0.1, 0.4),
-  new LandPosition(0.1, 0.5),
-  new LandPosition(0.1, 0.6),
-  new LandPosition(0.1, 0.7),
-  new LandPosition(0.1, 0.8),
-  new LandPosition(0.1, 0.9),
-  new LandPosition(0.2, 0.0),
-  new LandPosition(0.2, 0.1),
-  new LandPosition(0.2, 0.2),
-  new LandPosition(0.2, 0.3),
-  new LandPosition(0.2, 0.4),
-  new LandPosition(0.2, 0.5),
-  new LandPosition(0.2, 0.6),
-  new LandPosition(0.2, 0.7),
-];
-const extendedExternalLandPositionList = [
-  new LandPosition(0., 0.),
-  new LandPosition(0., 0.1),
-  new LandPosition(0., 0.2),
-  new LandPosition(0., 0.3),
-  new LandPosition(0., 0.4),
-  new LandPosition(0., 0.5),
-  new LandPosition(0., 0.6),
-  new LandPosition(0., 0.7),
-  new LandPosition(0., 0.8),
-  new LandPosition(0., 0.9),
-  new LandPosition(0.1, 0.0),
-  new LandPosition(0.1, 0.1),
-  new LandPosition(0.1, 0.2),
-  new LandPosition(0.1, 0.3),
-  new LandPosition(0.1, 0.4),
-  new LandPosition(0.1, 0.5),
-  new LandPosition(0.1, 0.6),
-  new LandPosition(0.1, 0.7),
-  new LandPosition(0.1, 0.8),
-  new LandPosition(0.1, 0.9),
-  new LandPosition(0.2, 0.0),
-  new LandPosition(0.2, 0.1),
-  new LandPosition(0.2, 0.2),
-  new LandPosition(0.2, 0.3),
-  new LandPosition(0.2, 0.4),
-  new LandPosition(0.2, 0.5),
-  new LandPosition(0.2, 0.6),
-  new LandPosition(0.2, 0.7),
-];
 
 @Component({
   selector: 'app-board-display',
   templateUrl: './board-display.component.html',
   styleUrls: ['./board-display.component.css']
 })
-export class BoardDisplayComponent implements OnInit, AfterViewInit, OnChanges {
+export class BoardDisplayComponent implements OnInit, OnChanges {
   @Output() clickLand = new EventEmitter<number>();
   @Output() clickSegment = new EventEmitter<number[]>();
   @Output() clickIntersection = new EventEmitter<number[]>();
   @Input() description: GameDescription;
 
-  @ViewChild('catanBoard', {static: false})
-  catanBoard: ElementRef<HTMLCanvasElement>;
+  @ViewChild('catanBoard', {static: true}) catanBoard: ElementRef<HTMLCanvasElement>;
+  canvas: HTMLCanvasElement;
+  context: CanvasRenderingContext2D;
   landPositionList: LandPosition[];
   externalLandPositionList: LandPosition[];
   portList: Port[];
 
-  landsFracSize = 0.1;
-  portsFracSize = this.landsFracSize / 2;
-  thiefFracSize = 0.09;
+  landsFracHeight: number;
+  landsFracWidth: number;
+  thiefFracHeight: number;
+  thiefFracWidth: number;
+  catanBoardXCenter = 0.5;
+  catanBoardYCenter = 0.5;
+
+  private static updateClickedLands(singleClickedLands: number[],
+                                    doubleClickedLands: number[],
+                                    tripleClickedLands: number[],
+                                    x: number, y: number,
+                                    landX: number, landY: number,
+                                    singleSquareDistThreshold: number,
+                                    doubleSquareDistThreshold: number,
+                                    tripleSquareDistThreshold: number,
+                                    landNumber: number) {
+    const landSquareDist = Math.pow((landX - x), 2) + Math.pow((landY - y), 2);
+    if (landSquareDist < singleSquareDistThreshold) {
+      singleClickedLands.push(landNumber);
+    }
+    if (landSquareDist < doubleSquareDistThreshold) {
+      doubleClickedLands.push(landNumber);
+    }
+    if (landSquareDist < tripleSquareDistThreshold) {
+      tripleClickedLands.push(landNumber);
+    }
+  }
+
+  static getLandImagePath(landType: string) {
+    return assetsPath.concat('/lands/').concat(landType).concat('.png');
+  }
+
+  static getPortImagePath(portName: string) {
+    return assetsPath.concat('/ports/').concat(portName).concat('.png');
+  }
 
   constructor() { }
 
   ngOnInit() {
-    if (this.description.extended) {
-      this.landPositionList = extendedLandPositionList;
-      this.externalLandPositionList = extendedExternalLandPositionList;
-      this.portList = extendedPortList;
-    } else {
-      this.landPositionList = originalLandPositionList;
-      this.externalLandPositionList = originalExternalLandPositionList;
-      this.portList = originalPortList;
-    }
-  }
+    this.canvas = this.catanBoard.nativeElement;
+    this.context = this.canvas.getContext('2d');
 
-  ngAfterViewInit() {
+    if (this.description.extended) {
+      this.landPositionList = extension344LandPositionList;
+      this.externalLandPositionList = extension344ExternalLandPositionList;
+      this.portList = extension344PortList;
+    } else {
+      this.landPositionList = classicLandPositionList;
+      this.externalLandPositionList = classicExternalLandPositionList;
+      this.portList = classicPortList;
+    }
+
+    let maxYFrac = 0;
+    let maxXFrac = 0;
+    for (const land of this.externalLandPositionList) {
+      maxXFrac = Math.max(maxXFrac, Math.abs(land.widthFrac));
+      maxYFrac = Math.max(maxYFrac, Math.abs(land.heightFrac));
+    }
+
+    const meanSizeHeightRatio = (this.canvas.height + this.canvas.width) / (2 * this.canvas.height);
+    const meanSizeWidthRatio = (this.canvas.height + this.canvas.width) / (2 * this.canvas.width);
+    this.landsFracHeight = Math.min(meanSizeHeightRatio / (2 * maxYFrac + 1),
+                                    2 * meanSizeWidthRatio / (Math.sqrt(3) * (2 * maxXFrac + 1)));
+    this.landsFracWidth = this.landsFracHeight * Math.sqrt(3) / 2;
+    this.thiefFracHeight = this.landsFracHeight / 2;
+    this.thiefFracWidth = 2 * this. thiefFracHeight / 3;
+
     this.drawFullCanvas(this.description);
   }
 
@@ -186,12 +108,9 @@ export class BoardDisplayComponent implements OnInit, AfterViewInit, OnChanges {
     if (previousDescription == null || currentDescription.thiefPosition !== previousDescription.thiefPosition) {
       this.drawFullCanvas(currentDescription, false);
     } else {
-        const canvas = this.catanBoard.nativeElement;
-        const ctx = canvas.getContext('2d');
-
         // If no change was made on thief we just add the new plays.
         for (let i: number = previousDescription.plays.length; i < currentDescription.plays.length; i++) {
-          this.drawPlay(currentDescription.plays[i], ctx, canvas.height, canvas.width);
+          this.drawPlay(currentDescription.plays[i], this.context, this.canvas.height, this.canvas.width);
         }
     }
   }
@@ -236,17 +155,14 @@ export class BoardDisplayComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   drawFullCanvas(gameDescription: GameDescription, drawPorts: boolean = true) {
-    const canvas = this.catanBoard.nativeElement;
-    const ctx = canvas.getContext('2d');
     if (drawPorts) {
-      this.resetCanvas(ctx, canvas.height, canvas.width);
-      this.drawPorts(ctx, canvas.height, canvas.width);
+      this.resetCanvas(this.context, this.canvas.height, this.canvas.width);
+      this.drawPorts(this.context, this.canvas.height, this.canvas.width);
     }
-    this.drawLands(gameDescription.landList, ctx, canvas.height, canvas.width);
-    this.drawThief(gameDescription.thiefPosition, ctx, canvas.height, canvas.width);
-    this.drawValues(gameDescription.landList, gameDescription.thiefPosition, ctx, canvas.height, canvas.width);
+    this.drawLands(gameDescription.landList, this.context, this.canvas.height, this.canvas.width);
+    this.drawThief(gameDescription.thiefPosition, gameDescription.landList, this.context, this.canvas.height, this.canvas.width);
     for (const play of gameDescription.plays) {
-      this.drawPlay(play, ctx, canvas.height, canvas.width);
+      this.drawPlay(play, this.context, this.canvas.height, this.canvas.width);
     }
   }
 
@@ -259,99 +175,122 @@ export class BoardDisplayComponent implements OnInit, AfterViewInit, OnChanges {
 
   drawLands(landList: NumberedLand[], ctx: CanvasRenderingContext2D, canvasHeight: number, canvasWidth: number) {
     const meanSize = (canvasWidth + canvasHeight) / 2;
-    const imgHeight = meanSize * this.landsFracSize;
-    const imgWidth = meanSize * this.landsFracSize;
+    const imgHeight = meanSize * this.landsFracHeight;
+    const imgWidth = meanSize * this.landsFracWidth;
 
     for (let i = 0; i < landList.length; i++) {
-      const image = new Image();
-      image.src = this.getLandURL(landList[i].landType);
 
       const landPosition = this.landPositionList[i];
-      ctx.drawImage(image,
-                canvasWidth * landPosition.widthFrac - imgWidth, canvasHeight * landPosition.heightFrac - imgHeight,
-                    imgWidth, imgHeight);
+      const land = landList[i];
+
+      const cx = this.catanBoardXCenter * canvasWidth + landPosition.widthFrac * imgWidth;
+      const cy = this.catanBoardYCenter * canvasHeight + landPosition.heightFrac * imgHeight;
+
+      const image = new Image();
+
+      image.src = BoardDisplayComponent.getLandImagePath(land.landType);
+      image.onload = () => {
+        ctx.drawImage(image, cx - imgWidth / 2, cy - imgHeight / 2, imgWidth, imgHeight);
+        this.drawValue(ctx, land, cy, cx, canvasHeight, canvasWidth);
+      };
     }
   }
 
   drawPorts(ctx: CanvasRenderingContext2D, canvasHeight: number, canvasWidth: number) {
     const meanSize = (canvasWidth + canvasHeight) / 2;
-    const imgHeight = meanSize * this.portsFracSize;
-    const imgWidth = meanSize * this.portsFracSize;
+    const imgHeight = meanSize * this.landsFracHeight;
+    const imgWidth = meanSize * this.landsFracWidth;
 
     for (const port of this.portList) {
-      ctx.save();
-
-      // move to the center of the canvas
-      ctx.translate(canvasWidth / 2, canvasHeight / 2);
-
-      // rotate the canvas to the specified degrees
-      ctx.rotate(-port.rotateRadians);
-
       // draw the image since the context is rotated, the image will be rotated also
-      const image = new Image();
-      image.src = this.getPortURL(port.portName);
-      ctx.drawImage(image, port.widthFrac - imgWidth / 2, port.heightFrac - imgHeight / 2, imgWidth, imgHeight);
+      const landPosition = this.externalLandPositionList[-port.externalLandPosition - 1];
+      const cx = canvasWidth * this.catanBoardXCenter + landPosition.widthFrac * imgWidth;
+      const cy = canvasHeight * this.catanBoardYCenter + landPosition.heightFrac * imgHeight;
 
-      // we’re done with the rotating so restore the un-rotated context
-      ctx.restore();
+      const image = new Image();
+
+      image.src = BoardDisplayComponent.getPortImagePath(port.portName);
+      image.onload = () => {
+        ctx.setTransform(1, 0, 0, 1, cx, cy); // sets scales and origin
+        ctx.rotate(-port.rotateRadians);
+
+        ctx.drawImage(image, -imgWidth / 2, -imgHeight / 2, imgWidth, imgHeight);
+        ctx.setTransform();
+      };
     }
   }
 
-  drawThief(thiefPosition: number, ctx: CanvasRenderingContext2D, canvasHeight: number, canvasWidth: number) {
+  drawThief(thiefPosition: number, landList: NumberedLand[], ctx: CanvasRenderingContext2D, canvasHeight: number, canvasWidth: number) {
     const meanSize = (canvasWidth + canvasHeight) / 2;
-    const imgHeight = meanSize * this.thiefFracSize;
-    const imgWidth = meanSize * this.thiefFracSize;
-    const desert = this.landPositionList[thiefPosition];
+    const imgHeight = meanSize * this.thiefFracHeight;
+    const landImgHeight = meanSize * this.landsFracHeight;
+    const imgWidth = meanSize * this.thiefFracWidth;
+    const landImgWidth = meanSize * this.landsFracWidth;
+    const thiefLand = this.landPositionList[thiefPosition];
+    const land = landList[thiefPosition];
+
+    const cx = this.catanBoardXCenter * canvasWidth + thiefLand.widthFrac * landImgWidth;
+    const cy = this.catanBoardYCenter * canvasHeight + thiefLand.heightFrac * landImgHeight;
+
     const image = new Image();
+
     image.src = assetsPath.concat('/thief.png');
-    ctx.drawImage(image,
-        canvasWidth * desert.widthFrac - imgWidth, canvasHeight * desert.heightFrac - imgHeight,
-        imgWidth, imgHeight);
+    image.onload = () => {
+      ctx.drawImage(image, cx - imgWidth / 2, cy - imgHeight / 2, imgWidth, imgHeight);
+      this.drawValue(ctx, land, cy, cx, canvasHeight, canvasWidth);
+    };
   }
 
-  drawValues(landList: NumberedLand[], thiefPosition: number, ctx: CanvasRenderingContext2D, canvasHeight: number, canvasWidth: number) {
-    ctx.textAlign = 'center';
-    for (let i = 0; i < this.landPositionList.length; i++) {
-      // Skip desert.
-      if (i === thiefPosition) {
-        continue;
-      }
-
-      // Get land and value associated to it.
-      const landPosition = this.landPositionList[i];
-      const numberedLand = landList[i];
-
-      // Actual drawing of value.
-      ctx.font = this.getFontFromValue(numberedLand.value, canvasHeight, canvasWidth);
-      ctx.fillStyle = this.getFillStyleFromValue(numberedLand.value);
-      ctx.fillText(numberedLand.value.toString(), canvasWidth * landPosition.widthFrac, canvasHeight * landPosition.heightFrac);
+  drawValue(ctx: CanvasRenderingContext2D, land: NumberedLand, cy: number, cx: number, canvasHeight: number, canvasWidth) {
+    if (land.landType !== 'desert') {
+      ctx.textAlign = 'center';
+      ctx.font = this.getFontFromValue(land.value, canvasHeight, canvasWidth);
+      ctx.fillStyle = this.getFillStyleFromValue(land.value);
+      ctx.fillText(land.value.toString(), cx, cy);
     }
   }
 
   processClick(event) {
-    const x = event.layerX / this.catanBoard.nativeElement.width;
-    const y = event.layerY / this.catanBoard.nativeElement.height;
+    const canvas = this.catanBoard.nativeElement;
+
+    const x = event.layerX / canvas.width;
+    const y = event.layerY / canvas.height;
 
     const singleClickedLands: number[] = [];
-    const singleSquareDistThreshold = Math.pow(this.landsFracSize / 3, 2);
+    const singleSquareDistThreshold = Math.pow(this.landsFracHeight / 4, 2);
     const doubleClickedLands: number[] = [];
-    const doubleSquareDistThreshold = Math.pow(this.landsFracSize / 2, 2);
+    const doubleSquareDistThreshold = Math.pow(this.landsFracHeight / 2, 2);
     const tripleClickedLands: number[] = [];
-    const tripleSquareDistThreshold = Math.pow(this.landsFracSize, 2);
+    const tripleSquareDistThreshold = Math.pow(2 * this.landsFracHeight / 3, 2);
 
     // Iterate over all lands checking clicks.
     for (let i = 0; i < this.landPositionList.length; i++) {
       const land = this.landPositionList[i];
-      const landSquareDist = Math.pow((land.widthFrac - x), 2) + Math.pow((land.heightFrac - y), 2);
-      if (landSquareDist < singleSquareDistThreshold) {
-        singleClickedLands.push(i);
-      }
-      if (landSquareDist < doubleSquareDistThreshold) {
-        doubleClickedLands.push(i);
-      }
-      if (landSquareDist < tripleSquareDistThreshold) {
-        tripleClickedLands.push(i);
-      }
+      BoardDisplayComponent.updateClickedLands(singleClickedLands,
+                              doubleClickedLands,
+                              tripleClickedLands,
+                              x, y,
+                        this.catanBoardXCenter + land.widthFrac,
+                        this.catanBoardYCenter + land.heightFrac,
+                              singleSquareDistThreshold,
+                              doubleSquareDistThreshold,
+                              tripleSquareDistThreshold,
+                              i);
+    }
+    // Iterate over all extended lands checking clicks.
+    for (let i = 0; i < this.externalLandPositionList.length; i++) {
+      const land = this.externalLandPositionList[i];
+      const landNumber = -i - 1;
+      BoardDisplayComponent.updateClickedLands(singleClickedLands,
+                              doubleClickedLands,
+                              tripleClickedLands,
+                              x, y,
+                        this.catanBoardXCenter + land.widthFrac,
+                        this.catanBoardYCenter + land.heightFrac,
+                              singleSquareDistThreshold,
+                              doubleSquareDistThreshold,
+                              tripleSquareDistThreshold,
+                              landNumber);
     }
 
     // Emit click events only one at a time.
@@ -368,26 +307,18 @@ export class BoardDisplayComponent implements OnInit, AfterViewInit, OnChanges {
 
   }
 
-  getLandURL(landName: string) {
-    return assetsPath.concat('/lands/').concat(landName).concat('.png');
-  }
-
-  getPortURL(portName: string) {
-    return assetsPath.concat('/ports/').concat(portName).concat('.png');
-  }
-
   getFontFromValue(value: number, canvasHeight: number, canvasWidth: number) {
     const meanSize = (canvasHeight + canvasWidth) / 2;
     if (value === 2 || value === 12) {
-      return 'normal ' + Math.round(meanSize * 0.010).toString() + 'px Arial';
+      return 'normal ' + Math.round(meanSize * 0.020).toString() + 'px Arial';
     } else if (value === 3 || value === 11) {
-      return 'normal ' + Math.round(meanSize * 0.012).toString() + 'px Arial';
+      return 'normal ' + Math.round(meanSize * 0.024).toString() + 'px Arial';
     } else if (value === 4 || value === 10) {
-      return 'normal ' + Math.round(meanSize * 0.015).toString() + 'px Arial';
+      return 'normal ' + Math.round(meanSize * 0.030).toString() + 'px Arial';
     } else if (value === 5 || value === 9) {
-      return 'bold ' + Math.round(meanSize * 0.015).toString() + 'px Arial';
+      return 'bold ' + Math.round(meanSize * 0.030).toString() + 'px Arial';
     } else if (value === 6 || value === 8) {
-      return 'bold ' + Math.round(meanSize * 0.015).toString() + 'px Arial';
+      return 'bold ' + Math.round(meanSize * 0.030).toString() + 'px Arial';
     }
   }
 
