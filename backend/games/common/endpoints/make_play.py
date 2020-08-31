@@ -47,7 +47,7 @@ async def make_play(pool: asyncpg.pool.Pool,
             database_data = game.to_database()
             await db.execute(f"""
                              UPDATE {active_games_table}
-                             SET current_player_index = $1, players = $2, plays = $3, last_updated = now()
+                             SET current_player_index = $1, player_list = $2, play_list = $3, last_updated = now()
                              WHERE id = $4
                              """,
                              database_data['current_player_index'],

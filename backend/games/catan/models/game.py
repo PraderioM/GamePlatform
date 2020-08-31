@@ -200,7 +200,7 @@ class Game(BaseGame):
     # region play processing.
     def process_play(self, play: Play):
         is_setup = self.is_setup_round
-        if (play.can_update_game(self) and is_setup) or (play.can_update_game_setup_round(self) and not is_setup):
+        if (play.can_update_game(self) and not is_setup) or (play.can_update_game_setup_round(self) and is_setup):
             play.game_pre_processing(self)
             play.update_game(self)
 

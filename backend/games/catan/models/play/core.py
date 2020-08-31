@@ -66,8 +66,10 @@ def register_play(play_name: str):
             raise ValueError(f'Repeated key {play_name}.')
         Play.PLAY_TYPES[play_name] = cls
 
+        original_to_database = cls.to_database
+
         def to_database(self) -> Dict:
-            out_dict = self.to_database()
+            out_dict = original_to_database(self)
             if not isinstance(out_dict, Dict):
                 raise ValueError('`to_database` method must return a dictionary.')
             elif 'play_name' in out_dict.keys():

@@ -19,7 +19,7 @@ async def make_play(request: web.Request) -> web.Response:
         return Game.from_database(json_data=game_data)
 
     def get_play(game: Game, player: Player) -> Optional[Play]:
-        return Play.from_database(json_data={'player': player, **json_data})
+        return Play.from_database(json_data={'player': player.to_database(), **json_data})
 
     def get_bot_play(game: Game, player: Player) -> Optional[Play]:
         return player.get_bot_play(game)
