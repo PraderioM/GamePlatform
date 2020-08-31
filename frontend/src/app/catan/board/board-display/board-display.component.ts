@@ -37,11 +37,13 @@ export class BoardDisplayComponent implements OnInit, OnChanges {
                                     tripleClickedLands: number[],
                                     x: number, y: number,
                                     landX: number, landY: number,
+                                    widthUnit: number, heightUnit: number,
                                     singleSquareDistThreshold: number,
                                     doubleSquareDistThreshold: number,
                                     tripleSquareDistThreshold: number,
                                     landNumber: number) {
-    const landSquareDist = Math.pow((landX - x), 2) + Math.pow((landY - y), 2);
+    const landSquareDist = Math.pow((landX - x) / widthUnit, 2) + Math.pow((landY - y) / heightUnit, 2);
+
     if (landSquareDist < singleSquareDistThreshold) {
       singleClickedLands.push(landNumber);
     }
@@ -105,11 +107,16 @@ export class BoardDisplayComponent implements OnInit, OnChanges {
 
     // If thief position has changed we need to remove it and that means re-drawing full canvas.
     // It can be done more efficiently but I do not care.
+    console.log('updating');
     if (previousDescription == null || currentDescription.thiefPosition !== previousDescription.thiefPosition) {
+      console.log('drawing full canvas');
       this.drawFullCanvas(currentDescription, false);
     } else {
+        console.log(previousDescription.plays.length);
+        console.log(currentDescription.plays.length);
         // If no change was made on thief we just add the new plays.
         for (let i: number = previousDescription.plays.length; i < currentDescription.plays.length; i++) {
+          console.log('drawing play');
           this.drawPlay(currentDescription.plays[i], this.context, this.canvas.height, this.canvas.width);
         }
     }
@@ -250,43 +257,59 @@ export class BoardDisplayComponent implements OnInit, OnChanges {
     }
   }
 
-  processClick(event) {
-    const canvas = this.catanBoard.nativeElement;
+  processClick(event: MouseEvent) {
+    // Get mouse position relative to viewed canvas.
+    const rect = this.canvas.getBoundingClientRect(); // abs. size of viewed canvas.
 
-    const x = event.layerX / canvas.width;
-    const y = event.layerY / canvas.height;
+    const x = (event.clientX - rect.left) / rect.width;
+    const y = (event.clientY - rect.top) / rect.height;
 
+    // Init lists of clicked lands.
     const singleClickedLands: number[] = [];
-    const singleSquareDistThreshold = Math.pow(this.landsFracHeight / 4, 2);
+    const singleSquareDistThreshold = 1 / 36;
     const doubleClickedLands: number[] = [];
-    const doubleSquareDistThreshold = Math.pow(this.landsFracHeight / 2, 2);
+    const doubleSquareDistThreshold = 31 / 144;
     const tripleClickedLands: number[] = [];
-    const tripleSquareDistThreshold = Math.pow(2 * this.landsFracHeight / 3, 2);
+    const tripleSquareDistThreshold = 4 / 9;
+
+    // Get size of land images in order to obtain center of land.
+    const meanSize = (this.canvas.width + this.canvas.height) / 2;
+    const landImgHeight = meanSize * this.landsFracHeight;
+    const landImgWidth = meanSize * this.landsFracWidth;
+    const landFracWidth = landImgWidth / this.canvas.width;
+    const landFracHeight = landImgHeight / this.canvas.height;
+    const widthUnit = landImgHeight / this.canvas.width;
+    const heightUnit = landImgHeight / this.canvas.height;
 
     // Iterate over all lands checking clicks.
     for (let i = 0; i < this.landPositionList.length; i++) {
       const land = this.landPositionList[i];
+      const landX = this.catanBoardXCenter + land.widthFrac * landFracWidth;
+      const landY = this.catanBoardYCenter + land.heightFrac * landFracHeight;
       BoardDisplayComponent.updateClickedLands(singleClickedLands,
                               doubleClickedLands,
                               tripleClickedLands,
                               x, y,
-                        this.catanBoardXCenter + land.widthFrac,
-                        this.catanBoardYCenter + land.heightFrac,
+                              landX, landY,
+                              widthUnit, heightUnit,
                               singleSquareDistThreshold,
                               doubleSquareDistThreshold,
                               tripleSquareDistThreshold,
                               i);
     }
+
     // Iterate over all extended lands checking clicks.
     for (let i = 0; i < this.externalLandPositionList.length; i++) {
       const land = this.externalLandPositionList[i];
       const landNumber = -i - 1;
+      const landX = this.catanBoardXCenter + land.widthFrac * landFracWidth;
+      const landY = this.catanBoardYCenter + land.heightFrac * landFracHeight;
       BoardDisplayComponent.updateClickedLands(singleClickedLands,
                               doubleClickedLands,
                               tripleClickedLands,
                               x, y,
-                        this.catanBoardXCenter + land.widthFrac,
-                        this.catanBoardYCenter + land.heightFrac,
+                              landX, landY,
+                              widthUnit, heightUnit,
                               singleSquareDistThreshold,
                               doubleSquareDistThreshold,
                               tripleSquareDistThreshold,
@@ -297,10 +320,12 @@ export class BoardDisplayComponent implements OnInit, OnChanges {
     if (singleClickedLands.length === 1) {
       // If single clicked was successful we emit the result.
       this.clickLand.emit(singleClickedLands[0]);
-    } else if (doubleClickedLands.length === 2) {
+    }
+    if (doubleClickedLands.length === 2) {
       // If double clicked was successful we emit the result.
       this.clickSegment.emit(doubleClickedLands);
-    } else if (tripleClickedLands.length === 3) {
+    }
+    if (tripleClickedLands.length === 3) {
       // If double clicked was successful we emit the result.
       this.clickIntersection.emit(tripleClickedLands);
     }

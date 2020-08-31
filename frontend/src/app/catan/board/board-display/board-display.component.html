@@ -1,3 +1,4 @@
+<div class="container">
 <p *ngIf="description.toBuildRoads > 0">
   {{description.getCurrentPlayer().name}} must build {{description.toBuildRoads}} roads
 </p>
@@ -6,3 +7,4 @@
 </p>
 
 <canvas #catanBoard width="1400" height="800" class="board" (click)="processClick($event)"></canvas>
+</div>

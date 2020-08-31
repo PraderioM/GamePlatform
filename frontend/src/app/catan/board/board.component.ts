@@ -70,7 +70,11 @@ export class BoardComponent implements OnInit {
   }
 
   async onClickSegment(position: number[]) {
-    if ((this.description.toBuildRoads > 0 || this.buildingElement === 'road') && this.isCurrentPlayer()) {
+    if (this.description.turn < 2 * this.description.players.length && this.isCurrentPlayer()) {
+      await this.stateService.makeBuildPlay(this.token,
+        new BuildRoad(this.description.getCurrentPlayer().color, position),
+        this.description.id);
+    } else if ((this.description.toBuildRoads > 0 || this.buildingElement === 'road') && this.isCurrentPlayer()) {
       await this.stateService.makeBuildPlay(this.token,
         new BuildRoad(this.description.getCurrentPlayer().color, position),
         this.description.id);
@@ -79,7 +83,11 @@ export class BoardComponent implements OnInit {
   }
 
   async onClickIntersection(position: number[]) {
-    if (this.buildingElement === 'settlement' && this.isCurrentPlayer()) {
+    if (this.description.turn < 2 * this.description.players.length && this.isCurrentPlayer()) {
+      await this.stateService.makeBuildPlay(this.token,
+        new BuildSettlement(this.description.getCurrentPlayer().color, position),
+        this.description.id);
+    } else if (this.buildingElement === 'settlement' && this.isCurrentPlayer()) {
       await this.stateService.makeBuildPlay(this.token,
         new BuildSettlement(this.description.getCurrentPlayer().color, position),
         this.description.id);
@@ -186,6 +194,6 @@ export class BoardComponent implements OnInit {
   }
 
   isCurrentPlayer() {
-    return this.description.getCurrentPlayer().name === name;
+    return this.description.getCurrentPlayer().name === this.name;
   }
 }

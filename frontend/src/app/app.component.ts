@@ -12,9 +12,6 @@ export class AppComponent {
   token?: string;
   name?: string;
   loggedIn = false;
-  // token = 'fe7166da-f0c8-4080-80d3-ef9a472334fd';
-  // name = 'PraderioM';
-  // loggedIn = true;
 
   logIn(loginResponse: LoginResponse) {
     this.token = loginResponse.token;

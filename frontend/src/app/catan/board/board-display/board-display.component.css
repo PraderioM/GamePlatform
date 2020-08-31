@@ -1,10 +1,7 @@
-.land {
-  width: 10pt;
-  height: 10pt;
-}
-
 .board {
+  padding: 0;
+  margin: auto;
+  display: block;
   width: 90%;
   height: 90%;
-  padding-left: 5%;
 }
