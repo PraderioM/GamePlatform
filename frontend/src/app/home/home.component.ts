@@ -19,12 +19,10 @@ export class HomeComponent {
   gameSelections: boolean[];
 
   constructor(private stateService: StateService) {
-    // Todo change back.
-    // this.gameSelections = [];
-    // for (const name of this.gameNames) {
-    //   this.gameSelections.push(false);
-    // }
-    this.gameSelections = [false, false, true];
+    this.gameSelections = [];
+    for (const name of this.gameNames) {
+      this.gameSelections.push(false);
+    }
   }
 
   async logOut() {
