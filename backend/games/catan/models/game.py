@@ -203,6 +203,8 @@ class Game(BaseGame):
         if (play.can_update_game(self) and not is_setup) or (play.can_update_game_setup_round(self) and is_setup):
             play.game_pre_processing(self)
             play.update_game(self)
+            if is_setup:
+                play.setup_round_post_processing(self)
 
     def reset_offer(self):
         self.offer = None

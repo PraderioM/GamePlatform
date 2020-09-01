@@ -107,22 +107,21 @@ export class BoardDisplayComponent implements OnInit, OnChanges {
 
     // If thief position has changed we need to remove it and that means re-drawing full canvas.
     // It can be done more efficiently but I do not care.
-    console.log('updating');
     if (previousDescription == null || currentDescription.thiefPosition !== previousDescription.thiefPosition) {
-      console.log('drawing full canvas');
       this.drawFullCanvas(currentDescription, false);
     } else {
-        console.log(previousDescription.plays.length);
-        console.log(currentDescription.plays.length);
         // If no change was made on thief we just add the new plays.
-        for (let i: number = previousDescription.plays.length; i < currentDescription.plays.length; i++) {
-          console.log('drawing play');
-          this.drawPlay(currentDescription.plays[i], this.context, this.canvas.height, this.canvas.width);
+        for (const play of currentDescription.plays) {
+          this.drawPlay(play, this.context, this.canvas.height, this.canvas.width);
         }
     }
   }
 
   drawPlay(play: BuildPlay, ctx: CanvasRenderingContext2D, canvasHeight: number, canvasWidth: number) {
+    const meanSize = (canvasWidth + canvasHeight) / 2;
+    const imgHeight = meanSize * this.landsFracHeight;
+    const imgWidth = meanSize * this.landsFracWidth;
+
     // Make sure that play is a build play.
     if (play.playName !== 'build_road' && play.playName !== 'build_settlement' && play.playName !== 'build_city') {
       return;
@@ -143,19 +142,22 @@ export class BoardDisplayComponent implements OnInit, OnChanges {
     }
     cx /= play.position.length;
     cy /= play.position.length;
+    cx = this.catanBoardXCenter * canvasWidth + cx * imgWidth;
+    cy = this.catanBoardYCenter * canvasHeight + cy * imgHeight;
 
-    const size = 0.03 * (canvasWidth + canvasHeight) / 2;
-    ctx.beginPath();
     ctx.fillStyle = play.color;
     if (play.playName === 'build_road') {
       // Road is a rectangle.
+      const size = imgHeight / 6;
       ctx.fillRect(cx - size / 2, cy - size / 2, size, size);
     } else if (play.playName === 'build_settlement') {
       // Settlement is a circle.
-      ctx.arc(cx - size / 2, cy - size / 2, size, 0, 2 * Math.PI, false);
+      const size = imgHeight / 5;
+      ctx.arc(cx, cy, size / 2, 0, 2 * Math.PI, false);
       ctx.fill();
     } else if (play.playName === 'build_city') {
       // City is a rectangle on top of the circle that represents a settlement.
+      const size = imgHeight / 5;
       ctx.fillRect(cx - 3 * size / 4, cy - 3 * size / 4, 3 * size / 2, 3 * size / 2);
     }
     ctx.stroke();
@@ -168,6 +170,8 @@ export class BoardDisplayComponent implements OnInit, OnChanges {
     }
     this.drawLands(gameDescription.landList, this.context, this.canvas.height, this.canvas.width);
     this.drawThief(gameDescription.thiefPosition, gameDescription.landList, this.context, this.canvas.height, this.canvas.width);
+
+    // This will probably not be drawn due to late image loading.
     for (const play of gameDescription.plays) {
       this.drawPlay(play, this.context, this.canvas.height, this.canvas.width);
     }
@@ -320,12 +324,10 @@ export class BoardDisplayComponent implements OnInit, OnChanges {
     if (singleClickedLands.length === 1) {
       // If single clicked was successful we emit the result.
       this.clickLand.emit(singleClickedLands[0]);
-    }
-    if (doubleClickedLands.length === 2) {
+    } else if (doubleClickedLands.length === 2) {
       // If double clicked was successful we emit the result.
       this.clickSegment.emit(doubleClickedLands);
-    }
-    if (tripleClickedLands.length === 3) {
+    } else if (tripleClickedLands.length === 3) {
       // If double clicked was successful we emit the result.
       this.clickIntersection.emit(tripleClickedLands);
     }

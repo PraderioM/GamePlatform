@@ -1,3 +1,4 @@
+from copy import deepcopy
 import enum
 from random import choice
 from typing import Dict, Optional, Union
@@ -67,6 +68,10 @@ class DevelopmentDeck:
     @property
     def n_cards(self) -> int:
         return self.n_knight + self.n_monopoly + self.n_resources + self.n_roads + self.n_point
+
+    @property
+    def deck(self) -> Dict[DevelopmentType, int]:
+        return deepcopy(self._deck)
 
     def to_json(self) -> Dict[int, int]:
         return {development_type.value: n_developments for development_type, n_developments in self._deck.items()}

@@ -49,6 +49,10 @@ class Play(BasePlay):
     def game_pre_processing(game):
         game.reset_offer()
 
+    @staticmethod
+    def setup_round_post_processing(game):
+        pass
+
     @property
     def play_points(self) -> int:
         return 0
@@ -57,7 +61,7 @@ class Play(BasePlay):
         return {'player': self.player.to_database()}
 
     def to_frontend(self, *args, **kwargs) -> Dict:
-        return {'player': self.player.to_frontend()}
+        return {'color': self.player.color, 'player': self.player.to_frontend()}
 
 
 def register_play(play_name: str):

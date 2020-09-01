@@ -42,6 +42,8 @@ export class StateService extends CommonStateService {
     }
 
     async makeBuildPlay(token: string, play: BuildPlay, gameId: string) {
+      // Todo remove.
+      console.log('building ', play.playName);
       const response = await this.http
         .get<GameDescription>(this.backendURL + '/make-play',
           {

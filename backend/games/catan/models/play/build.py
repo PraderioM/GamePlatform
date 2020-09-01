@@ -164,6 +164,10 @@ class BuildRoad(BuildPlay):
         return game.to_build_roads > 0
 
     @staticmethod
+    def setup_round_post_processing(game):
+        game.end_turn()
+
+    @staticmethod
     def update_free_count(game):
         game.to_build_roads -= 1
 

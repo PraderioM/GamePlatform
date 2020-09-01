@@ -69,8 +69,12 @@ class Player(BasePlayer):
 
     def end_turn(self):
         new_development_deck = self._new_development_deck.to_json()
-        self._development_deck = {development_type: n_existing + new_development_deck[development_type.value]
-                                  for development_type, n_existing in self._development_deck.items()}
+        self._development_deck = DevelopmentDeck(
+            {
+                development_type: n_existing + new_development_deck[development_type.value]
+                for development_type, n_existing in self._development_deck.deck.items()
+            }
+        )
         self._new_development_deck = DevelopmentDeck()
         self.dice_thrown = False
         self.cards_discarded = False
