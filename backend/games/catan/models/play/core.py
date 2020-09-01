@@ -79,6 +79,19 @@ def register_play(play_name: str):
 
         cls.to_database = to_database
 
+        original_to_frontend = cls.to_frontend
+
+        def to_frontend(self) -> Dict:
+            out_dict = original_to_frontend(self)
+            if not isinstance(out_dict, Dict):
+                raise ValueError('`to_frontend` method must return a dictionary.')
+            elif 'playName' in out_dict.keys():
+                raise ValueError('`to_frontend` method cannot return a dictionary with a key named `playName`.')
+
+            return {**out_dict, **{'playName': play_name}}
+
+        cls.to_frontend = to_frontend
+
         return cls
 
     return _register_play
