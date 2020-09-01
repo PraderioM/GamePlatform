@@ -84,13 +84,13 @@ class BuildPlay(Play):
 
     def to_frontend(self, *args, **kwargs) -> Dict:
         return {
-            'player': self.player.to_frontend(),
+            **Play.to_frontend(self, *args, **kwargs),
             'position': sorted([val for val in self.position])
         }
 
     def to_database(self) -> Dict:
         return {
-            'player': self.player.to_database(),
+            **Play.to_database(self),
             'position': sorted([val for val in self.position])
         }
 
@@ -131,7 +131,7 @@ class BuildRoad(BuildPlay):
         settlement_play_list = [play for play in game.play_list if
                                 isinstance(play, BuildSettlement) or isinstance(play, BuildCity)]
         for play in settlement_play_list:
-            if play.player == self.player.name:
+            if play.player.name == self.player.name:
                 for intersection in neighbour_intersections:
                     if play.position == intersection:
                         return True
