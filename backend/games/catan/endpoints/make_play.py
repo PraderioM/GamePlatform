@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Dict, Optional
 
 from aiohttp import web
 import asyncpg
@@ -24,7 +24,24 @@ async def make_play(request: web.Request) -> web.Response:
     def get_bot_play(game: Game, player: Player) -> Optional[Play]:
         return player.get_bot_play(game)
 
+    async def update_database(db: asyncpg.connection, active_games_table: str, database_data: Dict):
+        await db.execute(f"""
+                         UPDATE {active_games_table}
+                         SET current_player_index = $1,
+                             player_list = $2,
+                             play_list = $3,
+                             turn_index = $4,
+                             last_updated = now()
+                         WHERE id = $5
+                         """,
+                         database_data['current_player_index'],
+                         database_data['players'],
+                         database_data['plays'],
+                         database_data['turn_index'],
+                         database_data['id'])
+
     return await general_make_play(pool=request.app['db'], token=request.rel_url.query['token'],
                                    active_games_table='catan_active_games',
                                    get_game_from_database=get_game_from_database,
-                                   get_play=get_play, get_bot_play=get_bot_play)
+                                   get_play=get_play, get_bot_play=get_bot_play,
+                                   update_database=update_database)

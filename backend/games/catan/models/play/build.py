@@ -56,7 +56,9 @@ class BuildPlay(Play):
     def can_update_game_setup_round(self, game) -> bool:
         n_plays = len(game.play_list)
         turn_index = game.turn_index
-        return self.is_number_of_plays_correct(n_plays, turn_index) and self.is_position_valid(game=game)
+        is_correct_turn = self.is_number_of_plays_correct(n_plays, turn_index)
+        is_position_valid = self.is_position_valid(game=game)
+        return is_correct_turn and is_position_valid
 
     def update_game(self, game):
         is_free = self.is_building_free(game)
