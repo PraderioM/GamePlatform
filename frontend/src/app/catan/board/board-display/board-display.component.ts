@@ -1,10 +1,11 @@
 import {Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {GameDescription, NumberedLand} from '../../services/models';
 import {assetsPath} from '../../services/constants';
-import {BuildPlay} from '../../services/plays/build';
+import {BuildPlay, BuildRoad, BuildSettlement, BuildCity} from '../../services/plays/build';
 import {LandPosition, Port} from './utils/models';
 import {extension344ExternalLandPositionList, extension344LandPositionList, extension344PortList} from './utils/boards/extension.3.4.4';
 import {classicExternalLandPositionList, classicLandPositionList, classicPortList} from './utils/boards/classic';
+import {changeRowSpeed, changeColInRowSpeed, changeColBetweenRowsSpeed} from './utils/board.generation.utils';
 
 
 @Component({
@@ -118,48 +119,78 @@ export class BoardDisplayComponent implements OnInit, OnChanges {
   }
 
   drawPlay(play: BuildPlay, ctx: CanvasRenderingContext2D, canvasHeight: number, canvasWidth: number) {
-    const meanSize = (canvasWidth + canvasHeight) / 2;
-    const imgHeight = meanSize * this.landsFracHeight;
-    const imgWidth = meanSize * this.landsFracWidth;
-
     // Make sure that play is a build play.
     if (play.playName !== 'build_road' && play.playName !== 'build_settlement' && play.playName !== 'build_city') {
       return;
     }
 
-    // Get position where play should be placed.
-    let cx = 0;
-    let cy = 0;
-    for (const index of play.position) {
-      let land: LandPosition;
-      if (index >= 0) {
-        land = this.landPositionList[index];
-      } else {
-        land = this.externalLandPositionList[-index];
-      }
-      cx += land.widthFrac;
-      cy += land.heightFrac;
-    }
-    cx /= play.position.length;
-    cy /= play.position.length;
-    cx = this.catanBoardXCenter * canvasWidth + cx * imgWidth;
-    cy = this.catanBoardYCenter * canvasHeight + cy * imgHeight;
+    // Get referent for sizes.
+    const meanSize = (canvasWidth + canvasHeight) / 2;
+    const imgHeight = meanSize * this.landsFracHeight;
 
-    ctx.fillStyle = play.color;
     if (play.playName === 'build_road') {
       // Road is a rectangle.
-      const size = imgHeight / 6;
-      ctx.fillRect(cx - size / 2, cy - size / 2, size, size);
+      this.drawRoad(ctx, play, canvasWidth, canvasHeight, imgHeight / 25);
     } else if (play.playName === 'build_settlement') {
-      // Settlement is a circle.
-      const size = imgHeight / 5;
-      ctx.arc(cx, cy, size / 2, 0, 2 * Math.PI, false);
-      ctx.fill();
+      // Settlement is a square.
+      this.drawSettlement(ctx, play, canvasWidth, canvasHeight, imgHeight / 5);
     } else if (play.playName === 'build_city') {
-      // City is a rectangle on top of the circle that represents a settlement.
-      const size = imgHeight / 5;
-      ctx.fillRect(cx - 3 * size / 4, cy - 3 * size / 4, 3 * size / 2, 3 * size / 2);
+      // City is a cross on top of the square that represents a settlement.
+      this.drawCity(ctx, play, canvasWidth, canvasHeight, imgHeight / 5);
     }
+  }
+
+  drawRoad(ctx: CanvasRenderingContext2D, play: BuildRoad, canvasWidth: number, canvasHeight: number, size: number) {
+    // Get values for drawing.
+    const neighbourIntersections = this.getNeighbourIntersections(play.position);
+    const positions0 = this.getIntersectionPosition(neighbourIntersections[0], canvasWidth, canvasHeight);
+    const positions1 = this.getIntersectionPosition(neighbourIntersections[1], canvasWidth, canvasHeight);
+
+    // Draw border.
+    // Set metadata for drawing border.
+    ctx.lineWidth = size + 8;
+    ctx.strokeStyle = 'black';
+
+    // Actual border drawing.
+    ctx.beginPath();
+    ctx.moveTo(positions0[0], positions0[1]);
+    ctx.lineTo(positions1[0], positions1[1]);
+    ctx.stroke();
+
+    // Draw road.
+    // Set metadata for drawing.
+    ctx.lineWidth = size;
+    ctx.strokeStyle = play.color;
+
+    // Actual drawing.
+    ctx.beginPath();
+    ctx.moveTo(positions0[0], positions0[1]);
+    ctx.lineTo(positions1[0], positions1[1]);
+    ctx.stroke();
+  }
+
+  drawSettlement(ctx: CanvasRenderingContext2D, play: BuildSettlement, canvasWidth: number, canvasHeight: number, size: number) {
+    // Get values for drawing.
+    const positions = this.getIntersectionPosition(play.position, canvasWidth, canvasHeight);
+
+    // Set metadata for drawing.
+    ctx.fillStyle = play.color;
+
+    // Actual drawing.
+    ctx.fillRect(positions[0] - size / 2, positions[1] - size / 2, size, size);
+    ctx.stroke();
+  }
+
+  drawCity(ctx: CanvasRenderingContext2D, play: BuildCity, canvasWidth: number, canvasHeight: number, size: number) {
+    // Get values for drawing.
+    const positions = this.getIntersectionPosition(play.position, canvasWidth, canvasHeight);
+
+    // Set metadata for drawing.
+    ctx.fillStyle = play.color;
+
+    // Actual drawing.
+    ctx.fillRect(positions[0] - size / 4, positions[1] - size, size / 2, 2 * size);
+    ctx.fillRect(positions[0] - size, positions[1] - size / 4, 2 * size, size / 2);
     ctx.stroke();
   }
 
@@ -362,4 +393,85 @@ export class BoardDisplayComponent implements OnInit, OnChanges {
       return 'red';
     }
   }
+
+  private getIntersectionPosition(position: number[], canvasWidth, canvasHeight: number): number[] {
+    // Get sizes.
+    const meanSize = (canvasWidth + canvasHeight) / 2;
+    const imgHeight = meanSize * this.landsFracHeight;
+    const imgWidth = meanSize * this.landsFracWidth;
+
+    // Get position where play should be placed.
+    let cx = 0;
+    let cy = 0;
+    for (const index of position) {
+      let land: LandPosition;
+      if (index >= 0) {
+        land = this.landPositionList[index];
+      } else {
+        land = this.externalLandPositionList[- index - 1];
+      }
+      cx += land.widthFrac;
+      cy += land.heightFrac;
+    }
+    cx /= position.length;
+    cy /= position.length;
+    cx = this.catanBoardXCenter * canvasWidth + cx * imgWidth;
+    cy = this.catanBoardYCenter * canvasHeight + cy * imgHeight;
+    return [cx, cy];
+  }
+
+  private getNeighbourIntersections(position: number[]): number[][] {
+    const neighbours0 = this.getNeighbourLandIndexes(position[0]);
+    const neighbours1 = this.getNeighbourLandIndexes(position[1]);
+
+    const neighbourIntersections: number[][] = [];
+    for (const index0 of neighbours0) {
+      for (const index1 of neighbours1) {
+        if (index0 === index1) {
+          neighbourIntersections.push([position[0], position[1], index0]);
+        }
+      }
+    }
+
+    return neighbourIntersections;
+  }
+
+  private getNeighbourLandIndexes(landIndex: number): number[] {
+    // get Land.
+    let land: LandPosition;
+    if (landIndex >= 0) {
+      land = this.landPositionList[landIndex];
+    } else {
+      land = this.externalLandPositionList[- landIndex - 1];
+    }
+
+    const neighbourLandIndexes: number[] = [];
+    for (let i = 0; i < this.landPositionList.length; i++) {
+      const newLand = this.landPositionList[i];
+      // Check if new land is a neighbour.
+      if (isNeighbour(land, newLand)) {
+        neighbourLandIndexes.push(i);
+      }
+    }
+    for (let i = 0; i < this.externalLandPositionList.length; i++) {
+      const newLand = this.externalLandPositionList[i];
+      // Check if new land is a neighbour.
+      if (isNeighbour(land, newLand)) {
+        neighbourLandIndexes.push(- i - 1);
+      }
+    }
+
+    return neighbourLandIndexes;
+  }
+
+}
+
+function isNeighbour(land0: LandPosition, land1: LandPosition): boolean {
+  if (Math.abs(land0.widthFrac - land1.widthFrac) === changeColInRowSpeed && land0.heightFrac === land1.heightFrac) {
+    return true;
+  } else if (Math.abs(land0.widthFrac - land1.widthFrac) === changeColBetweenRowsSpeed &&
+             Math.abs(land0.heightFrac - land1.heightFrac) === changeRowSpeed) {
+    return true;
+  }
+  return false;
 }

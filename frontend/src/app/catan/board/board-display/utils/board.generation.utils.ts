@@ -1,8 +1,8 @@
 import {LandPosition} from './models';
 
-const changeRowSpeed = 3 / 4;
-const changeColInRowSpeed = 1;
-const changeColBetweenRowsSpeed = 1 / 2;
+export const changeRowSpeed = 3 / 4;
+export const changeColInRowSpeed = 1;
+export const changeColBetweenRowsSpeed = 1 / 2;
 
 export function generateLandPositionList(lowerWidthSize: number, lowerHeightSize: number, upperHeightSize: number): LandPosition[] {
   const upperWidthSize = lowerWidthSize + lowerHeightSize - upperHeightSize;
