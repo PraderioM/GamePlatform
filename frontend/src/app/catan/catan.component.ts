@@ -50,7 +50,43 @@ export class CatanComponent implements OnInit {
   //   "currentPlayer":0,
   //   "description":"successfully obtained game.",
   //   "id":"30531a1a-15d1-4020-82e9-9ed2332359b7",
-  //   "plays":[],
+  //   "plays":[
+  //     {
+  //       'color': 'red',
+  //       'playName': 'build_settlement',
+  //       'position': [2, 3, 17]
+  //     },
+  //     {
+  //       'color': 'red',
+  //       'playName': 'build_road',
+  //       'position': [2, 3]
+  //     },
+  //     {
+  //       'color': 'blue',
+  //       'playName': 'build_road',
+  //       'position': [2, -19]
+  //     },
+  //     {
+  //       'color': 'red',
+  //       'playName': 'build_settlement',
+  //       'position': [24, 25, 29]
+  //     },
+  //     {
+  //       'color': 'red',
+  //       'playName': 'build_city',
+  //       'position': [24, 25, 29]
+  //     },
+  //     {
+  //       'color': 'red',
+  //       'playName': 'build_road',
+  //       'position': [24, 25]
+  //     },
+  //     {
+  //       'color': 'blue',
+  //       'playName': 'build_settlement',
+  //       'position': [6, 7, 20]
+  //     }
+  //   ],
   //   "turn":0,
   //   "developmentDeck":{0:20,1:3,2:3,3:3,4:5},
   //   "materialsDeck":{0:0,3:0,1:0,2:0,4:0},
