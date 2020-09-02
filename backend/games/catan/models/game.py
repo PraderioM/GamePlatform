@@ -458,7 +458,7 @@ class Game(BaseGame):
         distance = 0
         frontier_intersections: List[Set[int]] = [intersection_1]
 
-        while len(frontier_intersections) == 0:
+        while len(frontier_intersections) != 0:
             if intersection_2 in frontier_intersections:
                 return distance
 
