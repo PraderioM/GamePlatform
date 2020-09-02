@@ -150,8 +150,8 @@ class Game(BaseGame):
 
     def to_database(self) -> Dict[str, Union[str, int, bool, Dict]]:
         offer = None if self.offer is None else json.dumps(self.offer.to_database())
-        knight_player = None if self._knight_player is None else json.dumps(self._knight_player.to_frontend())
-        long_road_player = None if self._long_road_player is None else json.dumps(self._long_road_player.to_frontend())
+        knight_player = None if self._knight_player is None else json.dumps(self._knight_player.to_database())
+        long_road_player = None if self._long_road_player is None else json.dumps(self._long_road_player.to_database())
         return {
             **BaseGame.to_database(self),
             **{
@@ -216,11 +216,11 @@ class Game(BaseGame):
     # region materials.
     def give_materials(self, dice_number: int):
         thief_land_index = self.thief_position
-        for land_index, (number, land_type) in enumerate(zip(self.board.number_list, self._land_list)):
+        for land_index, land in enumerate(self._land_list):
             if land_index == thief_land_index:
                 continue
 
-            if number == dice_number:
+            if land.number == dice_number:
                 # Give one material at every settlement and two at every city.
                 for play in self.play_list:
                     if not isinstance(play, BuildSettlement) and not isinstance(play, BuildCity):
@@ -237,8 +237,8 @@ class Game(BaseGame):
                     # Update player materials.
                     for player in self.player_list:
                         if player.name == play.player.name:
-                            player.update_materials(material=land_type, numer=n_materials)
-                            self._materials_deck.update(material=land_type, number=-n_materials)
+                            player.update_materials(material=land.land_type, number=n_materials)
+                            self._materials_deck.update(material=land.land_type, number=-n_materials)
 
     def monopolize_materials(self, player_name: str, material: LandType):
         total_material_number = 0
@@ -415,7 +415,7 @@ class Game(BaseGame):
         n_players = len(self.player_list)
         if n_players < self.turn_index < 2 * n_players:
             self.current_player_index -= 1
-        elif n_players != self.turn_index:
+        elif n_players != self.turn_index and 2 * n_players != self.turn_index:
             self.current_player_index += 1
         self.current_player_index = self.current_player_index % len(self.player_list)
 

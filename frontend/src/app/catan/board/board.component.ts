@@ -141,7 +141,7 @@ export class BoardComponent implements OnInit {
 
   async endTurn() {
     this.resetVariables();
-    if (this.isCurrentPlayer() && !this.description.getCurrentPlayer().diceThrown) {
+    if (this.isCurrentPlayer() && this.description.getCurrentPlayer().diceThrown) {
       await this.stateService.endTurn(this.token, new EndTurnPlay(), this.description.id);
     }
   }

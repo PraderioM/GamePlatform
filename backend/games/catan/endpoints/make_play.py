@@ -31,13 +31,15 @@ async def make_play(request: web.Request) -> web.Response:
                              player_list = $2,
                              play_list = $3,
                              turn_index = $4,
+                             last_dice_result = $5,
                              last_updated = now()
-                         WHERE id = $5
+                         WHERE id = $6
                          """,
                          database_data['current_player_index'],
                          database_data['players'],
                          database_data['plays'],
                          database_data['turn_index'],
+                         database_data['last_dice_result'],
                          database_data['id'])
 
     return await general_make_play(pool=request.app['db'], token=request.rel_url.query['token'],

@@ -27,7 +27,8 @@ class MakeOffer(Play):
 
     @classmethod
     def pre_process_web_request(cls, request: web.Request) -> Dict:
-        return {'offer': json.loads(request.rel_url.query['offer'])}
+        offer = json.loads(request.rel_url.query['offer'])
+        return {'offer': _convert_fronted_offer_to_database_offer(offer=offer)}
 
     def can_update_game(self, game) -> bool:
         # Check previous conditions.
@@ -189,7 +190,8 @@ class CommerceWithBank(Play):
 
     @classmethod
     def pre_process_web_request(cls, request: web.Request) -> Dict:
-        return {'offer': json.loads(request.rel_url.query['offer'])}
+        offer = json.loads(request.rel_url.query['offer'])
+        return {'offer': _convert_fronted_offer_to_database_offer(offer=offer)}
 
     def can_update_game(self, game) -> bool:
         # Check previous conditions.
@@ -255,3 +257,10 @@ class CommerceWithBank(Play):
         for material, number in self.offer.requested_deck.deck.items():
             game.update_materials(material=material, number=-number)
             player.update_materials(material=material, number=number)
+
+
+def _convert_fronted_offer_to_database_offer(frontend_offer_data: Dict) -> Dict:
+    print('offer in commerce.')
+    offer = Offer.from_frontend(frontend_offer_data).to_database()
+    print(offer)
+    return offer

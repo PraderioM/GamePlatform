@@ -18,6 +18,8 @@ class MaterialsDeck:
         )
 
     def update(self, material: LandType, number: int):
+        print(self._deck)
+        print(material)
         self._deck[material] += number
 
     @staticmethod
