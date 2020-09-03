@@ -47,7 +47,7 @@ class BuildPlay(Play):
         # Check if the player has enough materials.
         if not self.is_building_free(game):
             player_deck = player.materials_deck
-            for material, number in self._price:
+            for material, number in self._price.items():
                 if player_deck[material] < number:
                     return False
 
@@ -156,7 +156,7 @@ class BuildRoad(BuildPlay):
 
                 # If there is a connection to a previous road then we can build there.
                 for play in road_play_list:
-                    if play.position == self.position and play.player.name == self.player.name:
+                    if play.position == segment and play.player.name == self.player.name:
                         return True
 
         return False
