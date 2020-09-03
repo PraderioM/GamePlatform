@@ -19,19 +19,21 @@ export class CommerceComponent implements OnInit {
   @Output() rejectOffer = new EventEmitter<void>();
   @Output() withdrawOffer = new EventEmitter<void>();
 
-  possiblePLayers: Player[];
   targetPlayers: Player[] = [];
 
 
   constructor() { }
 
-  ngOnInit(): void {
-    this.possiblePLayers = [];
+  ngOnInit(): void { }
+
+  getPossiblePlayers(): Player[] {
+    const possiblePLayers: Player[] = [];
     for (const player of this.allPlayers) {
-      if (player.name !== name) {
-        this.possiblePLayers.push(new Player(false, 'black', 0, player.name));
+      if (player.name !== this.name) {
+        possiblePLayers.push(new Player(false, 'black', 0, player.name));
       }
     }
+    return possiblePLayers;
   }
 
   isOfferTarget() {
@@ -40,7 +42,7 @@ export class CommerceComponent implements OnInit {
     }
 
     for (const player of this.offer.targetPlayerList) {
-      if (player.name === name) {
+      if (player.name === this.name) {
         return true;
       }
     }
