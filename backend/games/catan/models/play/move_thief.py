@@ -15,7 +15,7 @@ class MoveThief(Play):
     def can_update_game(self, game) -> bool:
         if game.discard_cards or game.to_build_roads > 0:
             return False
-        return self.thief_land_index != self.dst_index and self.dst_index >= 0 and game.is_current_player(self.player)
+        return game.thief_position != self.dst_index and self.dst_index >= 0 and game.is_current_player(self.player)
 
     def update_game(self, game):
         game.move_thief(self)
@@ -23,7 +23,7 @@ class MoveThief(Play):
     @classmethod
     def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'MoveThief':
         return MoveThief(player=Player.from_frontend(json_data=json_data['player']),
-                         dst_index=json_data['dstIndex'])
+                         dst_index=json_data['dst_index'])
 
     @classmethod
     def from_database(cls, json_data: Dict, *args, **kwargs) -> 'MoveThief':
@@ -32,7 +32,7 @@ class MoveThief(Play):
 
     @classmethod
     def pre_process_web_request(cls, request: web.Request) -> Dict:
-        return {'dst_index': request.rel_url.query['dst_index']}
+        return {'dst_index': int(request.rel_url.query['dst_index'])}
 
     def to_frontend(self, *args, **kwargs) -> Dict:
         return {'player': self.player.to_frontend(),
