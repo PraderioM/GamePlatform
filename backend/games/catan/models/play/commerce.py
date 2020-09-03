@@ -18,7 +18,7 @@ class MakeOffer(Play):
     @classmethod
     def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'MakeOffer':
         return MakeOffer(player=Player.from_frontend(json_data['player']),
-                         offer=Offer.from_frontend(json_data['offer']))
+                         offer=Offer.from_frontend({**json_data['offer'], 'offerMaker': json_data['player']}))
 
     @classmethod
     def from_database(cls, json_data: Dict, *args, **kwargs) -> 'MakeOffer':
@@ -27,8 +27,7 @@ class MakeOffer(Play):
 
     @classmethod
     def pre_process_web_request(cls, request: web.Request) -> Dict:
-        offer = json.loads(request.rel_url.query['offer'])
-        return {'offer': _convert_fronted_offer_to_database_offer(offer=offer)}
+        return {'offer': json.loads(request.rel_url.query['offer'])}
 
     def can_update_game(self, game) -> bool:
         # Check previous conditions.
@@ -100,7 +99,7 @@ class AcceptOffer(Play):
         # Make sure individual accepting offer has materials.
         player = game.get_player_by_name(self.player.name)
         player_materials = player.materials_deck
-        for material, number in self.offer.requested_deck.deck.items():
+        for material, number in game.offer.requested_deck.deck.items():
             if player_materials[material] < number:
                 return False
 
@@ -181,7 +180,7 @@ class CommerceWithBank(Play):
     @classmethod
     def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'MakeOffer':
         return MakeOffer(player=Player.from_frontend(json_data['player']),
-                         offer=Offer.from_frontend(json_data['offer']))
+                         offer=Offer.from_frontend({**json_data['offer'], 'offerMaker': json_data['player']}))
 
     @classmethod
     def from_database(cls, json_data: Dict, *args, **kwargs) -> 'MakeOffer':
@@ -190,8 +189,7 @@ class CommerceWithBank(Play):
 
     @classmethod
     def pre_process_web_request(cls, request: web.Request) -> Dict:
-        offer = json.loads(request.rel_url.query['offer'])
-        return {'offer': _convert_fronted_offer_to_database_offer(offer=offer)}
+        return {'offer': json.loads(request.rel_url.query['offer'])}
 
     def can_update_game(self, game) -> bool:
         # Check previous conditions.
@@ -257,10 +255,3 @@ class CommerceWithBank(Play):
         for material, number in self.offer.requested_deck.deck.items():
             game.update_materials(material=material, number=-number)
             player.update_materials(material=material, number=number)
-
-
-def _convert_fronted_offer_to_database_offer(frontend_offer_data: Dict) -> Dict:
-    print('offer in commerce.')
-    offer = Offer.from_frontend(frontend_offer_data).to_database()
-    print(offer)
-    return offer

@@ -19,27 +19,29 @@ async def make_play(request: web.Request) -> web.Response:
         return Game.from_database(json_data=game_data)
 
     def get_play(game: Game, player: Player) -> Optional[Play]:
-        return Play.from_database(json_data={'player': player.to_database(), **json_data})
+        return Play.from_frontend(json_data={'player': player.to_frontend(), **json_data})
 
     def get_bot_play(game: Game, player: Player) -> Optional[Play]:
         return player.get_bot_play(game)
 
     async def update_database(db: asyncpg.connection, active_games_table: str, database_data: Dict):
         await db.execute(f"""
-                         UPDATE {active_games_table}
+                         UPDATE catan_active_games
                          SET current_player_index = $1,
                              player_list = $2,
                              play_list = $3,
                              turn_index = $4,
                              last_dice_result = $5,
+                             offer = $6,
                              last_updated = now()
-                         WHERE id = $6
+                         WHERE id = $7
                          """,
                          database_data['current_player_index'],
                          database_data['players'],
                          database_data['plays'],
                          database_data['turn_index'],
                          database_data['last_dice_result'],
+                         database_data['offer'],
                          database_data['id'])
 
     return await general_make_play(pool=request.app['db'], token=request.rel_url.query['token'],

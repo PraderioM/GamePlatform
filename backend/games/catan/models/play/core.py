@@ -20,6 +20,11 @@ class Play(BasePlay):
         return cls.PLAY_TYPES[play_name].from_database(json_data)
 
     @classmethod
+    def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'Play':
+        play_name = json_data.pop('play_name')
+        return cls.PLAY_TYPES[play_name].from_frontend(json_data)
+
+    @classmethod
     def pre_process_web_request(cls, request: web.Request) -> Dict:
         play_name = request.rel_url.query['play_name']
         return {'play_name': play_name, **cls.PLAY_TYPES[play_name].pre_process_web_request(request=request)}

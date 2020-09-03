@@ -13,13 +13,23 @@ class MaterialsDeck:
         json_data = {int(key): val for key, val in json_data.items()}
         return MaterialsDeck(
             {
-                land_type: json_data[land_type.value] for land_type in LandType
+                land_type: json_data.get(land_type.value, 0) for land_type in LandType
+            }
+        )
+
+    @classmethod
+    def from_frontend(cls, json_data: Dict[str, int]) -> 'MaterialsDeck':
+        return MaterialsDeck(
+            {
+                LandType.Wood: json_data['nWood'],
+                LandType.Brick: json_data['nBrick'],
+                LandType.Sheep: json_data['nSheep'],
+                LandType.Wheat: json_data['nWheat'],
+                LandType.Stone: json_data['nStone']
             }
         )
 
     def update(self, material: LandType, number: int):
-        print(self._deck)
-        print(material)
         self._deck[material] += number
 
     @staticmethod

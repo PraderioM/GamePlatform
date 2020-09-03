@@ -17,7 +17,15 @@ class Offer(GameComponent):
     # region frontend conversion.
     @classmethod
     def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'Offer':
-        raise NotImplementedError('from fronted is not implemented.')
+        return Offer(
+            offer_maker=Player.from_frontend(json_data['offerMaker']),
+            target_player_list=[
+                Player(name=player_data['name'], color=player_data['color'])
+                for player_data in json_data['targetPlayerList']
+            ],
+            offered_deck=MaterialsDeck.from_frontend(json_data['offeredDeck']),
+            requested_deck=MaterialsDeck.from_frontend(json_data['requestedDeck'])
+        )
 
     def to_frontend(self, *args, **kwargs) -> Dict:
         return {
