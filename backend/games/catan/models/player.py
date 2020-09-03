@@ -34,6 +34,7 @@ class Player(BasePlayer):
         return Player(name=json_data['name'], color=json_data['color'],
                       materials_deck=MaterialsDeck.from_json(json_data['materials_deck']),
                       development_deck=DevelopmentDeck.from_json(json_data['development_deck']),
+                      new_development_deck=DevelopmentDeck.from_json(json_data['new_development_deck']),
                       dice_thrown=json_data['dice_thrown'],
                       cards_discarded=json_data['cards_discarded'])
 
@@ -43,16 +44,23 @@ class Player(BasePlayer):
             'color': self.color,
             'materials_deck': self._materials_deck.to_json(),
             'development_deck': self._development_deck.to_json(),
+            'new_development_deck': self._new_development_deck.to_json(),
             'dice_thrown': self.dice_thrown,
             'cards_discarded': self.cards_discarded,
         }
 
     def to_frontend(self, points: int = 0) -> Dict:
+        development_deck = {}
+        development_dict = self._development_deck.to_json()
+        new_development_dict = self._new_development_deck.to_json()
+        for land_type, number in development_dict.items():
+            development_deck[land_type] = number + new_development_dict[land_type]
+
         return {
             'name': self.name,
             'color': self.color,
             'materialsDeck': self._materials_deck.to_json(),
-            'developmentDeck': self._development_deck.to_json(),
+            'developmentDeck': development_deck,
             'points': points,
             'diceThrown': self.dice_thrown,
             'cardsDiscarded': self.cards_discarded,
