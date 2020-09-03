@@ -10,14 +10,14 @@
 }
 
 .ver-container {
-  width: 40%;
+  width: 30%;
   height: 100%;
 
-  display: flex;
   flex-direction: column;
   flex-flow: wrap;
   justify-content: space-around;
   align-content: center;
+  text-align: center;
 }
 
 .deck-container {
@@ -29,4 +29,40 @@
   flex-flow: wrap;
   justify-content: space-around;
   align-content: center;
+}
+
+.card-label {
+  width: 30pt;
+  height: 60pt;
+  text-align: center;
+}
+
+.card {
+  width: 95%;
+  height: 80%;
+  padding-top: 10%;
+  padding-left: 2.5%;
+}
+
+
+/* Tooltip container */
+.tooltip {}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 5px;
+  border-radius: 6px;
+
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
 }

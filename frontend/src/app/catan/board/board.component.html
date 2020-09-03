@@ -26,7 +26,8 @@
 
   <div *ngIf="description.discardCards && description.getPlayerMaterialsByName(name).nMaterials > 7" class="second-row-container">
     <app-discard-cards-display [materialsDeck]="description.getPlayerMaterialsByName(name)"
-                               (discardCards)="discardCards($event)">
+                               (discardCards)="discardCards($event)"
+                               style="width: 100%">
     </app-discard-cards-display>
   </div>
 
