@@ -8,7 +8,7 @@ import {AcceptOffer, CommercePlay, RejectOffer, WithdrawOffer} from './plays/com
 import {BuyDevelopment, PlayKnight, PlayMonopoly, PlayResources, PlayRoads} from './plays/development';
 import {DiscardPlay} from './plays/discard';
 import {EndTurnPlay} from './plays/end.turn';
-import {MoveThiefPlay} from './plays/move.thief';
+import {MoveThiefPlay, Steal} from './plays/move.thief';
 import {ThrowDicePlay} from './plays/throw.dice';
 
 @Injectable()
@@ -42,12 +42,21 @@ export class StateService extends CommonStateService {
     }
 
     async makeBuildPlay(token: string, play: BuildPlay, gameId: string) {
-      // Todo remove.
-      console.log('building ', play.playName);
       const response = await this.http
         .get<GameDescription>(this.backendURL + '/make-play',
           {
             params: this.initPlayParams(token, play, gameId).set('position', JSON.stringify(play.position))
+          }
+        )
+        .toPromise();
+      return GameDescription.fromJSON(response);
+    }
+
+    async stealPlayer(token: string, play: Steal, gameId: string) {
+      const response = await this.http
+        .get<GameDescription>(this.backendURL + '/steal',
+          {
+            params: this.initPlayParams(token, play, gameId).set('player', JSON.stringify(play.player.name))
           }
         )
         .toPromise();

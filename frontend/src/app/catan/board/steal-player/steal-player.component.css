@@ -1,0 +1,10 @@
+.container {
+  width: 100%;
+  height: 80%;
+
+  display: flex;
+  flex-direction: row;
+  flex-flow: wrap;
+  justify-content: space-around;
+  align-content: center;
+}

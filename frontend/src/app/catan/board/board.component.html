@@ -24,14 +24,17 @@
     </app-options-display>
   </div>
 
-  <div *ngIf="description.discardCards && description.getPlayerMaterialsByName(name).nMaterials > 7" class="second-row-container">
+  <div *ngIf="description.discardCards && description.getPlayerMaterialsByName(name).nMaterials > 7"
+       class="second-row-container">
     <app-discard-cards-display [materialsDeck]="description.getPlayerMaterialsByName(name)"
                                (discardCards)="discardCards($event)"
                                style="width: 100%">
     </app-discard-cards-display>
   </div>
 
-  <p *ngIf="!(description.discardCards && description.getPlayerMaterialsByName(name).nMaterials > 7)" class="second-row-container">
+  <div *ngIf="!(description.discardCards && description.getPlayerMaterialsByName(name).nMaterials > 7)
+              && this.description.toStealPlayers.length === 0"
+       class="second-row-container">
     <app-materials-deck [materialsDeck]="description.getPlayerMaterialsByName(name)" style="height: 100%">
 
     </app-materials-deck>
@@ -66,7 +69,19 @@
     </app-player-development-deck>
     <button *ngIf="description.players[description.currentPlayer].name == name" (click)="endTurn()">End Turn</button>
     <button  class="dice" (click)="throwDice()"> {{description.lastDiceResult}} </button>
-  </p>
+  </div>
+
+  <div *ngIf="!(description.discardCards && description.getPlayerMaterialsByName(name).nMaterials > 7)
+              && this.description.toStealPlayers.length !== 0"
+       class="second-row-container">
+    <app-steal-player [toStealPlayers]="description.toStealPlayers"
+                      [token]="token"
+                      [gameId]="description.id"
+                      style="height: 100%">
+
+    </app-steal-player>
+
+  </div>
 </div>
 
 <app-game-resolution-display *ngIf="description != null && !isPlaying"

@@ -28,6 +28,7 @@ import {KnightPlayingComponent} from './board/player-development-deck/knight-pla
 import {MonopolyPlayingComponent} from './board/player-development-deck/monopoly-playing/monopoly-playing.component';
 import {ResourcesPlayingComponent} from './board/player-development-deck/resources-playing/resources-playing.component';
 import {RoadsPlayingComponent} from './board/player-development-deck/roads-playing/roads-playing.component';
+import {StealPlayerComponent} from './board/steal-player/steal-player.component';
 
 
 const DECLARATIONS: any[] = [
@@ -55,6 +56,7 @@ const DECLARATIONS: any[] = [
   MonopolyPlayingComponent,
   ResourcesPlayingComponent,
   RoadsPlayingComponent,
+  StealPlayerComponent,
 ];
 
 const MODULES: any[] = [

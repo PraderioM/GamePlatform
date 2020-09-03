@@ -42,10 +42,10 @@ export class BoardComponent implements OnInit {
     this.description = new GameDescription(this.description.players, this.description.plays, this.description.currentPlayer,
                                            this.description.turn, this.description.developmentDeck, this.description.materialsDeck,
                                            this.description.landList, this.description.extended, this.description.description,
-                                           this.description.thiefPosition, this.description.knightPlayer, this.description.longRoadPlayer,
-                                           this.description.discardCards, this.description.thiefMoved, this.description.toBuildRoads,
-                                            this.description.lastDiceResult, this.description.hasEnded, this.description.offer,
-                                            this.description.id);
+                                           this.description.thiefPosition, this.description.toStealPlayers, this.description.knightPlayer,
+                                           this.description.longRoadPlayer, this.description.discardCards, this.description.thiefMoved,
+                                           this.description.toBuildRoads, this.description.lastDiceResult, this.description.hasEnded,
+                                           this.description.offer, this.description.id);
     const description = await this.stateService.findGame(this.token, this.description.id);
     if (description.id != null) {
       this.description = description;

@@ -52,6 +52,7 @@ export class GameDescription extends BaseGameDescription {
               public extended: boolean,
               public description: string,
               public thiefPosition: number,
+              public toStealPlayers?: Player[],
               public knightPlayer?: Player,
               public longRoadPlayer?: Player,
               public discardCards: boolean = false,
@@ -86,6 +87,16 @@ export class GameDescription extends BaseGameDescription {
       landList.push(NumberedLand.fromJSON(landData));
     }
 
+    let toStealPlayers: Player[];
+    if (jsonData.toStealPlayers === null || jsonData.toStealPlayers.length === 0) {
+      toStealPlayers = [];
+    } else {
+      toStealPlayers = [];
+      for (const playerName of jsonData.toStealPlayers) {
+        toStealPlayers.push(new Player(false, 'black', 0, playerName));
+      }
+    }
+
     let knightPlayer: Player;
     if (jsonData.knightPlayer === null) {
       knightPlayer = null;
@@ -112,7 +123,8 @@ export class GameDescription extends BaseGameDescription {
 
     return new GameDescription(players, plays, jsonData.currentPlayer, jsonData.turn,
                                developmentDeck, materialsDeck, landList, jsonData.extended, jsonData.description,
-                               jsonData.thiefPosition, knightPlayer, longRoadPlayer, jsonData.discardCards, jsonData.thiefMoved,
+                               jsonData.thiefPosition, toStealPlayers, knightPlayer, longRoadPlayer,
+                               jsonData.discardCards, jsonData.thiefMoved,
                                jsonData.toBuildRoads, jsonData.lastDiceResult, jsonData.hasEnded, offer, jsonData.id);
   }
 
