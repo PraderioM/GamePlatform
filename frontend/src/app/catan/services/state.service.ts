@@ -8,8 +8,9 @@ import {AcceptOffer, CommercePlay, RejectOffer, WithdrawOffer} from './plays/com
 import {BuyDevelopment, PlayKnight, PlayMonopoly, PlayResources, PlayRoads} from './plays/development';
 import {DiscardPlay} from './plays/discard';
 import {EndTurnPlay} from './plays/end.turn';
-import {MoveThiefPlay, Steal} from './plays/move.thief';
+import {MoveThiefPlay} from './plays/move.thief';
 import {ThrowDicePlay} from './plays/throw.dice';
+import {Steal} from './plays/steal';
 
 @Injectable()
 export class StateService extends CommonStateService {

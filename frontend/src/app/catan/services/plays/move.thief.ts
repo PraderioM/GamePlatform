@@ -1,5 +1,4 @@
 import {BasePlay} from './base.play';
-import {Player} from '../models';
 
 export class MoveThiefPlay extends BasePlay {
   constructor(public position: number) {
@@ -7,8 +6,3 @@ export class MoveThiefPlay extends BasePlay {
   }
 }
 
-export class Steal extends BasePlay {
-  constructor(public player: Player) {
-    super('steal');
-  }
-}

@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Player} from '../../services/models';
 import {StateService} from '../../services/state.service';
-import {Steal} from '../../services/plays/move.thief';
+import {Steal} from '../../services/plays/steal';
 
 @Component({
   selector: 'app-steal-player',
