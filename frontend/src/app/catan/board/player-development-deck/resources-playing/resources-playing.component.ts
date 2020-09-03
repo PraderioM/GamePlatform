@@ -40,6 +40,7 @@ export class ResourcesPlayingComponent implements OnInit {
   submit() {
     if (this.resource1 != null && this.resource2 != null) {
       this.makePlay.emit(new PlayResources(this.resource1, this.resource2));
+      this.back.emit();
     }
   }
 

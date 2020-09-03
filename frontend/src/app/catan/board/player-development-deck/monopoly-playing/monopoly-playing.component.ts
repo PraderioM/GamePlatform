@@ -29,6 +29,7 @@ export class MonopolyPlayingComponent implements OnInit {
 
   submit(material: string) {
     this.makePlay.emit(new PlayMonopoly(material));
+    this.back.emit();
   }
 
 }

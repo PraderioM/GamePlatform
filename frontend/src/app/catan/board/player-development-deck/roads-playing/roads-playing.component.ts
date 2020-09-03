@@ -21,6 +21,7 @@ export class RoadsPlayingComponent implements OnInit {
 
   submit() {
     this.makePlay.emit(new PlayRoads());
+    this.back.emit();
   }
 
 }

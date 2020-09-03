@@ -21,6 +21,7 @@ export class KnightPlayingComponent implements OnInit {
 
   submit() {
     this.makePlay.emit(new PlayKnight());
+    this.back.emit();
   }
 
 }
