@@ -31,7 +31,8 @@ class MakeOffer(Play):
 
     def can_update_game(self, game) -> bool:
         # Check previous conditions.
-        Play.can_update_game(self, game)
+        if not Play.can_update_game(self, game):
+            return False
 
         # Make sure there is some target player.
         if self.offer.n_target_players == 0:
