@@ -94,12 +94,12 @@ class DevelopmentPlay(Play):
 class PlayKnight(DevelopmentPlay):
 
     @classmethod
-    def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'DevelopmentPlay':
-        return DevelopmentPlay(player=Player.from_frontend(json_data['player']))
+    def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'PlayKnight':
+        return PlayKnight(player=Player.from_frontend(json_data['player']))
 
     @classmethod
-    def from_database(cls, json_data: Dict, *args, **kwargs) -> 'DevelopmentPlay':
-        return DevelopmentPlay(player=Player.from_database(json_data['player']))
+    def from_database(cls, json_data: Dict, *args, **kwargs) -> 'PlayKnight':
+        return PlayKnight(player=Player.from_database(json_data['player']))
 
     def update_game(self, game):
         game.thief_moved = False
