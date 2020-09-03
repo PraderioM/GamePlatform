@@ -32,6 +32,7 @@ export class BoardDisplayComponent implements OnInit, OnChanges {
   thiefFracWidth: number;
   catanBoardXCenter = 0.5;
   catanBoardYCenter = 0.5;
+  borderThickness = 4;
 
   private static updateClickedLands(singleClickedLands: number[],
                                     doubleClickedLands: number[],
@@ -148,7 +149,7 @@ export class BoardDisplayComponent implements OnInit, OnChanges {
 
     // Draw border.
     // Set metadata for drawing border.
-    ctx.lineWidth = size + 8;
+    ctx.lineWidth = size + 2 * this.borderThickness;
     ctx.strokeStyle = 'black';
 
     // Actual border drawing.
@@ -173,6 +174,18 @@ export class BoardDisplayComponent implements OnInit, OnChanges {
     // Get values for drawing.
     const positions = this.getIntersectionPosition(play.position, canvasWidth, canvasHeight);
 
+    // Draw border.
+    // Set metadata for drawing.
+    ctx.fillStyle = 'black';
+
+    // Actual drawing.
+    ctx.fillRect(positions[0] - size / 2 - this.borderThickness,
+                 positions[1] - size / 2 - this.borderThickness,
+                 size + 2 * this.borderThickness,
+                 size + 2 * this.borderThickness);
+    ctx.stroke();
+
+    // Draw settlement.
     // Set metadata for drawing.
     ctx.fillStyle = play.color;
 
@@ -185,10 +198,25 @@ export class BoardDisplayComponent implements OnInit, OnChanges {
     // Get values for drawing.
     const positions = this.getIntersectionPosition(play.position, canvasWidth, canvasHeight);
 
+    // Draw border.
+    // Set metadata for drawing.
+    ctx.fillStyle = 'black';
+
+    // Actual drawing.
+    ctx.fillRect(positions[0] - size / 2 - this.borderThickness, positions[1] - size / 2 - this.borderThickness,
+                 size + 2 * this.borderThickness, size + 2 * this.borderThickness);
+    ctx.fillRect(positions[0] - size / 4 - this.borderThickness, positions[1] - size - this.borderThickness,
+                 size / 2 + 2 * this.borderThickness, 2 * size + 2 * this.borderThickness);
+    ctx.fillRect(positions[0] - size - this.borderThickness, positions[1] - size / 4 - this.borderThickness,
+                 2 * size + 2 * this.borderThickness, size / 2 + 2 * this.borderThickness);
+    ctx.stroke();
+
+    // Draw city.
     // Set metadata for drawing.
     ctx.fillStyle = play.color;
 
     // Actual drawing.
+    ctx.fillRect(positions[0] - size / 2, positions[1] - size / 2, size, size);
     ctx.fillRect(positions[0] - size / 4, positions[1] - size, size / 2, 2 * size);
     ctx.fillRect(positions[0] - size, positions[1] - size / 4, 2 * size, size / 2);
     ctx.stroke();
