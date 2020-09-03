@@ -178,14 +178,14 @@ class CommerceWithBank(Play):
         self.offer = offer
 
     @classmethod
-    def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'MakeOffer':
-        return MakeOffer(player=Player.from_frontend(json_data['player']),
-                         offer=Offer.from_frontend({**json_data['offer'], 'offerMaker': json_data['player']}))
+    def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'CommerceWithBank':
+        return CommerceWithBank(player=Player.from_frontend(json_data['player']),
+                                offer=Offer.from_frontend({**json_data['offer'], 'offerMaker': json_data['player']}))
 
     @classmethod
-    def from_database(cls, json_data: Dict, *args, **kwargs) -> 'MakeOffer':
-        return MakeOffer(player=Player.from_database(json_data['player']),
-                         offer=Offer.from_database(json_data['offer']))
+    def from_database(cls, json_data: Dict, *args, **kwargs) -> 'CommerceWithBank':
+        return CommerceWithBank(player=Player.from_database(json_data['player']),
+                                offer=Offer.from_database(json_data['offer']))
 
     @classmethod
     def pre_process_web_request(cls, request: web.Request) -> Dict:
@@ -193,7 +193,9 @@ class CommerceWithBank(Play):
 
     def can_update_game(self, game) -> bool:
         # Check previous conditions.
-        Play.can_update_game(self, game)
+        if not Play.can_update_game(self, game):
+            # Previous conditions unsatisfied.
+            return False
 
         # Commercing with bank exactly one exchange at a time is allowed. Check that only one material is requested.
         requested_material = None
@@ -202,36 +204,47 @@ class CommerceWithBank(Play):
                 continue
             elif number == 1:
                 if requested_material is not None:
+                    # Requested more than one different material.
                     return False
                 else:
                     requested_material = material
             else:
+                # Requested more than one of same material.
                 return False
+
         if requested_material is None:
+            # No material requested.
             return False
 
         # Commercing with bank exactly one exchange at a time is allowed.
         asked_material = None
         accepted_lands = set([port.land_type for port in game.get_player_ports(self.player.name)])
-        for material, number in self.offer.requested_deck.deck.items():
+        for material, number in self.offer.offered_deck.deck.items():
             if number == 0:
                 continue
             elif number in [2, 3, 4]:
                 if asked_material is not None:
+                    # Offered more than one material.
                     return False
                 elif number == 2:
                     if material not in accepted_lands:
+                        # Offered 2 of a material for which there is no port.
                         return False
                 elif number == 3:
                     if None not in accepted_lands or material in accepted_lands:
+                        # Offered 3:1 with no 3:1 port or 3:1 of material for which there is port.
                         return False
                 else:
                     if None in accepted_lands or material in accepted_lands:
+                        # Offered 4:1 but a 3:1 or 2:1 can be made.
                         return False
                 asked_material = material
             else:
+                # Offered a non accepted number of changes, more than one.
                 return False
+
         if asked_material is None:
+            # No asked material.
             return False
 
         # Make sure individual making offer has materials.
@@ -239,8 +252,10 @@ class CommerceWithBank(Play):
         player_materials = player.materials_deck
         for material, number in self.offer.offered_deck.deck.items():
             if player_materials[material] < number:
+                # Does not have enough materials.
                 return False
 
+        # Successful commerce.
         return True
 
     def update_game(self, game):
