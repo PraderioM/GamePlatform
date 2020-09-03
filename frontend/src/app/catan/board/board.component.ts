@@ -22,8 +22,6 @@ export class BoardComponent implements OnInit {
   @Input() description: GameDescription;
 
   interval;
-  playerMaterials: MaterialsDeck;
-  playerDevelopment: DevelopmentDeck;
   gameResolution: GameResolution;
   isPlaying = true;
   buildingElement?: string = null;
@@ -35,9 +33,6 @@ export class BoardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.playerMaterials = this.description.getPlayerMaterialsByName(this.name);
-    this.playerDevelopment = this.description.getPlayerDevelopmentDeckByName(this.name);
-
     this.interval = setInterval(() => {
       this.updateGame();
     }, 200);
@@ -54,8 +49,6 @@ export class BoardComponent implements OnInit {
     const description = await this.stateService.findGame(this.token, this.description.id);
     if (description.id != null) {
       this.description = description;
-      this.playerMaterials = description.getPlayerMaterialsByName(this.name);
-      this.playerDevelopment = description.getPlayerDevelopmentDeckByName(this.name);
       if (description.hasEnded) {
         await this.endGame();
       }
@@ -64,7 +57,7 @@ export class BoardComponent implements OnInit {
 
   async onClickLand(landNumber: number) {
     this.resetVariables();
-    if (!this.description.thiefMoved && this.description.getCurrentPlayer().name === name) {
+    if (!this.description.thiefMoved && this.description.getCurrentPlayer().name === this.name) {
       await this.stateService.moveThief(this.token, new MoveThiefPlay(landNumber), this.description.id);
     }
   }

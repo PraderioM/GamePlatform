@@ -24,17 +24,17 @@
     </app-options-display>
   </div>
 
-  <div *ngIf="description.discardCards && playerMaterials.nMaterials > 7" class="second-row-container">
-    <app-discard-cards-display [materialsDeck]="playerMaterials"
+  <div *ngIf="description.discardCards && description.getPlayerMaterialsByName(name).nMaterials > 7" class="second-row-container">
+    <app-discard-cards-display [materialsDeck]="description.getPlayerMaterialsByName(name)"
                                (discardCards)="discardCards($event)">
     </app-discard-cards-display>
   </div>
 
-  <p *ngIf="!(description.discardCards && playerMaterials.nMaterials > 7)" class="second-row-container">
-    <app-materials-deck [materialsDeck]="playerMaterials" style="height: 100%">
+  <p *ngIf="!(description.discardCards && description.getPlayerMaterialsByName(name).nMaterials > 7)" class="second-row-container">
+    <app-materials-deck [materialsDeck]="description.getPlayerMaterialsByName(name)" style="height: 100%">
 
     </app-materials-deck>
-    <app-commerce [materialsDeck]="playerMaterials"
+    <app-commerce [materialsDeck]="description.getPlayerMaterialsByName(name)"
                   [isCurrentPlayer]="description.players[description.currentPlayer].name == name"
                   [allPlayers]="description.players"
                   [offer]="description.offer"
@@ -47,7 +47,7 @@
                   style="height: 100%; width: 30%">
 
     </app-commerce>
-    <app-buy [materialsDeck]="playerMaterials"
+    <app-buy [materialsDeck]="description.getPlayerMaterialsByName(name)"
              [developmentDeck]="description.developmentDeck"
              [buildingElement]="buildingElement"
              (updateBuildingElement)="updateBuildingElement($event)"
@@ -55,7 +55,7 @@
              style="height: 100%">
 
     </app-buy>
-    <app-player-development-deck [developmentDeck]="playerDevelopment"
+    <app-player-development-deck [developmentDeck]="description.getPlayerDevelopmentDeckByName(name)"
                                  (playKnight)="onPlayKnight($event)"
                                  (playMonopoly)="onPlayMonopoly($event)"
                                  (playResources)="onPlayResources($event)"
