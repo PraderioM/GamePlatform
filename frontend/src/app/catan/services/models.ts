@@ -92,8 +92,8 @@ export class GameDescription extends BaseGameDescription {
       toStealPlayers = [];
     } else {
       toStealPlayers = [];
-      for (const playerName of jsonData.toStealPlayers) {
-        toStealPlayers.push(new Player(false, 'black', 0, playerName));
+      for (const player of jsonData.toStealPlayers) {
+        toStealPlayers.push(new Player(false, 'black', 0, player.name));
       }
     }
 
