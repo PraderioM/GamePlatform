@@ -37,6 +37,13 @@ async def find_game(token: str, pool: asyncpg.pool.Pool,
                                  SET last_updated = now(), player_list = $1
                                  WHERE id = $2
                                  """, json.dumps(database_player_list), out_game.id)
+            else:
+                # Update last updated since a connection is made.
+                await db.execute(f"""
+                                 UPDATE {active_games_table}
+                                 SET last_updated = now()
+                                 WHERE id = $1
+                                 """, out_game.id)
 
             frontend_out_game = out_game.to_frontend(db=db)
             return web.Response(
