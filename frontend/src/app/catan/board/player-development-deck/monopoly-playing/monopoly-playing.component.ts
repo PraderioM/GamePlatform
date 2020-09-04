@@ -12,11 +12,11 @@ export class MonopolyPlayingComponent implements OnInit {
   @Output() makePlay = new EventEmitter<PlayMonopoly>();
 
   materialCardsPath = assetsPath.concat('/material_cards');
-  woodImgPath = this.materialCardsPath.concat('wood.png');
-  brickImgPath = this.materialCardsPath.concat('brick.png');
-  sheepImgPath = this.materialCardsPath.concat('sheep.png');
-  wheatImgPath = this.materialCardsPath.concat('wheat.png');
-  stoneImgPath = this.materialCardsPath.concat('stone.png');
+  woodImgPath = this.materialCardsPath.concat('/wood.png');
+  brickImgPath = this.materialCardsPath.concat('/brick.png');
+  sheepImgPath = this.materialCardsPath.concat('/sheep.png');
+  wheatImgPath = this.materialCardsPath.concat('/wheat.png');
+  stoneImgPath = this.materialCardsPath.concat('/stone.png');
 
   constructor() { }
 
