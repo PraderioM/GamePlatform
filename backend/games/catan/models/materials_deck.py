@@ -1,5 +1,6 @@
 from copy import deepcopy
-from typing import Dict, Optional, Union
+from random import choice
+from typing import Dict, Optional, List, Union
 
 from .land import LandType
 
@@ -31,6 +32,16 @@ class MaterialsDeck:
 
     def update(self, material: LandType, number: int):
         self._deck[material] += number
+
+    def get_random_material(self) -> Optional[LandType]:
+        if self.n_materials == 0:
+            return None
+
+        all_materials: List[LandType] = []
+        for land_type, number in self._deck.items():
+            all_materials.extend([land_type] * number)
+
+        return choice(all_materials)
 
     @staticmethod
     def get_empty_deck() -> Dict[LandType, int]:

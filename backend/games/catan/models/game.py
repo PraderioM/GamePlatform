@@ -26,6 +26,7 @@ class Game(BaseGame):
                  development_deck: Optional[DevelopmentDeck] = None,
                  materials_deck: Optional[MaterialsDeck] = None,
                  land_list: Optional[List[Land]] = None,
+                 to_steal_players: Optional[List[Player]] = None,
                  knight_player: Optional[Player] = None,
                  long_road_player: Optional[Player] = None,
                  offer: Optional[Offer] = None,
@@ -47,6 +48,7 @@ class Game(BaseGame):
         self._materials_deck = self.get_empty_materials_deck() if materials_deck is None else materials_deck
         self._land_list = self.get_random_land_list() if land_list is None else land_list[:]
         self.offer = offer
+        self._to_steal_players = to_steal_players
         self._knight_player = knight_player
         self._long_road_player = long_road_player
         self._thief_position = thief_position
@@ -70,6 +72,7 @@ class Game(BaseGame):
             'offer': None if self.offer is None else self.offer.to_frontend(),
             'id': None if self.id is None else str(self.id),
             'extended': self._extended,
+            'toStealPlayers': [player.to_frontend() for player in self.to_steal_players],
             'knightPlayer': None if self._knight_player is None else self._knight_player.to_frontend(),
             'longRoadPlayer': None if self._long_road_player is None else self._long_road_player.to_frontend(),
             'discardCards': self.discard_cards,
@@ -128,6 +131,11 @@ class Game(BaseGame):
         else:
             long_road_player = Player.from_database(json_data=json.loads(json_data['long_road_player']))
 
+        if json_data.get('to_steal_players', None) is None:
+            to_steal_players = []
+        else:
+            to_steal_players = [Player(name=name, color='black') for name in json_data['to_steal_players']]
+
         return Game(
             current_player_index=json_data.get('current_player_index', 0),
             turn_index=json_data.get('turn_index', 0),
@@ -139,6 +147,7 @@ class Game(BaseGame):
             land_list=land_list,
             offer=offer,
             extended=json_data.get('extended', False),
+            to_steal_players=to_steal_players,
             knight_player=knight_player,
             long_road_player=long_road_player,
             discard_cards=json_data.get('discard_cards', False),
@@ -164,6 +173,7 @@ class Game(BaseGame):
                 'turn_index': self.turn_index,
                 'discard_cards': self.discard_cards,
                 'thief_moved': self.thief_moved,
+                'to_steal_players': json.dumps([player.name for player in self.to_steal_players]),
                 'to_build_roads': self.to_build_roads,
                 'last_dice_result': self.last_dice_result,
                 'extended': self._extended,
@@ -278,6 +288,18 @@ class Game(BaseGame):
         # Add last thief move.
         self._thief_position = move_thief.dst_index
         self.thief_moved = True
+
+        # Update to_steal players with players around the given land.
+        to_steal_player_names = []
+        for play in self.play_list:
+            if not (isinstance(play, BuildSettlement) or isinstance(play, BuildCity)):
+                continue
+
+            # Add player name if if touches land.
+            if move_thief.dst_index in play.position:
+                to_steal_player_names.append(play.player.name)
+
+        self._to_steal_players = [Player(name=name, color='black') for name in to_steal_player_names]
 
     # region game resolution.
     @property
@@ -502,6 +524,20 @@ class Game(BaseGame):
     # endregion.
 
     # region properties.
+    @property
+    def to_steal_players(self) -> List[Player]:
+        if self.to_steal_players is None:
+            return []
+        else:
+            return self._to_steal_players[:]
+
+    @to_steal_players.setter
+    def to_steal_players(self, players: Optional[List[Player]]):
+        if players is None:
+            self._to_steal_players = players
+        else:
+            self._to_steal_players = players[:]
+
     @property
     def board(self) -> Board:
         if self._extended:

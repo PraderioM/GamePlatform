@@ -66,6 +66,9 @@ class Player(BasePlayer):
             'cardsDiscarded': self.cards_discarded,
         }
 
+    def get_random_material(self) -> Optional[LandType]:
+        return self._materials_deck.get_random_material()
+
     def update_materials(self, material: LandType, number: int):
         self._materials_deck.update(material=material, number=number)
 

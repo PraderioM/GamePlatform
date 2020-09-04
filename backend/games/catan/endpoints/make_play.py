@@ -41,8 +41,9 @@ async def make_play(request: web.Request) -> web.Response:
                              thief_moved = $12,
                              to_build_roads = $13,
                              thief_position = $14,
+                             to_steal_players = $15,
                              last_updated = now()
-                         WHERE id = $15
+                         WHERE id = $16
                          """,
                          database_data['current_player_index'],
                          database_data['players'],
@@ -58,6 +59,7 @@ async def make_play(request: web.Request) -> web.Response:
                          database_data['thief_moved'],
                          database_data['to_build_roads'],
                          database_data['thief_position'],
+                         database_data['to_steal_players'],
                          database_data['id'])
 
     return await general_make_play(pool=request.app['db'], token=request.rel_url.query['token'],
