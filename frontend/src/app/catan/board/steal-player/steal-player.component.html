@@ -1,6 +1,6 @@
+<p>Select the player you want to steal from</p>
 <div class="container">
-  Select the player you want to steal from
-  <span *ngFor="let player of toStealPlayers" (click)="stealPlayer(player)">
+  <button *ngFor="let player of toStealPlayers" (click)="stealPlayer(player)">
     {{player.name}}
-  </span>
+  </button>
 </div>
