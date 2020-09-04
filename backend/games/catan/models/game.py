@@ -134,7 +134,7 @@ class Game(BaseGame):
         if json_data.get('to_steal_players', None) is None:
             to_steal_players = []
         else:
-            to_steal_players = [Player(name=name, color='black') for name in json_data['to_steal_players']]
+            to_steal_players = [Player(name=name, color='black') for name in json.loads(json_data['to_steal_players'])]
 
         return Game(
             current_player_index=json_data.get('current_player_index', 0),
@@ -299,7 +299,9 @@ class Game(BaseGame):
             if move_thief.dst_index in play.position:
                 to_steal_player_names.append(play.player.name)
 
-        self._to_steal_players = [Player(name=name, color='black') for name in to_steal_player_names]
+        self.to_steal_players = [
+            Player(name=name, color='black') for name in to_steal_player_names if name != move_thief.player.name
+        ]
 
     # region game resolution.
     @property
@@ -526,7 +528,7 @@ class Game(BaseGame):
     # region properties.
     @property
     def to_steal_players(self) -> List[Player]:
-        if self.to_steal_players is None:
+        if self._to_steal_players is None:
             return []
         else:
             return self._to_steal_players[:]

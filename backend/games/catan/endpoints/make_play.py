@@ -26,7 +26,7 @@ async def make_play(request: web.Request) -> web.Response:
 
     async def update_database(db: asyncpg.connection, active_games_table: str, database_data: Dict):
         await db.execute(f"""
-                         UPDATE catan_active_games
+                         UPDATE {active_games_table}
                          SET current_player_index = $1,
                              player_list = $2,
                              play_list = $3,

@@ -55,9 +55,9 @@ export class StateService extends CommonStateService {
 
     async stealPlayer(token: string, play: Steal, gameId: string) {
       const response = await this.http
-        .get<GameDescription>(this.backendURL + '/steal',
+        .get<GameDescription>(this.backendURL + '/make-play',
           {
-            params: this.initPlayParams(token, play, gameId).set('to_steal_player', JSON.stringify(play.player.name))
+            params: this.initPlayParams(token, play, gameId).set('to_steal_player',play.player.name)
           }
         )
         .toPromise();

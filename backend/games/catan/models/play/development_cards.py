@@ -74,6 +74,8 @@ class DevelopmentPlay(Play):
             return False
         elif game.to_build_roads > 0:
             return False
+        elif len(game.to_steal_players) != 0:
+            return False
         else:
             player = game.get_player_by_name(self.player.name)
             return self.has_available_cards(player)
@@ -135,7 +137,7 @@ class PlayRoads(DevelopmentPlay):
 
 def _resource_from_name(land_name: str) -> LandType:
     for land_type in LandType:
-        if land_type.value == land_name:
+        if land_type.name.lower() == land_name.lower():
             return land_type
 
 
@@ -161,8 +163,8 @@ class PlayResources(DevelopmentPlay):
     @classmethod
     def pre_process_web_request(cls, request: web.Request) -> Dict:
         return {
-            'resource_1': request.rel_url.query['resource_1'],
-            'resource_2': request.rel_url.query['resource_2']
+            'resource1': request.rel_url.query['resource1'],
+            'resource2': request.rel_url.query['resource2']
         }
 
     def update_game(self, game):

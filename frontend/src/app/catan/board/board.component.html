@@ -33,7 +33,7 @@
   </div>
 
   <div *ngIf="!(description.discardCards && description.getPlayerMaterialsByName(name).nMaterials > 7)
-              && this.description.toStealPlayers.length === 0"
+              && !(description.toStealPlayers.length !== 0 && isCurrentPlayer())"
        class="second-row-container">
     <app-materials-deck [materialsDeck]="description.getPlayerMaterialsByName(name)" style="height: 100%">
 
@@ -72,7 +72,7 @@
   </div>
 
   <div *ngIf="!(description.discardCards && description.getPlayerMaterialsByName(name).nMaterials > 7)
-              && this.description.toStealPlayers.length !== 0"
+              && description.toStealPlayers.length !== 0 && isCurrentPlayer()"
        class="second-row-container">
     <app-steal-player [toStealPlayers]="description.toStealPlayers"
                       [token]="token"

@@ -40,6 +40,8 @@ class Play(BasePlay):
             return False
         elif not game.has_thrown_dice:
             return False
+        elif len(game.to_steal_players) != 0:
+            return False
         else:
             return True
 

@@ -4,12 +4,43 @@ export const changeRowSpeed = 3 / 4;
 export const changeColInRowSpeed = 1;
 export const changeColBetweenRowsSpeed = 1 / 2;
 
+export function generateExternalLandPositionList(lowerWidthSize: number, lowerHeightSize: number, upperHeightSize: number): LandPosition[] {
+  const upperWidthSize = lowerWidthSize + lowerHeightSize - upperHeightSize;
+
+  const landPositionList: LandPosition[] = [];
+  let currentLand = new LandPosition(changeRowSpeed * (lowerHeightSize + upperHeightSize - 2) / 2,
+                                     - changeColInRowSpeed * (lowerWidthSize / 2 + 1));
+
+  for (let index = 0;
+       index < 2 * lowerHeightSize + 2 * upperHeightSize + upperWidthSize + lowerWidthSize;
+       index ++) {
+    landPositionList.push(currentLand);
+
+    // Update current land according to current land.
+    if (index < lowerHeightSize - 1) {
+      currentLand = moveOnSide(currentLand, 2);
+    } else if (index < lowerHeightSize - 1 + upperHeightSize) {
+      currentLand = moveOnSide(currentLand, 1);
+    } else if (index < lowerHeightSize - 1 + upperHeightSize + upperWidthSize) {
+      currentLand = moveOnSide(currentLand, 0);
+    } else if (index < lowerHeightSize - 1 + upperHeightSize + upperWidthSize + upperHeightSize) {
+      currentLand = moveOnSide(currentLand, 5);
+    } else if (index < lowerHeightSize - 1 + upperHeightSize + upperWidthSize + upperHeightSize + lowerHeightSize) {
+      currentLand = moveOnSide(currentLand, 4);
+    } else {
+      currentLand = moveOnSide(currentLand, 3);
+    }
+  }
+
+  return landPositionList;
+}
+
 export function generateLandPositionList(lowerWidthSize: number, lowerHeightSize: number, upperHeightSize: number): LandPosition[] {
   const upperWidthSize = lowerWidthSize + lowerHeightSize - upperHeightSize;
 
   const landPositionList: LandPosition[] = [];
   let currentLand = new LandPosition(changeRowSpeed * (lowerHeightSize + upperHeightSize - 2) / 2,
-                                      - changeColInRowSpeed * lowerWidthSize / 2);
+    - changeColInRowSpeed * lowerWidthSize / 2);
   let index = -1;
   let currentSide = 0;
   while (!isLandInList(currentLand, landPositionList)) {
@@ -40,37 +71,6 @@ export function generateLandPositionList(lowerWidthSize: number, lowerHeightSize
     }
     currentLand = newLand;
 
-  }
-
-  return landPositionList;
-}
-
-export function generateExternalLandPositionList(lowerWidthSize: number, lowerHeightSize: number, upperHeightSize: number): LandPosition[] {
-  const upperWidthSize = lowerWidthSize + lowerHeightSize - upperHeightSize;
-
-  const landPositionList: LandPosition[] = [];
-  let currentLand = new LandPosition(changeRowSpeed * (lowerHeightSize + upperHeightSize - 2) / 2,
-                                     - changeColInRowSpeed * (lowerWidthSize / 2 + 1));
-
-  for (let index = 0;
-       index < 2 * lowerHeightSize + 2 * upperHeightSize + upperWidthSize + lowerWidthSize;
-       index ++) {
-    landPositionList.push(currentLand);
-
-    // Update current land according to current land.
-    if (index < lowerHeightSize - 1) {
-      currentLand = moveOnSide(currentLand, 2);
-    } else if (index < lowerHeightSize - 1 + upperHeightSize) {
-      currentLand = moveOnSide(currentLand, 1);
-    } else if (index < lowerHeightSize - 1 + upperHeightSize + upperWidthSize) {
-      currentLand = moveOnSide(currentLand, 0);
-    } else if (index < lowerHeightSize - 1 + upperHeightSize + upperWidthSize + upperHeightSize) {
-      currentLand = moveOnSide(currentLand, 5);
-    } else if (index < lowerHeightSize - 1 + upperHeightSize + upperWidthSize + upperHeightSize + lowerHeightSize) {
-      currentLand = moveOnSide(currentLand, 4);
-    } else {
-      currentLand = moveOnSide(currentLand, 3);
-    }
   }
 
   return landPositionList;

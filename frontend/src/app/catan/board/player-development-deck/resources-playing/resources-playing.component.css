@@ -4,9 +4,11 @@
 }
 
 .selected-card {
-  border: black;
+  border-color: black;
+  border-style: solid;
 }
 
 .doubly-selected-card {
-  border: red;
+  border-color: red;
+  border-style: solid;
 }

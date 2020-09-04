@@ -43,14 +43,14 @@ class Steal(Play):
         # Get player to steal from.
         to_steal_player = game.get_player_by_name(self.to_steal_player.name)
 
-        # If player has no materials we reset to steal players and continue.
-        if to_steal_player.n_materials == 0:
-            game.to_steal_players = None
-
-        # Otherwise take a random material from to_steal player, add it to player and only then reset to_steal_players.
+        # Take a random material from to_steal player, add it to player and only then reset to_steal_players.
         material = to_steal_player.get_random_material()
-        to_steal_player.update_materials(material=material, number=-1)
-        game.get_player_by_name(self.player.name).update_materials(material=material, number=1)
+
+        # If player has materials then we take it.
+        if material is not None:
+            to_steal_player.update_materials(material=material, number=-1)
+            game.get_player_by_name(self.player.name).update_materials(material=material, number=1)
+
         game.to_steal_players = None
 
     @classmethod
