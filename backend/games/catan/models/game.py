@@ -10,9 +10,10 @@ from .development_deck import DevelopmentDeck, DevelopmentType
 from .land import Land, LandType
 from .materials_deck import MaterialsDeck
 from .offer import Offer
-from .play import Play, PlayKnight, BuildRoad, BuildSettlement, BuildCity, MoveThief
+from .play import Play, BuildRoad, BuildSettlement, BuildCity, MoveThief
 from .player import Player
-from .board import BOARD, EXTENDED_BOARD, Board
+from .board.constants import CLASSIC_BOARD, EXTENDED_3_4_4_BOARD
+from .board.board import Board
 from .port import Port
 
 
@@ -540,9 +541,9 @@ class Game(BaseGame):
     @property
     def board(self) -> Board:
         if self._extended:
-            return deepcopy(EXTENDED_BOARD)
+            return deepcopy(EXTENDED_3_4_4_BOARD)
         else:
-            return deepcopy(BOARD)
+            return deepcopy(CLASSIC_BOARD)
 
     @property
     def discard_cards(self) -> bool:
