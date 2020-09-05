@@ -7,7 +7,6 @@ from aiohttp import web
 from .core import Play, register_play
 from ..player import Player
 from ..land import LandType
-from ..game import Game
 
 
 class BuildPlay(Play):
@@ -177,7 +176,7 @@ class BuildRoad(BuildPlay):
     def update_free_count(game):
         game.to_build_roads -= 1
 
-    def can_build_before_dice(self, game: Game) -> bool:
+    def can_build_before_dice(self, game) -> bool:
         return game.to_build_roads > 0
 
 
