@@ -35,7 +35,7 @@ export class BoardComponent implements OnInit {
   ngOnInit() {
     this.interval = setInterval(() => {
       this.updateGame();
-    }, 200);
+    }, 500);
   }
 
   async updateGame() {
