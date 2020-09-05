@@ -66,12 +66,10 @@
 
   <div class="ver-container">
     <span *ngFor="let player of getPossiblePlayers()"
-          class="ver-list-item ver-spaced"
-          (click)="toggleTargetPlayer(player.name)">
-        <b *ngIf="isTargetPlayer(player.name)">
-          {{player.name}}
-        </b>
-        {{isTargetPlayer(player.name) ? '' : player.name}}
+          class="ver-list-item ver-spaced">
+      <button (click)="toggleTargetPlayer(player.name)" [ngClass]="{'selected-player': isTargetPlayer(player.name)}">
+        {{player.name}}
+      </button>
     </span>
   </div>
 
