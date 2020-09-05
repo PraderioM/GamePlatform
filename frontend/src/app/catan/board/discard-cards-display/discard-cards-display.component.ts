@@ -29,7 +29,7 @@ export class DiscardCardsDisplayComponent implements OnInit {
     this.remainingDeck = new MaterialsDeck(this.materialsDeck.nWood, this.materialsDeck.nBrick, this.materialsDeck.nSheep,
       this.materialsDeck.nWheat, this.materialsDeck.nStone);
     this.discardedDeck = new MaterialsDeck();
-    this.toDiscardCards = Math.floor((this.materialsDeck.nMaterials + 1) / 2);
+    this.toDiscardCards = Math.floor((this.materialsDeck.nMaterials) / 2);
   }
 
   addToDiscardedDeck(material: string) {
