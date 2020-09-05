@@ -4,7 +4,6 @@ from aiohttp import web
 
 from ..player import Player
 from .core import Play, register_play
-from .build import BuildSettlement, BuildCity
 
 
 @register_play(play_name='steal')
@@ -21,20 +20,10 @@ class Steal(Play):
         if self.player.name == self.to_steal_player.name:
             return False
 
-        # Check if player we should steal from is amongst the players we can steal from.
-        # That is the players touching the thief.
-        for play in game.play_list:
+        # Check if player we should steal from.
+        for player in game.to_steal_players:
             # Take only plays regarding the player we should steal from.
-            if play.player.name != self.to_steal_player.name:
-                continue
-
-            # If play is not the building of a settlement or a city we skip it.
-            if not (isinstance(play, BuildSettlement) or isinstance(play, BuildCity)):
-                continue
-
-            # Otherwise if the thief land touches the position of the built city or settlement
-            # then we can steal from the player.
-            if game.thief_position in play.position:
+            if player.name == self.to_steal_player.name:
                 return True
 
         return False
