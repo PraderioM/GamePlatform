@@ -8,7 +8,8 @@ export class Player extends BasePlayer {
               public name?: string, public materialsDeck?: MaterialsDeck,
               public developmentDeck?: DevelopmentDeck,
               public diceThrown: boolean = false,
-              public cardsDiscarded: boolean = true) {
+              public cardsDiscarded: boolean = true,
+              public nPlayedKnights: number = 0) {
     super(isBot, points, name);
   }
 
@@ -27,8 +28,16 @@ export class Player extends BasePlayer {
       developmentDeck = DevelopmentDeck.fromJSON(jsonData.developmentDeck);
     }
 
+    let nPlayedKnights: number;
+    if (jsonData.nPlayedKnights == null) {
+      nPlayedKnights = 0;
+    } else {
+      nPlayedKnights = jsonData.nPlayedKnights;
+    }
+
     return new Player(jsonData.isBot, jsonData.color, jsonData.points, jsonData.name,
-                      materialsDeck, developmentDeck, jsonData.diceThrown, jsonData.cardsDiscarded);
+                      materialsDeck, developmentDeck, jsonData.diceThrown,
+                      jsonData.cardsDiscarded, nPlayedKnights);
   }
 }
 

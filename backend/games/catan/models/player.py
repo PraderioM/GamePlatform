@@ -11,7 +11,8 @@ class Player(BasePlayer):
                  development_deck: Optional[DevelopmentDeck] = None,
                  new_development_deck: Optional[DevelopmentDeck] = None,
                  dice_thrown: bool = False,
-                 cards_discarded: bool = False):
+                 cards_discarded: bool = False,
+                 n_played_knights: int = 0):
         BasePlayer.__init__(self, name=name, is_bot=False)
         self.color = color
         self.dice_thrown = dice_thrown
@@ -20,6 +21,7 @@ class Player(BasePlayer):
         self._materials_deck = MaterialsDeck() if materials_deck is None else materials_deck
         self._development_deck = DevelopmentDeck() if development_deck is None else development_deck
         self._new_development_deck = DevelopmentDeck() if new_development_deck is None else new_development_deck
+        self.n_played_knights = n_played_knights
 
     @classmethod
     def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'Player':
@@ -27,7 +29,8 @@ class Player(BasePlayer):
                       materials_deck=MaterialsDeck.from_json(json_data['materialsDeck']),
                       development_deck=DevelopmentDeck.from_json(json_data['developmentDeck']),
                       dice_thrown=json_data['diceThrown'],
-                      cards_discarded=json_data['cardsDiscarded'])
+                      cards_discarded=json_data['cardsDiscarded'],
+                      n_played_knights=json_data['nPlayedKnights'])
 
     @classmethod
     def from_database(cls, json_data: Dict, *args, **kwargs) -> 'Player':
@@ -36,7 +39,8 @@ class Player(BasePlayer):
                       development_deck=DevelopmentDeck.from_json(json_data['development_deck']),
                       new_development_deck=DevelopmentDeck.from_json(json_data['new_development_deck']),
                       dice_thrown=json_data['dice_thrown'],
-                      cards_discarded=json_data['cards_discarded'])
+                      cards_discarded=json_data['cards_discarded'],
+                      n_played_knights=json_data['n_played_knights'])
 
     def to_database(self) -> Dict:
         return {
@@ -47,6 +51,7 @@ class Player(BasePlayer):
             'new_development_deck': self._new_development_deck.to_json(),
             'dice_thrown': self.dice_thrown,
             'cards_discarded': self.cards_discarded,
+            'n_played_knights': self.n_played_knights,
         }
 
     def to_frontend(self, points: int = 0) -> Dict:
@@ -64,6 +69,7 @@ class Player(BasePlayer):
             'points': points,
             'diceThrown': self.dice_thrown,
             'cardsDiscarded': self.cards_discarded,
+            'nPlayedKnights': self.n_played_knights,
         }
 
     def get_random_material(self) -> Optional[LandType]:

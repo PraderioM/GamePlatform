@@ -323,7 +323,8 @@ class Game(BaseGame):
             out_points += player.n_point
 
         # Compute knights points.
-        knight_points = self._get_player_card_points(per_player_scores=self.get_per_player_knights(), player=player,
+        knight_points = self._get_player_card_points(per_player_scores=self.get_per_player_knights(),
+                                                     player=player,
                                                      awarded_player=self._knight_player,
                                                      score_threshold=self.board.min_knights,
                                                      max_points=self.board.knights_points)
@@ -344,11 +345,7 @@ class Game(BaseGame):
         return out_points
 
     def get_per_player_knights(self) -> Dict[str, int]:
-        per_player_knights: Dict[str, int] = {player.name: 0 for player in self.player_list}
-        for play in self.play_list:
-            if isinstance(play, PlayKnight):
-                per_player_knights[play.player.name] += 1
-        return per_player_knights
+        return {player.name: player.n_played_knights for player in self.player_list}
 
     def get_per_player_longest_road(self) -> Dict[str, int]:
         return {player.name: len(self.get_player_longest_road(player)) for player in self.player_list}

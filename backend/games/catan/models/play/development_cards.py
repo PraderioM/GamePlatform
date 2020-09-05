@@ -104,10 +104,13 @@ class PlayKnight(DevelopmentPlay):
         return PlayKnight(player=Player.from_database(json_data['player']))
 
     def update_game(self, game):
+        # Thief must be moved.
         game.thief_moved = False
-        game.play_list.append(self)
+
+        # Knight card must be removed and
         player = game.get_player_by_name(self.player.name)
         player.update_development(development_card=DevelopmentType.KNIGHT, number=-1)
+        player.n_played_knights += 1
 
     @staticmethod
     def has_available_cards(player: Player) -> bool:
