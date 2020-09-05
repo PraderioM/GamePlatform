@@ -37,3 +37,7 @@
   height: 30pt;
   width: 30pt;
 }
+
+.non-thrown-dice {
+  background-color: red;
+}

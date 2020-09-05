@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {DevelopmentDeck, GameDescription, MaterialsDeck, Offer} from '../services/models';
+import {GameDescription, MaterialsDeck, Offer} from '../services/models';
 import {GameResolution} from '../../services/models';
 import {StateService} from '../services/state.service';
 import {MoveThiefPlay} from '../services/plays/move.thief';
@@ -188,5 +188,12 @@ export class BoardComponent implements OnInit {
 
   isCurrentPlayer() {
     return this.description.getCurrentPlayer().name === this.name;
+  }
+
+  getDiceClass() {
+    return {
+      dice: true,
+      'non-thrown-dice': this.isCurrentPlayer() && !this.description.getCurrentPlayer().diceThrown,
+    };
   }
 }

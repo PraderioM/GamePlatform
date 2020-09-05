@@ -68,7 +68,7 @@
 
     </app-player-development-deck>
     <button *ngIf="description.players[description.currentPlayer].name == name" (click)="endTurn()">End Turn</button>
-    <button  class="dice" (click)="throwDice()"> {{description.lastDiceResult}} </button>
+    <button  [ngClass]="getDiceClass()" (click)="throwDice()"> {{description.lastDiceResult}} </button>
   </div>
 
   <div *ngIf="!(description.discardCards && description.getPlayerMaterialsByName(name).nMaterials > 7)
