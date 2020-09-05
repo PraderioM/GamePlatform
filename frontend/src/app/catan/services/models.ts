@@ -114,10 +114,10 @@ export class GameDescription extends BaseGameDescription {
     }
 
     let longRoadPlayer: Player;
-    if (jsonData.knightPlayer === null) {
+    if (jsonData.longRoadPlayer === null) {
       longRoadPlayer = null;
     } else {
-      longRoadPlayer = Player.fromJSON(jsonData.knightPlayer);
+      longRoadPlayer = Player.fromJSON(jsonData.longRoadPlayer);
     }
 
     const developmentDeck = DevelopmentDeck.fromJSON(jsonData.developmentDeck);
