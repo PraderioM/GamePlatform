@@ -191,9 +191,10 @@ export class BoardComponent implements OnInit {
   }
 
   getDiceClass() {
+    const isSetupTurn = this.description.turn < 2 * this.description.players.length;
     return {
       dice: true,
-      'non-thrown-dice': this.isCurrentPlayer() && !this.description.getCurrentPlayer().diceThrown,
+      'non-thrown-dice': this.isCurrentPlayer() && !this.description.getCurrentPlayer().diceThrown && !isSetupTurn,
     };
   }
 }
