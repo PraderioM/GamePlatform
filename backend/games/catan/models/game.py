@@ -611,7 +611,7 @@ class Game(BaseGame):
             elif awarded_player.name == player.name:
                 if per_player_scores[player.name] >= max_score:
                     return max_points
-            elif per_player_scores[player.name] > max_score:
+            elif per_player_scores[player.name] > per_player_scores[awarded_player.name]:
                 return max_points
         return 0
 

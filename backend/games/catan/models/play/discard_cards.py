@@ -18,7 +18,7 @@ class DiscardCards(Play):
     @classmethod
     def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'DiscardCards':
         return DiscardCards(player=Player.from_frontend(json_data['player']),
-                            materials_deck=MaterialsDeck.from_json(json_data['materialsDeck']))
+                            materials_deck=MaterialsDeck.from_frontend(json_data['materials_deck']))
 
     @classmethod
     def from_database(cls, json_data: Dict, *args, **kwargs) -> 'DiscardCards':
