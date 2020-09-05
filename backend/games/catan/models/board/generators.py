@@ -35,9 +35,11 @@ def intersections_generator(lower_width: int, lower_height: int, upper_height: i
             for land_position_3 in neighbours_2:
                 # Keep only triplets of neighbours.
                 if land_position_3 in neighbours_1:
-                    intersections.append({land_position_1[-1], land_position_2[-1], land_position_3[-1]})
+                    new_intersection = {land_position_1[-1], land_position_2[-1], land_position_3[-1]}
+                    if new_intersection not in intersections:
+                        intersections.append(new_intersection)
 
-    return list(set(intersections))
+    return intersections
 
 
 def get_internal_land_position_list(lower_width: int,
@@ -50,7 +52,6 @@ def get_internal_land_position_list(lower_width: int,
 
     while not is_position_in_list((x, y), land_position_list):
         land_position_list.append((x, y, index))
-        index += 1
 
         # For first round positioning is directed.
         if index < lower_width - 1:
@@ -74,6 +75,7 @@ def get_internal_land_position_list(lower_width: int,
             new_x, new_y = move_on_side((x, y), side)
 
         x, y = new_x, new_y
+        index += 1
 
     return land_position_list
 
