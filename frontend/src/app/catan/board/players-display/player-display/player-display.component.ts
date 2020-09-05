@@ -22,7 +22,10 @@ export class PlayerDisplayComponent implements OnInit {
 
   ngOnInit() {
     const playerName = this.player.name == null ? '' : this.player.name;
-    const showText = playerName + ' (' + this.player.points + ') ' + this.player.nPlayedKnights;
+    let showText = playerName + ' p:' + this.player.points;
+    showText = showText + ' r:' + this.player.materialsDeck.getNMaterials();
+    showText = showText + ' d:' + this.player.developmentDeck.getNDevelopments();
+    showText = showText + ' k:' + this.player.nPlayedKnights;
     if (this.selected) {
       this.boldText = showText;
       this.plainText = '';
