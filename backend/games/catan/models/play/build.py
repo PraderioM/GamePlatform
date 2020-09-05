@@ -75,6 +75,7 @@ class BuildPlay(Play):
             self.update_free_count(game)
 
         game.get_player_score(self.player)
+        self.update_post_processing(game)
 
     @staticmethod
     def is_building_free(game) -> bool:
@@ -98,6 +99,9 @@ class BuildPlay(Play):
 
     def can_build_before_dice(self, game) -> bool:
         return False
+
+    def update_post_processing(self, game):
+        pass
 
 
 @register_play(play_name='build_road')
@@ -225,6 +229,12 @@ class BuildSettlement(BuildPlay):
                     return True
 
         return False
+
+    def update_post_processing(self, game):
+        if game.turn_index < len(game.player_list) or game.turn_index >= 2 * len(game.player_list):
+            return
+
+        game.take_materials_from_settlement(self.position, self.player.name)
 
     @staticmethod
     def is_number_of_plays_correct(n_plays: int, turn_index: int) -> bool:

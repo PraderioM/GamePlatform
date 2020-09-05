@@ -251,6 +251,24 @@ class Game(BaseGame):
                             player.update_materials(material=land.land_type, number=n_materials)
                             self._materials_deck.update(material=land.land_type, number=-n_materials)
 
+    def take_materials_from_settlement(self, position: Set[int], player_name: str, n_materials: int = 1):
+        # Get player.
+        player = self.get_player_by_name(player_name)
+
+        # Iterate over all lands neighbour to the intersection.
+        for index in position:
+            if index < 0:
+                continue
+
+            # Skip desert.
+            land = self._land_list[index]
+            if land.land_type == LandType.Desert:
+                continue
+
+            # Give a material to the player for the surrounding land.
+            player.update_materials(material=land.land_type, number=n_materials)
+            self._materials_deck.update(material=land.land_type, number=-n_materials)
+
     def monopolize_materials(self, player_name: str, material: LandType):
         total_material_number = 0
         for player in self.player_list:
