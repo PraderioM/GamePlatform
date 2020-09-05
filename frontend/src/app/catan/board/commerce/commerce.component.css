@@ -1,0 +1,43 @@
+.hor-container {
+  width: 100%;
+  height: 90%;
+
+  display: flex;
+  flex-direction: row;
+  flex-flow: wrap;
+  justify-content: space-around;
+  align-content: center;
+}
+
+.ver-container {
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  align-self: center;
+}
+
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.number-input {
+  width: 10pt;
+}
+
+.ver-list-item {
+  float: left;
+  clear: left;
+}
+
+.ver-spaced {
+  padding-top: 2pt;
+  padding-bottom: 2pt;
+}
+
+.selected-player {
+  background-color: black;
+  color: white;
+}

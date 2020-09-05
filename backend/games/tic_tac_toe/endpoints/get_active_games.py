@@ -18,8 +18,8 @@ async def get_active_games(request: web.Request) -> web.Response:
                                              rows AS rows,
                                              cols AS cols,
                                              current_player_index AS current_player_index,
-                                             players AS players, 
-                                             plays AS plays,
+                                             player_list AS players, 
+                                             play_list AS plays,
                                              gravity AS gravity
                                       FROM {active_games_table}
                                       ORDER BY creation_date DESC

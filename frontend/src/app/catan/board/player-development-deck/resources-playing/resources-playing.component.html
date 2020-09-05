@@ -1,0 +1,13 @@
+<div class="ver-container">
+  <p>select materials</p>
+  <div class="hor-container">
+    <img *ngFor="let material of ['wood', 'brick', 'sheep', 'wheat', 'stone']"
+         [src]="imgPaths[material]"
+         [ngClass]="getNgClass(material)"
+         alt="{{material}}"
+         (click)="updateResources(material)">
+  </div>
+  <button (click)="submit()">get resources</button>
+  <button (click)="goBack()">back</button>
+</div>
+

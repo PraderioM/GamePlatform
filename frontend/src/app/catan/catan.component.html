@@ -1,0 +1,13 @@
+<app-selection (enterGame)="startGame($event)"
+               [token]="token"
+               (backToGameSelection)="backToMenu.emit()"
+               *ngIf="selectionMode">
+
+</app-selection>
+<app-board (backToMenu)="enterSelectionMode()"
+           [description]="description"
+           [token]="token"
+           [name]="name"
+           *ngIf="!selectionMode">
+
+</app-board>

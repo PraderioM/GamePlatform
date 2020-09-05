@@ -36,6 +36,9 @@ const DECLARATIONS: any[] = [
   PlayerDisplayComponent,
   BoardDisplayComponent,
   OptionsDisplayComponent,
+  CellDisplayComponent,
+  LeaderBoardRowDisplayComponent,
+  GameResolutionDisplayComponent,
 ];
 
 const MODULES: any[] = [
@@ -45,12 +48,8 @@ const MODULES: any[] = [
 
 @Injectable()
 @NgModule({
-  declarations: [
-    DECLARATIONS,
-    CellDisplayComponent,
-    LeaderBoardRowDisplayComponent,
-    GameResolutionDisplayComponent
-  ],
+  declarations: DECLARATIONS
+  ,
   exports: [
     TicTacToeComponent,
     SelectionComponent,

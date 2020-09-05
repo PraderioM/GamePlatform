@@ -1,0 +1,10 @@
+<div class="container" [style.color]="player.color">
+  <div class="player-info">
+  <b [style.color]="player.color">
+    {{boldText}}
+  </b>
+  {{plainText}}
+  </div>
+  <img *ngIf="hasArmy" [src]="armyURL" class="extra-points-card">
+  <img *ngIf="hasCommercialRoute" [src]="routeURL" class="extra-points-card">
+</div>

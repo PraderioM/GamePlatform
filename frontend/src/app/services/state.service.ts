@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
+import {backendURL} from './constants';
 
 
 export class LoginResponse {
@@ -21,11 +22,6 @@ class RegisteringResponse {
 
 @Injectable()
 export class StateService {
-    // urlPath = 'http://localhost:2121';
-    // urlPath = 'http://0.0.0.0:2121';
-    // urlPath = 'http://192.168.1.19:2121';
-    // urlPath = 'http://85.53.252.2:27182';
-    urlPath = 'http://gameplatform.tetesake.site:27182';
     token?: string;
 
     constructor(private http: HttpClient) {
@@ -34,7 +30,7 @@ export class StateService {
     async login(name: string, password: string) {
       console.log('Logging in as ' + name);
       const response = await this.http
-        .get<LoginResponse>(this.urlPath + '/login',
+        .get<LoginResponse>(backendURL + '/login',
           {params: new HttpParams().set('name', name).set('password', password)})
         .toPromise();
 
@@ -47,7 +43,7 @@ export class StateService {
     async logout() {
       console.log('Logging out');
       await this.http
-        .get(this.urlPath + '/logout',
+        .get(backendURL + '/logout',
           {params: new HttpParams().set('token', this.getToken())}
           )
         .toPromise();
@@ -60,7 +56,7 @@ export class StateService {
     async register(name: string, password: string, confirmedPassword: string) {
       console.log('Registering');
       const response = await this.http
-        .get<RegisteringResponse>(this.urlPath + '/register',
+        .get<RegisteringResponse>(backendURL + '/register',
           {params: new HttpParams().set('name', name).set('password', password).set('confirmed_password', confirmedPassword)})
         .toPromise();
       console.log(response);

@@ -1,0 +1,34 @@
+<p> Game id: {{gameId}}</p>
+<button (click)="toggleShowInstructions()">{{getInstructionsHeader()}}</button>
+<p *ngIf="showInstructions">
+  Follow this
+  <a href="https://www.eljuegodemesa.com/colonos-de-catan/">link</a>
+  for instructions on how to play CATAN.
+</p>
+<button (click)="backToMenu.emit()">Back to menu</button>
+<p class="container">
+  <label class="card-label">
+    <img [src]="woodImgPath" class="card" alt="wood">
+    {{materialsDeck.nWood}}
+  </label>
+  <label class="card-label">
+    <img [src]="brickImgPath" class="card" alt="brick">
+    {{materialsDeck.nBrick}}
+  </label>
+  <label class="card-label">
+    <img [src]="sheepImgPath" class="card" alt="sheep">
+    {{materialsDeck.nSheep}}
+  </label>
+  <label class="card-label">
+    <img [src]="wheatImgPath" class="card" alt="wheat">
+    {{materialsDeck.nWheat}}
+  </label>
+  <label class="card-label">
+    <img [src]="stoneImgPath" class="card" alt="stone">
+    {{materialsDeck.nStone}}
+  </label>
+  <label class="card-label">
+    <img [src]="developmentImgPath" class="card" alt="stone">
+    {{developmentDeck.getNDevelopments()}}
+  </label>
+</p>

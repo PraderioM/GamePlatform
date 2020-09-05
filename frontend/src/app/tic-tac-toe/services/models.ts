@@ -1,31 +1,31 @@
-export class Play {
-  constructor(public row: number, public col: number, public symbol: string) { }
-}
+import {Play as BasePlay, Player as BasePlayer} from '../../services/models';
+import {GameDescription as BaseGameDescription, ActiveGame as BaseActiveGame} from '../../services/models';
 
-export class Player {
-  constructor(public isBot: boolean, public symbol: string, public points: number,
-              public name?: string) { }
-}
-
-export class GameDescription {
-  constructor(public rows: number, public cols: number, public players: Player[],
-              public currentPlayer: number, public description: string,
-              public id?: string, public plays: Play[] = []) { }
-}
-
-export class ActiveGame {
-  constructor(public gameId: string, public nPlayers: number, public nBots: number,
-              public gravity: boolean,
-              public currentPlayers: number, public rows: number, public cols: number) { }
-}
-
-export class LeaderBoardPosition {
-  constructor(public playerName: string, public totalPlayed: number,
-              public wins: number, public points: number) {
+export class Play extends BasePlay {
+  constructor(public row: number, public col: number, public symbol: string) {
+    super();
   }
 }
 
-export class GameResolution {
-  constructor(public isObserver: boolean = false, public isVictorious: boolean = false,
-              public isLoser: boolean = false, public isTie: boolean = false) { }
+export class Player extends BasePlayer {
+  constructor(public isBot: boolean, public symbol: string, public points: number,
+              public name?: string) {
+    super(isBot, points, name);
+  }
+}
+
+export class GameDescription extends BaseGameDescription {
+  constructor(public rows: number, public cols: number, public players: Player[],
+              public currentPlayer: number, public description: string,
+              public id?: string, public plays: Play[] = []) {
+    super(players, currentPlayer, description, id, plays);
+  }
+}
+
+export class ActiveGame extends BaseActiveGame {
+  constructor(public gameId: string, public nPlayers: number, public nBots: number,
+              public gravity: boolean,
+              public currentPlayers: number, public rows: number, public cols: number) {
+    super(gameId, nPlayers, nBots, currentPlayers);
+  }
 }

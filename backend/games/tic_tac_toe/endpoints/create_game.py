@@ -64,7 +64,7 @@ async def create_game(request: web.Request) -> web.Response:
         database_game = new_game.to_database()
         # Inset name in database.
         await db.execute("""
-                         INSERT INTO tic_tac_toe_active_games (id, rows, cols, players, plays, gravity)
+                         INSERT INTO tic_tac_toe_active_games (id, rows, cols, player_list, play_list, gravity)
                          VALUES ($1, $2, $3, $4, $5, $6)
                          """, new_game.id, new_game.rows, new_game.cols,
                          database_game['players'], database_game['plays'],

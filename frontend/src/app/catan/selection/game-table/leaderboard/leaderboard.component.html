@@ -1,0 +1,15 @@
+<p>Leader board</p>
+<table>
+  <tr>
+    <th>playerName</th>
+    <th>totalPlayed</th>
+    <th>wins</th>
+    <th>points</th>
+  </tr>
+  <tr *ngFor="let leaderBoardPosition of leaderBoardPositions">
+    <th>{{leaderBoardPosition.playerName}}</th>
+    <th>{{leaderBoardPosition.totalPlayed}}</th>
+    <th>{{leaderBoardPosition.wins}}</th>
+    <th>{{leaderBoardPosition.points}}</th>
+  </tr>
+</table>

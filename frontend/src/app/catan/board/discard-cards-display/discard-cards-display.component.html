@@ -1,0 +1,65 @@
+<div class="container">
+  <div class="ver-container">
+    <p>Current deck  {{remainingDeck.getNMaterials()}} / {{materialsDeck.getNMaterials()}}</p>
+    <div class="deck-container">
+      <label *ngIf="remainingDeck.nWood > 0" class="card-label tooltip">
+        <span class="tooltiptext">wood</span>
+        <img [src]="woodImgPath" class="card" alt="wood" (click)="addToDiscardedDeck('wood')">
+        {{remainingDeck.nWood}}
+      </label>
+      <label *ngIf="remainingDeck.nBrick > 0" class="card-label tooltip">
+        <span class="tooltiptext">brick</span>
+        <img [src]="brickImgPath" class="card" alt="brick" (click)="addToDiscardedDeck('brick')">
+        {{remainingDeck.nBrick}}
+      </label>
+      <label *ngIf="remainingDeck.nSheep > 0" class="card-label tooltip">
+        <span class="tooltiptext">sheep</span>
+        <img [src]="sheepImgPath" class="card" alt="sheep" (click)="addToDiscardedDeck('sheep')">
+        {{remainingDeck.nSheep}}
+      </label>
+      <label *ngIf="remainingDeck.nWheat > 0" class="card-label tooltip">
+        <span class="tooltiptext">wheat</span>
+        <img [src]="wheatImgPath" class="card" alt="wheat" (click)="addToDiscardedDeck('wheat')">
+        {{remainingDeck.nWheat}}
+      </label>
+      <label *ngIf="remainingDeck.nStone > 0" class="card-label tooltip">
+        <span class="tooltiptext">stone</span>
+        <img [src]="stoneImgPath" class="card" alt="stone" (click)="addToDiscardedDeck('stone')">
+        {{remainingDeck.nStone}}
+      </label>
+    </div>
+  </div>
+
+  <div class="ver-container">
+    <p>Discarded deck  {{discardedDeck.getNMaterials()}} / {{toDiscardCards}}</p>
+    <div class="deck-container">
+      <label *ngIf="discardedDeck.nWood > 0" class="card-label tooltip">
+        <span class="tooltiptext">wood</span>
+        <img [src]="woodImgPath" class="card" alt="wood" (click)="removeFromDiscardedDeck('wood')">
+        {{discardedDeck.nWood}}
+      </label>
+      <label *ngIf="discardedDeck.nBrick > 0" class="card-label tooltip">
+        <span class="tooltiptext">brick</span>
+        <img [src]="brickImgPath" class="card" alt="brick" (click)="removeFromDiscardedDeck('brick')">
+        {{discardedDeck.nBrick}}
+      </label>
+      <label *ngIf="discardedDeck.nSheep > 0" class="card-label tooltip">
+        <span class="tooltiptext">sheep</span>
+        <img [src]="sheepImgPath" class="card" alt="sheep" (click)="removeFromDiscardedDeck('sheep')">
+        {{discardedDeck.nSheep}}
+      </label>
+      <label *ngIf="discardedDeck.nWheat > 0" class="card-label tooltip">
+        <span class="tooltiptext">wheat</span>
+        <img [src]="wheatImgPath" class="card" alt="wheat" (click)="removeFromDiscardedDeck('wheat')">
+        {{discardedDeck.nWheat}}
+      </label>
+      <label *ngIf="discardedDeck.nStone > 0" class="card-label tooltip">
+        <span class="tooltiptext">stone</span>
+        <img [src]="stoneImgPath" class="card" alt="stone" (click)="removeFromDiscardedDeck('stone')">
+        {{discardedDeck.nStone}}
+      </label>
+    </div>
+  </div>
+
+  <button *ngIf="discardedDeck.getNMaterials() === toDiscardCards" (click)="discard()">discard</button>
+</div>

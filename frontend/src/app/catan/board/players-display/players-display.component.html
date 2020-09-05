@@ -1,0 +1,10 @@
+<div class="players-container">
+  <app-player-display *ngFor="let player of players; let i = index"
+                      [player]="player"
+                      [hasArmy]="knightPlayer != null && knightPlayer.name == player.name"
+                      [hasCommercialRoute]="longRoadPlayer != null && longRoadPlayer.name == player.name"
+                      [selected]="i===currentPlayer">
+
+  </app-player-display>
+</div>
+<img [src]="instructionsPath" class="instructions-card">
