@@ -3,6 +3,21 @@ from random import randint
 from typing import List, Tuple
 
 
+def first_wins_second(first_play: int, second_play: int) -> bool:
+    if first_play > second_play and first_play % 2 == 1 and second_play % 2 == 1:
+        first_wins = False
+    elif first_play < second_play and first_play % 2 == 1 and second_play % 2 == 0:
+        first_wins = False
+    elif first_play > second_play and first_play % 2 == 0 and second_play % 2 == 0:
+        first_wins = False
+    elif first_play < second_play and first_play % 2 == 0 and second_play % 2 == 1:
+        first_wins = False
+    else:
+        first_wins = True
+
+    return first_wins
+
+
 class VictoryCriterion(enum.Enum):
     BY_PLAY = 0
     BY_PLAYER = 1
@@ -19,7 +34,7 @@ class Player:
         if self.is_bot:
             return randint(1, n_plays)
         else:
-            self.ask_human_play(n_plays=n_plays)
+            return self.ask_human_play(n_plays=n_plays)
 
     def ask_human_play(self, n_plays: int) -> int:
         # Define message for asking input.
@@ -71,11 +86,14 @@ class Game:
         return Game(players=human_players + bots, n_plays=n_plays, victory_criterion=victory_criterion)
 
     def play(self):
+        round = 0
         while len(self._players) > 1:
+            round += 1
+            print(f'[ROUND {str(round)}]')
             winner_players = self.play_round()
             self._players = winner_players
 
-        print(f'The winner is {self._players[0].name}.')
+        print(f'The winner is {self._players[0].name}')
 
     def play_round(self) -> List[Player]:
         play_list = [(player, player.make_play(n_plays=self.n_plays)) for player in self._players]
@@ -143,14 +161,46 @@ class Game:
                                       f'is not yet implemented.')
 
     def _get_winner_players_by_play(self, play_list: List[Tuple[Player, int]]) -> List[Player]:
-        # Todo do stuff.
-
-        return [play_list[0][0]]
+        scores = []
+        set_of_plays = set()
+        # Creating a set of plays, with no repeated plays.
+        for i, (player_1, play_1) in enumerate(play_list):
+            set_of_plays.add(play_1)
+        iterable_set_of_plays = list(set_of_plays)
+        # Comparing each player's play to the set of non repeated plays.
+        for i,(player_1, play_1) in enumerate(play_list):
+            score = 0
+            for j in iterable_set_of_plays:
+                if play_1 == j:
+                    continue
+                elif first_wins_second(play_1, j):
+                    score += 1
+                elif first_wins_second(j, play_1):
+                    score -= 1
+            scores.append(score)
+        # Take highest score.
+        max_score = max(scores)
+        # Take players which have max_score.
+        return [player for (player, _), score in zip(play_list, scores) if score == max_score]
 
     def _get_winner_players_by_players(self, play_list: List[Tuple[Player, int]]) -> List[Player]:
-        # Todo do stuff.
-
-        return [play_list[0][0]]
+        scores = []
+        for i, (player_1, play_1) in enumerate(play_list):
+            score = 0
+            for j, (player_2, play_2) in enumerate(play_list):
+                if i == j:
+                    continue
+                elif play_1 == play_2:
+                    continue
+                elif first_wins_second(play_1, play_2):
+                    score += 1
+                elif first_wins_second(play_2, play_1):
+                    score -= 1
+            scores.append(score)
+        # Take highest score
+        max_score = max(scores)
+        # Take players which have max_score
+        return [player for (player, _), score in zip(play_list, scores) if score == max_score]
 
     @staticmethod
     def _ask_players(min_players: int, is_bot: bool, min_automatic: int = 10) -> List[Player]:
