@@ -1,5 +1,5 @@
 import json
-from typing import Awaitable, Callable, Optional
+from typing import Awaitable, Callable, Dict, Optional
 
 from aiohttp import web
 import asyncpg
@@ -10,11 +10,28 @@ from backend.games.common.models.play import Play
 from backend.games.common.models.player import Player
 
 
+async def _update_database(db: asyncpg.connection, active_games_table: str, database_data: Dict):
+    await db.execute(f"""
+                     UPDATE {active_games_table}
+                     SET current_player_index = $1,
+                         player_list = $2,
+                         play_list = $3,
+                         last_updated = now()
+                     WHERE id = $4
+                     """,
+                     database_data['current_player_index'],
+                     database_data['players'],
+                     database_data['plays'],
+                     database_data['id'])
+
+
 async def make_play(pool: asyncpg.pool.Pool,
                     token: str, active_games_table: str,
                     get_game_from_database: Callable[[asyncpg.Connection], Awaitable[Game]],
                     get_play: Callable[[Game, Player], Optional[Play]],
-                    get_bot_play: Optional[Callable[[Game, Player], Optional[Play]]] = None) -> web.Response:
+                    get_bot_play: Optional[Callable[[Game, Player], Optional[Play]]] = None,
+                    update_database: Callable[[asyncpg.Connection, str, Dict],
+                                              Awaitable[None]] = _update_database) -> web.Response:
     async with pool.acquire() as db:
         db: asyncpg.Connection = db
         async with db.transaction():
@@ -38,22 +55,14 @@ async def make_play(pool: asyncpg.pool.Pool,
             # Make bot plays.
             while game.current_player.is_bot:
                 if get_bot_play is None:
-                    raise NotImplementedError
+                    raise NotImplementedError('Artificial intelligence is not yet implemented.')
                 else:
                     play = get_bot_play(game, game.current_player)
                     game.add_play(play)
 
             # Update database.
             database_data = game.to_database()
-            await db.execute(f"""
-                             UPDATE {active_games_table}
-                             SET current_player_index = $1, players = $2, plays = $3, last_updated = now()
-                             WHERE id = $4
-                             """,
-                             database_data['current_player_index'],
-                             database_data['players'],
-                             database_data['plays'],
-                             database_data['id'])
+            await update_database(db, active_games_table, database_data)
 
             return web.Response(
                 status=200,

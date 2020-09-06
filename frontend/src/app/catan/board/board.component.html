@@ -1,0 +1,92 @@
+<p *ngIf="description == null">Game session has expired</p>
+<div *ngIf="description != null && isPlaying" class="ver-container">
+  <div class="first-row-container">
+    <app-players-display [players]="description.players"
+                         [knightPlayer]="description.knightPlayer"
+                         [longRoadPlayer]="description.longRoadPlayer"
+                         [currentPlayer]="description.currentPlayer"
+                         style="width: 10%">
+
+    </app-players-display>
+    <app-board-display (clickLand)="onClickLand($event)"
+                       (clickSegment)="onClickSegment($event)"
+                       (clickIntersection)="onClickIntersection($event)"
+                       [description]="description"
+                       style="width: 80%; height: 80%">
+
+    </app-board-display>
+    <app-options-display (backToMenu)="onBackToMenu()"
+                         [gameId]="description.id"
+                         [materialsDeck]="description.materialsDeck"
+                         [developmentDeck]="description.developmentDeck"
+                         style="width: 10%">
+
+    </app-options-display>
+  </div>
+
+  <div *ngIf="description.discardCards && description.getPlayerMaterialsByName(name).nMaterials > 7"
+       class="second-row-container">
+    <app-discard-cards-display [materialsDeck]="description.getPlayerMaterialsByName(name)"
+                               (discardCards)="discardCards($event)"
+                               style="width: 100%">
+    </app-discard-cards-display>
+  </div>
+
+  <div *ngIf="!(description.discardCards && description.getPlayerMaterialsByName(name).nMaterials > 7)
+              && !(description.toStealPlayers.length !== 0 && isCurrentPlayer())"
+       class="second-row-container">
+    <app-materials-deck [materialsDeck]="description.getPlayerMaterialsByName(name)" style="height: 100%">
+
+    </app-materials-deck>
+    <app-commerce [materialsDeck]="description.getPlayerMaterialsByName(name)"
+                  [isCurrentPlayer]="description.players[description.currentPlayer].name == name"
+                  [allPlayers]="description.players"
+                  [offer]="description.offer"
+                  [name]="name"
+                  (makeOffer)="makeOffer($event)"
+                  (commerceWithBank)="commerceWithBank($event)"
+                  (acceptOffer)="acceptOffer()"
+                  (rejectOffer)="rejectOffer()"
+                  (withdrawOffer)="withdrawOffer()"
+                  style="height: 100%; width: 30%">
+
+    </app-commerce>
+    <app-buy [materialsDeck]="description.getPlayerMaterialsByName(name)"
+             [developmentDeck]="description.developmentDeck"
+             [buildingElement]="buildingElement"
+             (updateBuildingElement)="updateBuildingElement($event)"
+             (buyDevelopment)="buyDevelopment()"
+             style="height: 100%">
+
+    </app-buy>
+    <app-player-development-deck [developmentDeck]="description.getPlayerDevelopmentDeckByName(name)"
+                                 (playKnight)="onPlayKnight($event)"
+                                 (playMonopoly)="onPlayMonopoly($event)"
+                                 (playResources)="onPlayResources($event)"
+                                 (playRoads)="onPlayRoads($event)"
+                                 style="height: 100%">
+
+    </app-player-development-deck>
+    <button *ngIf="description.players[description.currentPlayer].name == name" (click)="endTurn()">End Turn</button>
+    <button  [ngClass]="getDiceClass()" (click)="throwDice()"> {{description.lastDiceResult}} </button>
+  </div>
+
+  <div *ngIf="!(description.discardCards && description.getPlayerMaterialsByName(name).nMaterials > 7)
+              && description.toStealPlayers.length !== 0 && isCurrentPlayer()"
+       class="second-row-container">
+    <app-steal-player [toStealPlayers]="description.toStealPlayers"
+                      [token]="token"
+                      [gameId]="description.id"
+                      style="height: 100%">
+
+    </app-steal-player>
+
+  </div>
+</div>
+
+<app-game-resolution-display *ngIf="description != null && !isPlaying"
+                             [gameDescription]="description"
+                             [gameResolution]="gameResolution"
+                             (backToMenu)="onBackToMenu()">
+
+</app-game-resolution-display>

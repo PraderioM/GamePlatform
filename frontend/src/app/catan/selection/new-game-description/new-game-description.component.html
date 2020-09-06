@@ -1,0 +1,38 @@
+<table class="container">
+  <tr>
+    <th>
+      <label for="npc">Bots</label>
+    </th>
+    <th>
+      <input #npc id="npc" type="number" value="0">
+    </th>
+  </tr>
+  <tr>
+    <th>
+      <label for="pc">Players</label>
+    </th>
+    <th>
+      <input #pc id="pc" type="number" value="2">
+    </th>
+  </tr>
+  <tr>
+    <th>
+      <label for="expansion">Expansion</label>
+    </th>
+    <th>
+      <input #expansion id="expansion" type="checkbox">
+    </th>
+  </tr>
+  <tr>
+    <th>
+      <button
+        (click)="tryCreateGame(npc.valueAsNumber, pc.valueAsNumber,
+                               expansion.checked)">
+        Create game
+      </button>
+    </th>
+    <th>
+      <button (click)="back.emit()">Close</button>
+    </th>
+  </tr>
+</table>

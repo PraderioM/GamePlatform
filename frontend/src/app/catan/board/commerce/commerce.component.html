@@ -1,0 +1,118 @@
+<div *ngIf="isCurrentPlayer" class="hor-container">
+  <div class="ver-container">
+    <b class="ver-list-item">
+      Give
+    </b>
+    <label class="ver-list-item">
+      Wood
+      <input #giveWood type="number" class="number-input">
+    </label>
+
+
+    <label class="ver-list-item">
+      Brick
+      <input #giveBrick type="number" class="number-input">
+    </label>
+
+    <label class="ver-list-item">
+      Sheep
+      <input #giveSheep type="number" class="number-input">
+    </label>
+
+    <label class="ver-list-item">
+      Wheat
+      <input #giveWheat type="number" class="number-input">
+    </label>
+
+    <label class="ver-list-item">
+      Stone
+      <input #giveStone type="number" class="number-input">
+    </label>
+  </div>
+
+  <b style="align-self: center">
+    ->
+  </b>
+
+  <div class="ver-container">
+    <b class="ver-list-item">
+      Obtain
+    </b>
+    <label class="ver-list-item">
+      Wood
+      <input #getWood type="number" class="number-input">
+    </label>
+
+    <label class="ver-list-item">
+      Brick
+      <input #getBrick type="number" class="number-input">
+    </label>
+
+    <label class="ver-list-item">
+      Sheep
+      <input #getSheep type="number" class="number-input">
+    </label>
+
+    <label class="ver-list-item">
+      Wheat
+      <input #getWheat type="number" class="number-input">
+    </label>
+
+    <label class="ver-list-item">
+      Stone
+      <input #getStone type="number" class="number-input">
+    </label>
+  </div>
+
+  <div class="ver-container">
+    <span *ngFor="let player of getPossiblePlayers()"
+          class="ver-list-item ver-spaced">
+      <button (click)="toggleTargetPlayer(player.name)" [ngClass]="{'selected-player': isTargetPlayer(player.name)}">
+        {{player.name}}
+      </button>
+    </span>
+  </div>
+
+  <div class="ver-container">
+    <button class="ver-list-item ver-spaced"
+            (click)="onMakeOffer(giveWood.valueAsNumber, giveBrick.valueAsNumber, giveSheep.valueAsNumber,
+                                 giveWheat.valueAsNumber, giveStone.valueAsNumber,
+                                 getWood.valueAsNumber, getBrick.valueAsNumber, getSheep.valueAsNumber,
+                                 getWheat.valueAsNumber, getStone.valueAsNumber)">
+      Make offer
+    </button>
+    <button class="ver-list-item ver-spaced" (click)="onWithdrawOffer()">Withdraw</button>
+    <button class="ver-list-item ver-spaced"
+            (click)="onCommerceWithBank(giveWood.valueAsNumber, giveBrick.valueAsNumber, giveSheep.valueAsNumber,
+                                        giveWheat.valueAsNumber, giveStone.valueAsNumber,
+                                        getWood.valueAsNumber, getBrick.valueAsNumber, getSheep.valueAsNumber,
+                                        getWheat.valueAsNumber, getStone.valueAsNumber)">
+      Commerce with bank
+    </button>
+  </div>
+</div>
+
+<div *ngIf="!isCurrentPlayer && offer != null && isOfferTarget()" class="hor-container">
+  <div class="ver-container">
+    <span class="ver-list-item">You give to {{offer.offerMaker.name}}</span>
+    <span class="ver-list-item" *ngIf="offer.requestedDeck.nWood > 0"> Wood: {{offer.requestedDeck.nWood}}</span>
+    <span class="ver-list-item" *ngIf="offer.requestedDeck.nBrick > 0"> Brick: {{offer.requestedDeck.nBrick}}</span>
+    <span class="ver-list-item" *ngIf="offer.requestedDeck.nSheep > 0"> Sheep: {{offer.requestedDeck.nSheep}}</span>
+    <span class="ver-list-item" *ngIf="offer.requestedDeck.nWheat > 0"> Wheat: {{offer.requestedDeck.nWheat}}</span>
+    <span class="ver-list-item" *ngIf="offer.requestedDeck.nStone > 0"> Stone: {{offer.requestedDeck.nStone}}</span>
+  </div>
+
+  <div class="ver-container">
+    <span class="ver-list-item">You obtain from {{offer.offerMaker.name}}</span>
+    <span class="ver-list-item" *ngIf="offer.offeredDeck.nWood > 0"> Wood: {{offer.offeredDeck.nWood}}</span>
+    <span class="ver-list-item" *ngIf="offer.offeredDeck.nBrick > 0"> Brick: {{offer.offeredDeck.nBrick}}</span>
+    <span class="ver-list-item" *ngIf="offer.offeredDeck.nSheep > 0"> Sheep: {{offer.offeredDeck.nSheep}}</span>
+    <span class="ver-list-item" *ngIf="offer.offeredDeck.nWheat > 0"> Wheat: {{offer.offeredDeck.nWheat}}</span>
+    <span class="ver-list-item" *ngIf="offer.offeredDeck.nStone > 0"> Stone: {{offer.offeredDeck.nStone}}</span>
+  </div>
+
+  <div class="ver-container">
+    <button class="ver-list-item ver-spaced" *ngIf="canAcceptOffer()" (click)="onAccept()">Accept</button>
+    <button class="ver-list-item ver-spaced" (click)="onReject()">Reject</button>
+  </div>
+</div>

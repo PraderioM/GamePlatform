@@ -1,0 +1,20 @@
+<table>
+  <tr>
+    <th>
+      <label for="rows">Game id</label>
+    </th>
+    <th>
+      <input #gameId id="rows" type="text" value="" placeholder="id of game">
+    </th>
+    <th>
+      <button (click)="tryEnterGame(gameId.value)">
+        Enter game
+      </button>
+    </th>
+  </tr>
+  <tr>
+    <th>
+      <button (click)="back.emit()">Close</button>
+    </th>
+  </tr>
+</table>

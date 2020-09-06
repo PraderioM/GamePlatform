@@ -1,0 +1,14 @@
+.card {
+  width: 15pt;
+  height: 30pt;
+}
+
+.selected-card {
+  border-color: black;
+  border-style: solid;
+}
+
+.doubly-selected-card {
+  border-color: red;
+  border-style: solid;
+}

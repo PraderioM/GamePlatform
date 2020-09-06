@@ -10,7 +10,7 @@ export class OptionsDisplayComponent implements OnInit {
   @Input() gameId: string;
   showInstructions = false;
   // Todo write correct instructions.
-  instructions = 'Call Sergi Sanchez (0034 650 38 79 93) he\'ll explain everything or die trying.';
+  instructions = 'Call Sergi Sanchez (0034 650 38 79 93) he\'ll explain everything or die trying.\nHe\'ll be damned for the rest of eternity muajajajajajajaja';
 
   constructor() { }
 

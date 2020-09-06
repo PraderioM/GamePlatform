@@ -1,0 +1,27 @@
+<div class="ver-container">
+  <p>select material</p>
+  <div class="hor-container">
+    <label class="card-label tooltip">
+      <span class="tooltiptext">wood</span>
+      <img [src]="woodImgPath" class="card" alt="wood" (click)="submit('wood')">
+    </label>
+    <label class="card-label tooltip">
+      <span class="tooltiptext">brick</span>
+      <img [src]="brickImgPath" class="card" alt="brick" (click)="submit('brick')">
+    </label>
+    <label class="card-label tooltip">
+      <span class="tooltiptext">sheep</span>
+      <img [src]="sheepImgPath" class="card" alt="sheep" (click)="submit('sheep')">
+    </label>
+    <label class="card-label tooltip">
+      <span class="tooltiptext">wheat</span>
+      <img [src]="wheatImgPath" class="card" alt="wheat" (click)="submit('wheat')">
+    </label>
+    <label class="card-label tooltip">
+      <span class="tooltiptext">stone</span>
+      <img [src]="stoneImgPath" class="card" alt="stone" (click)="submit('stone')">
+    </label>
+  </div>
+  <button (click)="goBack()">back</button>
+</div>
+
