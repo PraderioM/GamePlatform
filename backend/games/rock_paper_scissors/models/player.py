@@ -7,12 +7,14 @@ class Player:
 
     def __init__(self, name: str, is_bot: bool = False,
                  last_play: Optional[int] = None,
+                 current_play: Optional[int] = None,
                  play: Optional[int] = None,
                  last_played_round: int = -1,
                  is_active: bool = True):
         self.name = name
         self.is_bot = is_bot
         self.last_play = last_play
+        self.current_play = current_play
         self.play = play
         self.last_played_round = last_played_round
         self.is_active = is_active

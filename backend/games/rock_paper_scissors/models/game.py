@@ -71,7 +71,7 @@ class Game:
 
     def play_round(self):
         play_list = [
-            (player, player.get_bot_play(self.n_plays) if player.is_bot else player.last_play)
+            (player, player.get_bot_play(self.n_plays) if player.is_bot else player.current_play)
             for player in self.active_players
         ]
         winner_players = self._get_winner_players(play_list)
@@ -97,7 +97,8 @@ class Game:
             return
 
         # Update player data if player exists.
-        player.last_play = play.play
+        player.last_play = player.current_play
+        player.current_play = play.play
         player.last_played_round = self.current_round
 
         # If all active players have made their play we can play the current round.
