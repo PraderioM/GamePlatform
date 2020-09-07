@@ -12,6 +12,7 @@ from backend.registration.register import register
 from backend.games.tic_tac_toe.endpoints.collect_end_points import collect_end_points as tic_tac_toe_end_points
 from backend.games.sudoku.endpoints.collect_end_points import collect_end_points as sudoku_end_points
 from backend.games.catan.endpoints.collect_end_points import collect_end_points as catan_end_points
+from backend.games.rock_paper_scissors.endpoints.collect_end_points import collect_end_points as r_p_s_end_points
 
 
 async def create_app():  # Start the app
@@ -47,6 +48,7 @@ async def create_app():  # Start the app
     tic_tac_toe_end_points(app=app_)
     sudoku_end_points(app=app_)
     catan_end_points(app=app_)
+    r_p_s_end_points(app=app_)
 
     # Configure CORS on all routes (deactivate it).
     for route in list(app_.router.routes()):
