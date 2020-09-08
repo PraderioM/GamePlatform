@@ -1,0 +1,17 @@
+.bold-paragraph {
+  font-weight: bold;
+  font-size: large;
+}
+
+.logo-label {
+  height: 30pt;
+  width: 30pt;
+  text-align: center;
+}
+
+.logo {
+  width: 95%;
+  height: 95%;
+  padding-top: 2.5%;
+  padding-left: 2.5%;
+}

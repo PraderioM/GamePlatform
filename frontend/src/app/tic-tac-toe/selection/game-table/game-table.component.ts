@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {GameDescription} from '../../services/models';
+import {StateService} from '../../services/state.service';
 
 @Component({
   selector: 'app-game-table',
@@ -11,7 +12,7 @@ export class GameTableComponent implements OnInit {
   @Input() token: string;
   showActive = true;
 
-  constructor() { }
+  constructor(public stateService: StateService) { }
 
   ngOnInit() {
   }

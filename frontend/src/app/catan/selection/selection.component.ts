@@ -1,5 +1,6 @@
 import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
 import { GameDescription } from '../services/models';
+import {StateService} from '../services/state.service';
 
 @Component({
   selector: 'app-selection',
@@ -14,7 +15,7 @@ export class SelectionComponent implements OnInit {
   gameCreationMode = false;
   gameFindingMode = false;
 
-  constructor() { }
+  constructor(public stateService: StateService) { }
 
   ngOnInit() {
   }

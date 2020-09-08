@@ -13,7 +13,8 @@
 <app-existing-game-search *ngIf="gameFindingMode"
                           (enterGame)="onEnterGame($event)"
                           (back)="onEnterSelectionMode()"
-                          [token]="token">
+                          [token]="token"
+                          [stateService]="stateService">
 
 </app-existing-game-search>
 <app-new-game-description *ngIf="gameCreationMode"

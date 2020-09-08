@@ -1,0 +1,16 @@
+.board {
+  width: 90%
+}
+
+.play-label {
+  width: 30pt;
+  height: 60pt;
+  text-align: center;
+}
+
+.play {
+  width: 95%;
+  height: 80%;
+  padding-top: 10%;
+  padding-left: 2.5%;
+}

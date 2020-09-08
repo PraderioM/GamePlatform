@@ -1,0 +1,11 @@
+<p [ngClass]=getNgClass()>
+  {{player.name}}:
+  <label class="logo-label tooltip">
+    <span class="tooltiptext">{{getLastPlayName()}}</span>
+    <img class="logo"
+         [src]="getLastPlayImage()"
+         [alt]="getLastPlayName()">
+  </label>
+  <span>{{getPoints()}}</span>
+  <span>{{getReadyStatus()}}</span>
+</p>

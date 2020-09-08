@@ -1,0 +1,26 @@
+<p class="container" style="width: 100%">
+  <span>victory criterion: {{description.victoryCriterion}}</span>
+  <span>play mode: {{description.playMode}}</span>
+  <span *ngIf="description.victoryCriterion === 'by_points'">points: + {{description.totalPoints}}</span>
+</p>
+<p class="container board">
+  <label *ngFor="let play of getPossiblePlays()" class="play-label tooltip">
+    <span class="tooltiptext">{{getPlayName(play)}}</span>
+    <img [src]="getPlayImgPath(play)"
+         [ngClass]="getPlayNgClass(play)"
+         (click)="selectPlay(play)"
+         [alt]="getPlayName(play)">
+  </label>
+</p>
+<p *ngIf="description.playMode === 'SMBC'" class="container board">
+  <label *ngFor="let modifier of getPossibleModifiers()" class="play-label tooltip">
+    <span class="tooltiptext">{{modifier}}</span>
+    <img [src]="getModifierImgPath(modifier)"
+         [ngClass]="getModifierNgClass(modifier)"
+         (click)="selectModifier(modifier)"
+         [alt]="modifier">
+  </label>
+</p>
+<p class="container" style="width: 100%">
+  <button (click)="onMakePlay()">Make Play</button>
+</p>

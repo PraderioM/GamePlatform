@@ -1,0 +1,68 @@
+<table class="container">
+  <tr>
+    <th>
+      <label for="npc">Bots</label>
+    </th>
+    <th>
+      <input #npc id="npc" type="number" value="0" [ngClass]="getNPCClass()">
+    </th>
+  </tr>
+  <tr>
+    <th>
+      <label for="pc">Players</label>
+    </th>
+    <th>
+      <input #pc id="pc" type="number" value="2" [ngClass]="getPCClass()">
+    </th>
+  </tr>
+  <tr>
+    <th>
+      <label for="nPlays">Plays</label>
+    </th>
+    <th>
+      <input #nPlays id="nPlays" type="number" value="3" [ngClass]="getNPlaysClass()">
+    </th>
+  </tr>
+  <tr>
+    <th>
+      <label for="totalPoints">Total points</label>
+    </th>
+    <th>
+      <input #totalPoints id="totalPoints" type="number" value="10" [ngClass]="getTotalPointsClass()">
+    </th>
+  </tr>
+  <tr>
+    <th>
+      <label for="victoryCriterion">Victory criterion</label>
+    </th>
+    <th>
+      <select #victoryCriterion id="victoryCriterion">
+        <option *ngFor="let criterion of victoryCriterionList" [value]="criterion">{{criterion}}</option>
+      </select>
+    </th>
+  </tr>
+  <tr>
+    <th>
+      <label for="playMode">Play mode</label>
+    </th>
+    <th>
+      <select #playMode id="playMode">
+        <option *ngFor="let mode of playModeList" [value]="mode">{{mode}}</option>
+      </select>
+    </th>
+  </tr>
+  <tr>
+    <th>
+      <button
+        (click)="tryCreateGame(npc.valueAsNumber, pc.valueAsNumber,
+                               nPlays.valueAsNumber, totalPoints.valueAsNumber,
+                               victoryCriterionList[victoryCriterion.selectedIndex],
+                               playModeList[playMode.selectedIndex])">
+        Create game
+      </button>
+    </th>
+    <th>
+      <button (click)="back.emit()">Close</button>
+    </th>
+  </tr>
+</table>

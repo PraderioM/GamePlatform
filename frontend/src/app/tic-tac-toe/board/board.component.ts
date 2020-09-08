@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {GameDescription, Play} from '../services/models';
 import {GameResolution} from '../../services/models';
 import {StateService} from '../services/state.service';
+import { GameResolutionDisplayComponent } from '../../services/common-components/game-resolution-display/game-resolution-display.component';
 
 @Component({
   selector: 'app-board',
@@ -17,6 +18,9 @@ export class BoardComponent implements OnInit {
   interval;
   gameResolution: GameResolution;
   isPlaying = true;
+  // Todo write correct instructions.
+  instructions: string = 'Call Sergi Sanchez (0034 650 38 79 93) he\'ll explain everything or die trying.\nHe\'ll be damned ' +
+                         'for the rest of eternity muajajajajajajaja';
 
   constructor(private stateService: StateService) { }
 

@@ -5,7 +5,7 @@ import {assetsPath} from '../../services/constants';
 @Component({
   selector: 'app-buy',
   templateUrl: './buy.component.html',
-  styleUrls: ['./buy.component.css']
+  styleUrls: ['./buy.component.css', '../../../services/common.styles.css']
 })
 export class BuyComponent implements OnInit {
   @Input() materialsDeck: MaterialsDeck;

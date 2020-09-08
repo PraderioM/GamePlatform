@@ -11,12 +11,12 @@
 
     </app-board-display>
     <app-options-display (backToMenu)="onBackToMenu()"
-                         [gameId]="description.id">
+                         [gameId]="description.id"
+                         [instructions]="instructions">
 
     </app-options-display>
 </div>
 <app-game-resolution-display *ngIf="description != null && !isPlaying"
-                             [gameDescription]="description"
                              [gameResolution]="gameResolution"
                              (backToMenu)="onBackToMenu()">
 

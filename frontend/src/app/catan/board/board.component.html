@@ -15,13 +15,13 @@
                        style="width: 80%; height: 80%">
 
     </app-board-display>
-    <app-options-display (backToMenu)="onBackToMenu()"
+    <app-right-side-display (backToMenu)="onBackToMenu()"
                          [gameId]="description.id"
                          [materialsDeck]="description.materialsDeck"
                          [developmentDeck]="description.developmentDeck"
                          style="width: 10%">
 
-    </app-options-display>
+    </app-right-side-display>
   </div>
 
   <div *ngIf="description.discardCards && description.getPlayerMaterialsByName(name).nMaterials > 7"
@@ -85,7 +85,6 @@
 </div>
 
 <app-game-resolution-display *ngIf="description != null && !isPlaying"
-                             [gameDescription]="description"
                              [gameResolution]="gameResolution"
                              (backToMenu)="onBackToMenu()">
 

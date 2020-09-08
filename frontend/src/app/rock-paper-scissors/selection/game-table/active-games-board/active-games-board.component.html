@@ -1,0 +1,21 @@
+<p>Active Games</p>
+<table>
+  <tr>
+    <th>game id</th>
+    <th>n players</th>
+    <th>n bots</th>
+    <th>current players</th>
+    <th>n plays</th>
+    <th>victory criterion</th>
+    <th>Play mode</th>
+  </tr>
+  <tr *ngFor="let activeGame of activeGames" (click)="tryEnterGame(activeGame)">
+    <th>{{activeGame.gameId}}</th>
+    <th>{{activeGame.nPlayers}}</th>
+    <th>{{activeGame.nBots}}</th>
+    <th>{{activeGame.currentPlayers}}</th>
+    <th>{{activeGame.nPlays}}</th>
+    <th>{{activeGame.victoryCriterion}}</th>
+    <th>{{activeGame.playMode}}</th>
+  </tr>
+</table>

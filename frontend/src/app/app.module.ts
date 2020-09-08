@@ -13,6 +13,7 @@ import {TicTacToeModule} from './tic-tac-toe/tic-tac-toe.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {SudokuModule} from './sudoku/sudoku.module';
 import {CatanModule} from './catan/catan.module';
+import {RockPaperScissorsModule} from './rock-paper-scissors/rock-paper-scissors.module';
 
 const MODULES: any[] = [
   NgbModule,
@@ -21,6 +22,7 @@ const MODULES: any[] = [
   TicTacToeModule,
   CatanModule,
   SudokuModule,
+  RockPaperScissorsModule,
 ];
 
 
