@@ -17,12 +17,12 @@ class DiscardCards(Play):
 
     @classmethod
     def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'DiscardCards':
-        return DiscardCards(player=Player.from_frontend(json_data['player']),
+        return DiscardCards(player=Player.from_reduced_json(json_data['player']),
                             materials_deck=MaterialsDeck.from_frontend(json_data['materials_deck']))
 
     @classmethod
     def from_database(cls, json_data: Dict, *args, **kwargs) -> 'DiscardCards':
-        return DiscardCards(player=Player.from_database(json_data['player']),
+        return DiscardCards(player=Player.from_reduced_json(json_data['player']),
                             materials_deck=MaterialsDeck.from_json(json_data['materials_deck']))
 
     @classmethod
@@ -30,12 +30,16 @@ class DiscardCards(Play):
         return {'materials_deck': json.loads(request.rel_url.query['materials_deck'])}
 
     def to_frontend(self) -> Dict:
-        return {'player': self.player.to_frontend(),
-                'materialsDeck': self.materials_deck.to_json()}
+        return {
+            **Play.to_frontend(self),
+            'materialsDeck': self.materials_deck.to_json()
+        }
 
     def to_database(self) -> Dict:
-        return {'player': self.player.to_frontend(),
-                'materials_deck': self.materials_deck.to_json()}
+        return {
+            **Play.to_database(self),
+            'materials_deck': self.materials_deck.to_json()
+        }
 
     def can_update_game(self, game) -> bool:
         player: Player = game.get_player_by_name(self.player.name)

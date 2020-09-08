@@ -22,12 +22,12 @@ class MoveThief(Play):
 
     @classmethod
     def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'MoveThief':
-        return MoveThief(player=Player.from_frontend(json_data=json_data['player']),
+        return MoveThief(player=Player.from_reduced_json(json_data['player']),
                          dst_index=json_data['dst_index'])
 
     @classmethod
     def from_database(cls, json_data: Dict, *args, **kwargs) -> 'MoveThief':
-        return MoveThief(player=Player.from_database(json_data=json_data['player']),
+        return MoveThief(player=Player.from_reduced_json(json_data['player']),
                          dst_index=json_data['dst_index'])
 
     @classmethod
@@ -35,10 +35,13 @@ class MoveThief(Play):
         return {'dst_index': int(request.rel_url.query['dst_index'])}
 
     def to_frontend(self, *args, **kwargs) -> Dict:
-        return {'player': self.player.to_frontend(),
-                'dstIndex': self.dst_index}
+        return {
+            **Play.to_frontend(self),
+            'dstIndex': self.dst_index
+        }
 
     def to_database(self) -> Dict:
-        return {'player': self.player.to_database(),
-                'dst_index': self.dst_index}
-
+        return {
+            **Play.to_database(self),
+            'dst_index': self.dst_index
+        }

@@ -44,23 +44,27 @@ class Steal(Play):
 
     @classmethod
     def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'Steal':
-        return Steal(player=Player.from_frontend(json_data=json_data['player']),
+        return Steal(player=Player.from_reduced_json(json_data['player']),
                      to_steal_player=Player(name=json_data['to_steal_player'], color='black'))
 
     @classmethod
     def from_database(cls, json_data: Dict, *args, **kwargs) -> 'Steal':
-        return Steal(player=Player.from_database(json_data=json_data['player']),
+        return Steal(player=Player.from_reduced_json(json_data['player']),
                      to_steal_player=Player(name=json_data['to_steal_player'], color='black'))
 
     @classmethod
     def pre_process_web_request(cls, request: web.Request) -> Dict:
-        return {'to_steal_player': request.rel_url.query['to_steal_player']}
+        return {
+            'to_steal_player': request.rel_url.query['to_steal_player']}
 
     def to_frontend(self, *args, **kwargs) -> Dict:
-        return {'player': self.player.to_frontend(),
-                'toStealPlayer': self.to_steal_player.to_frontend()}
+        return {
+            **Play.to_frontend(self),
+            'toStealPlayer': self.to_steal_player.name
+        }
 
     def to_database(self) -> Dict:
-        return {'player': self.player.to_database(),
-                'to_steal_player': self.to_steal_player.name}
-
+        return {
+            **Play.to_database(self),
+            'to_steal_player': self.to_steal_player.name
+        }

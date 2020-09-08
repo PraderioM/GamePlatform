@@ -12,7 +12,7 @@ export class BuildRoad extends BuildPlay {
   }
 
   static fromJSON(jsonData: any) {
-    return new BuildRoad(jsonData.color, jsonData.position);
+    return new BuildRoad(jsonData.player.color, jsonData.player.position);
   }
 }
 
@@ -22,7 +22,7 @@ export class BuildSettlement extends BuildPlay {
   }
 
   static fromJSON(jsonData: any) {
-    return new BuildSettlement(jsonData.color, jsonData.position);
+    return new BuildSettlement(jsonData.player.color, jsonData.player.position);
   }
 }
 
@@ -32,6 +32,6 @@ export class BuildCity extends BuildPlay {
   }
 
   static fromJSON(jsonData: any) {
-    return new BuildCity(jsonData.color, jsonData.position);
+    return new BuildCity(jsonData.player.color, jsonData.player.position);
   }
 }

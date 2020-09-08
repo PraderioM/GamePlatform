@@ -72,6 +72,16 @@ class Player(BasePlayer):
             'nPlayedKnights': self.n_played_knights,
         }
 
+    @classmethod
+    def from_reduced_json(cls, json_data: Dict[str, str]) -> 'Player':
+        return Player(name=json_data['name'], color=json_data.get('color', 'black'))
+
+    def to_reduced_json(self) -> Dict:
+        return {
+            'name': self.name,
+            'color': self.color,
+        }
+
     def get_random_material(self) -> Optional[LandType]:
         return self._materials_deck.get_random_material()
 

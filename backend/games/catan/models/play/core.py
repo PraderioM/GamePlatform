@@ -65,10 +65,10 @@ class Play(BasePlay):
         return 0
 
     def to_database(self) -> Dict:
-        return {'player': self.player.to_database()}
+        return {'player': self.player.to_reduced_json()}
 
     def to_frontend(self, *args, **kwargs) -> Dict:
-        return {'color': self.player.color, 'player': self.player.to_frontend()}
+        return {'player': self.player.to_reduced_json()}
 
 
 def register_play(play_name: str):

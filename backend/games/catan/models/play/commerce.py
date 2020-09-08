@@ -17,12 +17,12 @@ class MakeOffer(Play):
 
     @classmethod
     def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'MakeOffer':
-        return MakeOffer(player=Player.from_frontend(json_data['player']),
+        return MakeOffer(player=Player.from_reduced_json(json_data['player']),
                          offer=Offer.from_frontend({**json_data['offer'], 'offerMaker': json_data['player']}))
 
     @classmethod
     def from_database(cls, json_data: Dict, *args, **kwargs) -> 'MakeOffer':
-        return MakeOffer(player=Player.from_database(json_data['player']),
+        return MakeOffer(player=Player.from_reduced_json(json_data['player']),
                          offer=Offer.from_database(json_data['offer']))
 
     @classmethod
@@ -55,11 +55,11 @@ class MakeOffer(Play):
 class WithdrawOffer(Play):
     @classmethod
     def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'WithdrawOffer':
-        return WithdrawOffer(player=Player.from_frontend(json_data['player']))
+        return WithdrawOffer(player=Player.from_reduced_json(json_data['player']))
 
     @classmethod
     def from_database(cls, json_data: Dict, *args, **kwargs) -> 'WithdrawOffer':
-        return WithdrawOffer(player=Player.from_database(json_data['player']))
+        return WithdrawOffer(player=Player.from_reduced_json(json_data['player']))
 
     @classmethod
     def pre_process_web_request(cls, request: web.Request) -> Dict:
@@ -73,11 +73,11 @@ class WithdrawOffer(Play):
 class AcceptOffer(Play):
     @classmethod
     def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'AcceptOffer':
-        return AcceptOffer(player=Player.from_frontend(json_data['player']))
+        return AcceptOffer(player=Player.from_reduced_json(json_data['player']))
 
     @classmethod
     def from_database(cls, json_data: Dict, *args, **kwargs) -> 'AcceptOffer':
-        return AcceptOffer(player=Player.from_database(json_data['player']))
+        return AcceptOffer(player=Player.from_reduced_json(json_data['player']))
 
     @classmethod
     def pre_process_web_request(cls, request: web.Request) -> Dict:
@@ -133,11 +133,11 @@ class AcceptOffer(Play):
 class RejectOffer(Play):
     @classmethod
     def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'RejectOffer':
-        return RejectOffer(player=Player.from_frontend(json_data['player']))
+        return RejectOffer(player=Player.from_reduced_json(json_data['player']))
 
     @classmethod
     def from_database(cls, json_data: Dict, *args, **kwargs) -> 'RejectOffer':
-        return RejectOffer(player=Player.from_database(json_data['player']))
+        return RejectOffer(player=Player.from_reduced_json(json_data['player']))
 
     @classmethod
     def pre_process_web_request(cls, request: web.Request) -> Dict:
@@ -180,12 +180,12 @@ class CommerceWithBank(Play):
 
     @classmethod
     def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'CommerceWithBank':
-        return CommerceWithBank(player=Player.from_frontend(json_data['player']),
+        return CommerceWithBank(player=Player.from_reduced_json(json_data['player']),
                                 offer=Offer.from_frontend({**json_data['offer'], 'offerMaker': json_data['player']}))
 
     @classmethod
     def from_database(cls, json_data: Dict, *args, **kwargs) -> 'CommerceWithBank':
-        return CommerceWithBank(player=Player.from_database(json_data['player']),
+        return CommerceWithBank(player=Player.from_reduced_json(json_data['player']),
                                 offer=Offer.from_database(json_data['offer']))
 
     @classmethod

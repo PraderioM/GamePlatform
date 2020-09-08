@@ -81,7 +81,7 @@
                                  getWheat.valueAsNumber, getStone.valueAsNumber)">
       Make offer
     </button>
-    <button class="ver-list-item ver-spaced" (click)="onWithdrawOffer()">Withdraw</button>
+    <button *ngIf="offer != null" class="ver-list-item ver-spaced" (click)="onWithdrawOffer()">Withdraw</button>
     <button class="ver-list-item ver-spaced"
             (click)="onCommerceWithBank(giveWood.valueAsNumber, giveBrick.valueAsNumber, giveSheep.valueAsNumber,
                                         giveWheat.valueAsNumber, giveStone.valueAsNumber,

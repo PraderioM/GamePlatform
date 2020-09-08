@@ -29,19 +29,13 @@ class ThrowDice(Play):
 
     @classmethod
     def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'ThrowDice':
-        return ThrowDice(player=Player.from_frontend(json_data=json_data['player']))
+        return ThrowDice(player=Player.from_reduced_json(json_data['player']))
 
     @classmethod
     def from_database(cls, json_data: Dict, *args, **kwargs) -> 'ThrowDice':
-        return ThrowDice(player=Player.from_database(json_data=json_data['player']))
+        return ThrowDice(player=Player.from_reduced_json(json_data['player']))
 
     @classmethod
     def pre_process_web_request(cls, request: web.Request) -> Dict:
         return {}
-
-    def to_frontend(self, *args, **kwargs) -> Dict:
-        return {'player': self.player.to_frontend()}
-
-    def to_database(self) -> Dict:
-        return {'player': self.player.to_database()}
 

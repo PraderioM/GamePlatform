@@ -73,9 +73,9 @@ class Game(BaseGame):
             'offer': None if self.offer is None else self.offer.to_frontend(),
             'id': None if self.id is None else str(self.id),
             'extended': self._extended,
-            'toStealPlayers': [player.to_frontend() for player in self.to_steal_players],
-            'knightPlayer': None if self._knight_player is None else self._knight_player.to_frontend(),
-            'longRoadPlayer': None if self._long_road_player is None else self._long_road_player.to_frontend(),
+            'toStealPlayers': [player.name for player in self.to_steal_players],
+            'knightPlayer': None if self._knight_player is None else self._knight_player.name,
+            'longRoadPlayer': None if self._long_road_player is None else self._long_road_player.name,
             'discardCards': self.discard_cards,
             'thiefMoved': self.thief_moved,
             'toBuildRoads': self.to_build_roads,
@@ -125,12 +125,12 @@ class Game(BaseGame):
         if json_data.get('knight_player', None) is None:
             knight_player = None
         else:
-            knight_player = Player.from_database(json_data=json.loads(json_data['knight_player']))
+            knight_player = Player(name=json_data['knight_player'], color='black')
 
         if json_data.get('long_road_player', None) is None:
             long_road_player = None
         else:
-            long_road_player = Player.from_database(json_data=json.loads(json_data['long_road_player']))
+            long_road_player = Player(name=json_data['long_road_player'], color='black')
 
         if json_data.get('to_steal_players', None) is None:
             to_steal_players = []
@@ -160,8 +160,8 @@ class Game(BaseGame):
 
     def to_database(self) -> Dict[str, Union[str, int, bool, Dict]]:
         offer = None if self.offer is None else json.dumps(self.offer.to_database())
-        knight_player = None if self._knight_player is None else json.dumps(self._knight_player.to_database())
-        long_road_player = None if self._long_road_player is None else json.dumps(self._long_road_player.to_database())
+        knight_player = None if self._knight_player is None else self._knight_player.name
+        long_road_player = None if self._long_road_player is None else self._long_road_player.name
         return {
             **BaseGame.to_database(self),
             **{
@@ -222,6 +222,7 @@ class Game(BaseGame):
 
     def is_current_player(self, player: Player) -> bool:
         return self.player_list[self.current_player_index].name == player.name
+
     # endregion.
 
     # region materials.
@@ -282,6 +283,7 @@ class Game(BaseGame):
 
     def update_materials(self, material: LandType, number: int):
         self._materials_deck.update(material=material, number=number)
+
     # endregion.
 
     # region development.
@@ -301,6 +303,7 @@ class Game(BaseGame):
         # Update number of cards for player and in deck.
         player.update_new_development(development_card=development_card, number=1)
         self.update_development(development_card=development_card, number=-1)
+
     # endregion.
 
     def move_thief(self, move_thief: MoveThief):

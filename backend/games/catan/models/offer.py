@@ -18,9 +18,9 @@ class Offer(GameComponent):
     @classmethod
     def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'Offer':
         return Offer(
-            offer_maker=Player.from_frontend(json_data['offerMaker']),
+            offer_maker=Player.from_reduced_json(json_data['offerMaker']),
             target_player_list=[
-                Player(name=player_data['name'], color=player_data['color'])
+                Player.from_reduced_json(player_data)
                 for player_data in json_data['targetPlayerList']
             ],
             offered_deck=MaterialsDeck.from_frontend(json_data['offeredDeck']),
@@ -29,8 +29,8 @@ class Offer(GameComponent):
 
     def to_frontend(self, *args, **kwargs) -> Dict:
         return {
-            'offerMaker': self._offer_maker.to_frontend(),
-            'targetPlayerList': [player.to_frontend() for player in self._target_player_list],
+            'offerMaker': self._offer_maker.to_reduced_json(),
+            'targetPlayerList': [player.to_reduced_json() for player in self._target_player_list],
             'offeredDeck': self.offered_deck.to_json(),
             'requestedDeck': self.requested_deck.to_json(),
         }
@@ -40,9 +40,9 @@ class Offer(GameComponent):
     @classmethod
     def from_database(cls, json_data: Dict, *args, **kwargs) -> 'Offer':
         return Offer(
-            offer_maker=Player.from_database(json_data['offer_maker']),
+            offer_maker=Player.from_reduced_json(json_data['offer_maker']),
             target_player_list=[
-                Player.from_database(player_data) for player_data in json_data['target_player_list']
+                Player.from_reduced_json(player_data) for player_data in json_data['target_player_list']
             ],
             offered_deck=MaterialsDeck.from_json(json_data['offered_deck']),
             requested_deck=MaterialsDeck.from_json(json_data['requested_deck']),
@@ -50,8 +50,8 @@ class Offer(GameComponent):
 
     def to_database(self) -> Dict:
         return {
-            'offer_maker': self._offer_maker.to_database(),
-            'target_player_list': [player.to_database() for player in self._target_player_list],
+            'offer_maker': self._offer_maker.to_reduced_json(),
+            'target_player_list': [player.to_reduced_json() for player in self._target_player_list],
             'offered_deck': self.offered_deck.to_json(),
             'requested_deck': self.requested_deck.to_json(),
         }

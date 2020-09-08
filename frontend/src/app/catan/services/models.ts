@@ -101,8 +101,8 @@ export class GameDescription extends BaseGameDescription {
       toStealPlayers = [];
     } else {
       toStealPlayers = [];
-      for (const player of jsonData.toStealPlayers) {
-        toStealPlayers.push(new Player(false, 'black', 0, player.name));
+      for (const playerName of jsonData.toStealPlayers) {
+        toStealPlayers.push(new Player(false, 'black', 0, playerName));
       }
     }
 
@@ -110,14 +110,14 @@ export class GameDescription extends BaseGameDescription {
     if (jsonData.knightPlayer === null) {
       knightPlayer = null;
     } else {
-      knightPlayer = Player.fromJSON(jsonData.knightPlayer);
+      knightPlayer = new Player(false, 'black', 0, jsonData.knightPlayer);
     }
 
     let longRoadPlayer: Player;
     if (jsonData.longRoadPlayer === null) {
       longRoadPlayer = null;
     } else {
-      longRoadPlayer = Player.fromJSON(jsonData.longRoadPlayer);
+      longRoadPlayer = new Player(false, 'black', 0, jsonData.longRoadPlayer);
     }
 
     const developmentDeck = DevelopmentDeck.fromJSON(jsonData.developmentDeck);
@@ -210,10 +210,11 @@ export class Offer {
   public static fromJSON(jsonData: any) {
     const targetPlayerList: Player[] = [];
     for (const playerData of jsonData.targetPlayerList) {
-      targetPlayerList.push(Player.fromJSON(playerData));
+      targetPlayerList.push(new Player(false, 'black', 0, playerData.name));
     }
 
-    return new Offer(Player.fromJSON(jsonData.offerMaker), targetPlayerList,
+    return new Offer(new Player(false, 'black', 0, jsonData.offerMaker.name),
+                     targetPlayerList,
                      MaterialsDeck.fromJSON(jsonData.offeredDeck),
                      MaterialsDeck.fromJSON(jsonData.requestedDeck));
   }

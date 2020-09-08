@@ -13,19 +13,13 @@ from ..development_deck import DevelopmentType
 class BuyDevelopment(Play):
     PRICE = {LandType.Sheep: 1, LandType.Wheat: 1, LandType.Stone: 1}
 
-    def to_frontend(self, *args, **kwargs) -> Dict:
-        return {'player': self.player.to_frontend()}
-
-    def to_database(self) -> Dict:
-        return {'player': self.player.to_database()}
-
     @classmethod
     def from_database(cls, json_data: Dict, *args, **kwargs) -> 'BuyDevelopment':
-        return BuyDevelopment(player=Player.from_database(json_data['player']))
+        return BuyDevelopment(player=Player.from_reduced_json(json_data['player']))
 
     @classmethod
     def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'BuyDevelopment':
-        return BuyDevelopment(player=Player.from_frontend(json_data['player']))
+        return BuyDevelopment(player=Player.from_reduced_json(json_data['player']))
 
     @classmethod
     def pre_process_web_request(cls, request: web.Request) -> Dict:
@@ -80,12 +74,6 @@ class DevelopmentPlay(Play):
             player = game.get_player_by_name(self.player.name)
             return self.has_available_cards(player)
 
-    def to_frontend(self, *args, **kwargs) -> Dict:
-        return {'player': self.player.to_frontend()}
-
-    def to_database(self) -> Dict:
-        return {'player': self.player.to_database()}
-
     @staticmethod
     @abc.abstractmethod
     def has_available_cards(player: Player) -> bool:
@@ -97,11 +85,11 @@ class PlayKnight(DevelopmentPlay):
 
     @classmethod
     def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'PlayKnight':
-        return PlayKnight(player=Player.from_frontend(json_data['player']))
+        return PlayKnight(player=Player.from_reduced_json(json_data['player']))
 
     @classmethod
     def from_database(cls, json_data: Dict, *args, **kwargs) -> 'PlayKnight':
-        return PlayKnight(player=Player.from_database(json_data['player']))
+        return PlayKnight(player=Player.from_reduced_json(json_data['player']))
 
     def update_game(self, game):
         # Thief must be moved.
@@ -122,11 +110,11 @@ class PlayRoads(DevelopmentPlay):
 
     @classmethod
     def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'PlayRoads':
-        return PlayRoads(player=Player.from_frontend(json_data['player']))
+        return PlayRoads(player=Player.from_reduced_json(json_data['player']))
 
     @classmethod
     def from_database(cls, json_data: Dict, *args, **kwargs) -> 'PlayRoads':
-        return PlayRoads(player=Player.from_database(json_data['player']))
+        return PlayRoads(player=Player.from_reduced_json(json_data['player']))
 
     def update_game(self, game):
         game.to_build_roads = 2
@@ -153,13 +141,13 @@ class PlayResources(DevelopmentPlay):
 
     @classmethod
     def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'PlayResources':
-        return PlayResources(player=Player.from_frontend(json_data['player']),
+        return PlayResources(player=Player.from_reduced_json(json_data['player']),
                              resource_1=_resource_from_name(json_data['resource1']),
                              resource_2=_resource_from_name(json_data['resource2']))
 
     @classmethod
     def from_database(cls, json_data: Dict, *args, **kwargs) -> 'PlayResources':
-        return PlayResources(player=Player.from_database(json_data['player']),
+        return PlayResources(player=Player.from_reduced_json(json_data['player']),
                              resource_1=_resource_from_name(json_data['resource_1']),
                              resource_2=_resource_from_name(json_data['resource_2']))
 
@@ -186,14 +174,18 @@ class PlayResources(DevelopmentPlay):
         return player.n_available_resources > 0
 
     def to_frontend(self, *args, **kwargs) -> Dict:
-        return {'player': self.player.to_frontend(),
-                'resource1': self._resource_1.value,
-                'resource2': self._resource_2.value}
+        return {
+            **DevelopmentPlay.to_frontend(self),
+            'resource1': self._resource_1.value,
+            'resource2': self._resource_2.value
+        }
 
     def to_database(self) -> Dict:
-        return {'player': self.player.to_database(),
-                'resource_1': self._resource_1.value,
-                'resource_2': self._resource_2.value}
+        return {
+            **DevelopmentPlay.to_frontend(self),
+            'resource_1': self._resource_1.value,
+            'resource_2': self._resource_2.value
+        }
 
     @property
     def resource_dict(self) -> Dict[LandType, int]:
@@ -208,12 +200,12 @@ class PlayMonopoly(DevelopmentPlay):
 
     @classmethod
     def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'PlayMonopoly':
-        return PlayMonopoly(player=Player.from_frontend(json_data['player']),
+        return PlayMonopoly(player=Player.from_reduced_json(json_data['player']),
                             material=_resource_from_name(json_data['material']))
 
     @classmethod
     def from_database(cls, json_data: Dict, *args, **kwargs) -> 'PlayMonopoly':
-        return PlayMonopoly(player=Player.from_database(json_data['player']),
+        return PlayMonopoly(player=Player.from_reduced_json(json_data['player']),
                             material=_resource_from_name(json_data['material']))
 
     @classmethod
@@ -228,6 +220,18 @@ class PlayMonopoly(DevelopmentPlay):
         # Remove development card.
         player = game.get_player_by_name(self.player.name)
         player.update_development(development_card=DevelopmentType.MONOPOLY, number=-1)
+
+    def to_frontend(self, *args, **kwargs) -> Dict:
+        return {
+            **DevelopmentPlay.to_frontend(self),
+            'material': self.material,
+        }
+
+    def to_database(self) -> Dict:
+        return {
+            **DevelopmentPlay.to_frontend(self),
+            'material': self.material,
+        }
 
     @staticmethod
     def has_available_cards(player: Player) -> bool:

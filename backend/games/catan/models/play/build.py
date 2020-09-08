@@ -111,12 +111,12 @@ class BuildRoad(BuildPlay):
 
     @classmethod
     def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'BuildRoad':
-        return BuildRoad(player=Player.from_frontend(json_data['player']),
+        return BuildRoad(player=Player.from_reduced_json(json_data['player']),
                          position=set(json_data['position']))
 
     @classmethod
     def from_database(cls, json_data: Dict, *args, **kwargs) -> 'BuildRoad':
-        return BuildRoad(player=Player.from_database(json_data['player']),
+        return BuildRoad(player=Player.from_reduced_json(json_data['player']),
                          position=set(json_data['position']))
 
     def has_structures(self, game):
@@ -192,12 +192,12 @@ class BuildSettlement(BuildPlay):
 
     @classmethod
     def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'BuildSettlement':
-        return BuildSettlement(player=Player.from_frontend(json_data['player']),
+        return BuildSettlement(player=Player.from_reduced_json(json_data['player']),
                                position=set(json_data['position']))
 
     @classmethod
     def from_database(cls, json_data: Dict, *args, **kwargs) -> 'BuildSettlement':
-        return BuildSettlement(player=Player.from_database(json_data['player']),
+        return BuildSettlement(player=Player.from_reduced_json(json_data['player']),
                                position=set(json_data['position']))
 
     def can_update_game(self, game) -> bool:
@@ -252,12 +252,12 @@ class BuildCity(BuildPlay):
 
     @classmethod
     def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'BuildCity':
-        return BuildCity(player=Player.from_frontend(json_data['player']),
+        return BuildCity(player=Player.from_reduced_json(json_data['player']),
                          position=set(json_data['position']))
 
     @classmethod
     def from_database(cls, json_data: Dict, *args, **kwargs) -> 'BuildCity':
-        return BuildCity(player=Player.from_database(json_data['player']),
+        return BuildCity(player=Player.from_reduced_json(json_data['player']),
                          position=set(json_data['position']))
 
     def can_update_game(self, game) -> bool:
