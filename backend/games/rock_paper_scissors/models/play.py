@@ -1,19 +1,11 @@
-from typing import Dict, Union
-
-from aiohttp import web
+from typing import Optional
 
 from .player import Player
+from .modifier import Modifier
 
 
 class Play:
-    def __init__(self, player: Player, play: int):
+    def __init__(self, player: Player, play: int, modifier: Optional[Modifier] = None):
         self.player = player
         self.play = play
-
-    @classmethod
-    def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'Play':
-        return Play(player=Player(json_data['player_name']), play=json_data['play'])
-
-    @staticmethod
-    def pre_process_web_request(request: web.Request) -> Dict[str, Union[str, int]]:
-        return {'player_name': request.rel_url.query['player_name']}
+        self.modifier = modifier

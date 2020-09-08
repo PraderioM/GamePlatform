@@ -32,11 +32,13 @@ export class StateService extends CommonStateService {
     }
 
     async makePlay(token: string, play: Play, gameId: string) {
+      const modifier = play.modifier == null ? 'clone' : play.modifier;
       return await this.http
         .get<GameDescription>(this.backendURL + '/make-play',
           {params: new HttpParams().set('token', token)
                                           .set('game_id', gameId)
-                                          .set('play', play.play.toString())})
+                                          .set('play', play.play.toString())
+                                          .set('modifier', modifier)})
         .toPromise();
     }
 

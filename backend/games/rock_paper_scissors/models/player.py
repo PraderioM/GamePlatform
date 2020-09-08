@@ -1,6 +1,8 @@
 from random import randint
 from typing import Dict, Optional
 
+from .modifier import Modifier
+
 
 class Player:
     NAMED_PLAYS = ('Rock', 'Paper', 'Scissors', 'Lizard', 'Spock')
@@ -8,27 +10,59 @@ class Player:
     def __init__(self, name: str, is_bot: bool = False,
                  last_play: Optional[int] = None,
                  current_play: Optional[int] = None,
-                 play: Optional[int] = None,
+                 modifier: Optional[Modifier] = None,
+                 points: Optional[int] = 0,
+                 imaginary_points: int = 0,
                  last_played_round: int = -1,
                  is_active: bool = True):
         self.name = name
         self.is_bot = is_bot
         self.last_play = last_play
+        self.modifier = modifier
+        self._points = points
+        self.imaginary_points = imaginary_points
         self.current_play = current_play
-        self.play = play
         self.last_played_round = last_played_round
         self.is_active = is_active
 
     @classmethod
     def from_database(cls, json_data: Dict) -> 'Player':
-        # Todo implement. This method must return a game object using all the data in the input json data dict
-        #  (assume all data is available).
-        pass
+        return Player(
+            name=json_data['name'],
+            is_bot=json_data['is_bot'],
+            last_play=json_data['last_play'],
+            current_play=json_data['current_play'],
+            modifier=Modifier.from_name(json_data.get('modifier', 'clone')),
+            points=json_data['points'],
+            imaginary_points=json_data['imaginary_points'],
+            last_played_round=json_data['last_played_round'],
+            is_active=json_data['is_active']
+        )
 
     def to_database(self) -> Dict:
-        # Todo implement. This method should return a dictionary with the json data needed in the
-        #  `from_database` method.
-        pass
+        return {
+            'name': self.name,
+            'is_bot': self.is_bot,
+            'last_play': self.last_play,
+            'current_play': self.current_play,
+            'modifier': self.modifier.name,
+            'points': self._points,
+            'imaginary_points': self.imaginary_points,
+            'last_played_round': self.last_played_round,
+            'is_active': self.is_active
+        }
+
+    def to_frontend(self):
+        return {
+            'isBot': self.is_bot,
+            'isActive': self.is_active,
+            'points': self.points,
+            'imaginaryPoints': self.imaginary_points,
+            'name': self.name,
+            'lastPlay': self.last_play,
+            'currentPlay': self.current_play,
+            'lastPlayedRound': self.last_played_round,
+        }
 
     @staticmethod
     def get_bot_play(n_plays: int) -> int:
@@ -62,9 +96,13 @@ class Player:
             print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
             return selected_play
 
-    def to_frontend(self):
-        return self.to_database()
-
     @property
     def points(self) -> int:
-        return self.last_played_round + (1 if self.is_active else 0)
+        if self._points is None:
+            return self.last_played_round + (1 if self.is_active else 0)
+        else:
+            return self._points
+
+    @points.setter
+    def points(self, val: int):
+        self._points = val

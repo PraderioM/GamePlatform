@@ -16,7 +16,7 @@ async def create_game(request: web.Request) -> web.Response:
     npc = int(request.rel_url.query['npc'])
     pc = int(request.rel_url.query['pc'])
     n_plays = int(request.rel_url.query['n_plays'])
-    victory_criterion = VictoryCriterion.from_name(request.rel_url.query['n_plays'])
+    victory_criterion = VictoryCriterion.from_name(request.rel_url.query['victory_criterion'])
 
     token = request.rel_url.query['token']
 

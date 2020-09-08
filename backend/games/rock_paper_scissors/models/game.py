@@ -1,36 +1,72 @@
+import json
 from typing import List, Optional, Tuple, Dict
 
 
-from backend.games.rock_paper_scissors.models.vidtory_criterion import VictoryCriterion
-from backend.games.rock_paper_scissors.models.player import Player
+from ..models.play_mode import PlayMode
+from ..models.vidtory_criterion import VictoryCriterion
+from ..models.player import Player
+from ..models.play import Play
 
 
 class Game:
     def __init__(self, player_list: List[Player], n_plays: int = 3,
                  victory_criterion: VictoryCriterion = VictoryCriterion.BY_PLAY,
+                 play_mode: PlayMode = PlayMode.CLASSIC,
+                 total_points: Optional[int] = None,
                  current_round: int = 0,
                  id_: Optional[str] = None):
         assert n_plays % 2 == 1, 'Number of plays must be odd.'
         assert n_plays >= 3, f'Number of plays must be at least 3 but got {n_plays}'
         assert len(player_list) >= 2, f'Number of players must be at least 2 but got {len(player_list)}'
         assert isinstance(victory_criterion, VictoryCriterion)
+        assert isinstance(play_mode, PlayMode)
+        if victory_criterion == VictoryCriterion.BY_POINTS:
+            error_msg = f'total points must be specified when victory criterion is {victory_criterion.name}'
+            assert total_points is not None, error_msg
+            assert total_points > 0, f'total points must be strictly positive. However got `{total_points}`.'
 
         self.player_list = player_list[:]
         self.id = id_
         self.n_plays = n_plays
         self.current_round = current_round
+        self.play_mode = play_mode
+        self._total_points = total_points
         self._victory_criterion = victory_criterion
 
     @classmethod
     def from_database(cls, json_data: Dict) -> 'Game':
-        # Todo implement. This method must return a game object using all the data in the input json data dict
-        #  (assume all data is available).
-        pass
+        return Game(
+            player_list=[Player.from_database(player_data) for player_data in json.loads(json_data['player_list'])],
+            n_plays=json_data['n_plays'],
+            victory_criterion=VictoryCriterion.from_name(json_data['victory_criterion']),
+            play_mode=PlayMode.from_name(json_data['play_mode']),
+            total_points=json_data['total_points'],
+            current_round=json_data['current_round'],
+            id_=json_data['id'],
+        )
 
     def to_database(self) -> Dict:
-        # Todo implement. This method should return a dictionary with the json data needed in the
-        #  `from_database` method.
-        pass
+        return {
+            'player_list': [player.to_database() for player in self.player_list],
+            'n_plays': self.n_plays,
+            'victory_criterion': self.victory_criterion.name,
+            'play_mode': self.play_mode.name,
+            'total_points': self.total_points,
+            'current_round': self.current_round,
+            'id': self.id,
+        }
+
+    def to_frontend(self):
+        return {
+            'playerList': [player.to_frontend() for player in self.player_list],
+            'nPlays': self.n_plays,
+            'victoryCriterion': self.victory_criterion.name,
+            'playMode': self.play_mode.name,
+            'hasEnded': self.has_ended,
+            'totalPoints': self.total_points,
+            'currentRound': self.current_round,
+            'id': self.id,
+        }
 
     def to_game_resolution(self, player: Player) -> Dict:
         if player is None:
@@ -61,12 +97,13 @@ class Game:
 
     def to_display(self) -> Dict:
         return {
-            'game_id': None if self.id is None else str(self.id),
-            'n_players': self.n_players,
-            'n_bots': self.n_bots,
-            'n_registered': self.n_registered_players,
-            'n_plays': self.n_plays,
-            'victory_criterion': self.victory_criterion.name,
+            'gameId': None if self.id is None else str(self.id),
+            'nPlayers': self.n_players,
+            'nBots': self.n_bots,
+            'currentPlayers': self.n_registered_players,
+            'nPlays': self.n_plays,
+            'victoryCriterion': self.victory_criterion.name,
+            'playMode': self.play_mode.name,
         }
 
     def play_round(self):
@@ -89,7 +126,7 @@ class Game:
         player = self.get_player_by_name(player.name)
         return player.last_played_round
 
-    def add_play(self, play):
+    def add_play(self, play: Play):
         player = self.get_player_by_name(play.player.name)
 
         # Do not update if player is not playing.
@@ -98,6 +135,7 @@ class Game:
 
         # Update player data if player exists.
         player.last_play = player.current_play
+        player.modifier = play.modifier
         player.current_play = play.play
         player.last_played_round = self.current_round
 
@@ -127,11 +165,14 @@ class Game:
             return self._get_winner_players_by_play(play_list=play_list)
         elif self.victory_criterion == VictoryCriterion.BY_PLAYER:
             return self._get_winner_players_by_players(play_list=play_list)
+        elif self.victory_criterion == VictoryCriterion.BY_POINTS:
+            return self._get_winner_players_by_points(play_list=play_list)
         else:
             raise NotImplementedError(f'Winners selection for victory criterion {self.victory_criterion} '
                                       f'is not yet implemented.')
 
     def _get_winner_players_by_play(self, play_list: List[Tuple[Player, int]]) -> List[Player]:
+        # Todo modify in order to apply play mode SMBC.
         scores = []
         set_of_plays = set()
         # Creating a set of plays, with no repeated plays.
@@ -155,6 +196,7 @@ class Game:
         return [player for (player, _), score in zip(play_list, scores) if score == max_score]
 
     def _get_winner_players_by_players(self, play_list: List[Tuple[Player, int]]) -> List[Player]:
+        # Todo modify in order to apply play mode SMBC.
         scores = []
         for i, (player_1, play_1) in enumerate(play_list):
             score = 0
@@ -172,6 +214,11 @@ class Game:
         max_score = max(scores)
         # Take players which have max_score
         return [player for (player, _), score in zip(play_list, scores) if score == max_score]
+
+    def _get_winner_players_by_points(self, play_list) -> List[Player]:
+        # Todo implement. this should modify players adding points and, in case some of them have surpassed the total
+        #  points threshold, remove them all players except the ones with highest score.
+        pass
 
     def are_players_ready(self):
         return len([player for player in self.active_players if player.last_played_round == self.current_round]) == 0
@@ -216,8 +263,9 @@ class Game:
     def has_ended(self) -> bool:
         return self.n_active_players == 1
 
-    def to_frontend(self):
-        return self.to_database()
+    @property
+    def total_points(self) -> Optional[int]:
+        return self._total_points if self.victory_criterion == VictoryCriterion.BY_POINTS else None
 
     @staticmethod
     def first_wins_second(first_play: int, second_play: int) -> bool:

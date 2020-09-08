@@ -21,6 +21,8 @@ async def get_game_data(game_id: str, db: asyncpg.Connection) -> Optional[Dict]:
                                     player_list AS player_list, 
                                     current_round AS current_round,
                                     victory_criterion AS victory_criterion,
+                                    play_mode AS play_mode,
+                                    total_points AS total_points,
                                     n_plays AS n_plays
                              FROM rock_paper_scissors_active_games
                              WHERE id = $1
