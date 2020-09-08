@@ -5,7 +5,6 @@ import {OptionsDisplayComponent} from './options-display/options-display.compone
 import { GameOptionsComponent } from './game-options/game-options.component';
 import { ExistingGameSearchComponent } from './existing-game-search/existing-game-search.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
-import { LeaderboardRowDisplayComponent } from './leaderboard/leaderboard-row-display/leaderboard-row-display.component';
 
 
 
@@ -16,7 +15,6 @@ import { LeaderboardRowDisplayComponent } from './leaderboard/leaderboard-row-di
     GameOptionsComponent,
     ExistingGameSearchComponent,
     LeaderboardComponent,
-    LeaderboardRowDisplayComponent,
   ],
   imports: [
     CommonModule

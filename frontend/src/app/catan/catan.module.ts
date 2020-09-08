@@ -9,9 +9,7 @@ import { BoardComponent } from './board/board.component';
 import { NewGameDescriptionComponent } from './selection/new-game-description/new-game-description.component';
 import { GameTableComponent } from './selection/game-table/game-table.component';
 import { ActiveGamesBoardComponent } from './selection/game-table/active-games-board/active-games-board.component';
-import { LeaderboardComponent } from './selection/game-table/leaderboard/leaderboard.component';
 // tslint:disable-next-line:max-line-length
-import {LeaderBoardRowDisplayComponent} from './selection/game-table/leaderboard/leader-board-row-display/leader-board-row-display.component';
 import {BoardDisplayComponent} from './board/board-display/board-display.component';
 import {RightSideDisplayComponent} from './board/right-side-display/right.side.display.component';
 import {PlayersDisplayComponent} from './board/players-display/players-display.component';
@@ -36,8 +34,6 @@ const DECLARATIONS: any[] = [
   NewGameDescriptionComponent,
   GameTableComponent,
   ActiveGamesBoardComponent,
-  LeaderboardComponent,
-  LeaderBoardRowDisplayComponent,
   BoardDisplayComponent,
   RightSideDisplayComponent,
   PlayersDisplayComponent,

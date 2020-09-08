@@ -2,7 +2,6 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { victoryCriterionList, playModeList } from '../../services/constants';
 import {GameDescription} from '../../services/models';
 import {StateService} from '../../services/state.service';
-import {isInteger} from '@ng-bootstrap/ng-bootstrap/util/util';
 
 @Component({
   selector: 'app-new-game-description',
@@ -45,7 +44,7 @@ export class NewGameDescriptionComponent implements OnInit {
       alert('Number of non player characters must be non negative.');
       this.isNPCCorrect = false;
       return;
-    } else if (!isInteger(npc)) {
+    } else if (!Number.isInteger(npc)) {
       alert('Number of non player characters must be an integer.');
       this.isNPCCorrect = false;
       return;
@@ -57,7 +56,7 @@ export class NewGameDescriptionComponent implements OnInit {
       alert('Number of players must be non negative.');
       this.isPCCorrect = false;
       return;
-    } else if (!isInteger(pc)) {
+    } else if (!Number.isInteger(pc)) {
       alert('Number of players must be an integer.');
       this.isPCCorrect = false;
       return;
@@ -74,7 +73,7 @@ export class NewGameDescriptionComponent implements OnInit {
       alert('Number of plays must be at least 3.');
       this.isNPlaysCorrect = false;
       return;
-    } else if (!isInteger(nPlays)) {
+    } else if (!Number.isInteger(nPlays)) {
       alert('Number of plays must be an integer.');
       this.isNPlaysCorrect = false;
       return;
@@ -90,7 +89,7 @@ export class NewGameDescriptionComponent implements OnInit {
       alert('Number of total points must be at least 1.');
       this.isTotalPointsCorrect = false;
       return;
-    } else if (!isInteger(totalPoints) && victoryCriterion === 'by_points') {
+    } else if (!Number.isInteger(totalPoints) && victoryCriterion === 'by_points') {
       alert('Number of total points must be an integer.');
       this.isTotalPointsCorrect = false;
       return;
