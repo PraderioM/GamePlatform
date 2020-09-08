@@ -40,10 +40,7 @@ class DevelopmentDeck:
         if len(deck) == 0:
             return None
 
-        out_type = choice(deck)
-        self._deck[out_type] -= 1
-
-        return out_type
+        return choice(deck)
 
     @property
     def n_knight(self) -> int:
