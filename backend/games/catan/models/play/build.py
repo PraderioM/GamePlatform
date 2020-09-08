@@ -271,7 +271,10 @@ class BuildCity(BuildPlay):
 
     def is_position_valid(self, game) -> bool:
         for play_index, play in enumerate(game.play_list):
-            if isinstance(play, BuildSettlement) and play.player.name == self.player.name:
+            is_settlement = isinstance(play, BuildSettlement)
+            is_correct_player = play.player.name == self.player.name
+            is_same_position = play.position == self.position
+            if is_settlement and is_correct_player and is_same_position:
                 return True
         return False
 
