@@ -315,7 +315,7 @@ class Game(BaseGame):
                 continue
 
             # Add player name if if touches land.
-            if move_thief.dst_index in play.position:
+            if move_thief.dst_index in play.position and play.player.name not in to_steal_player_names:
                 to_steal_player_names.append(play.player.name)
 
         self.to_steal_players = [
