@@ -4,6 +4,7 @@ import asyncpg
 from .utils import get_game_data
 from ..models.game import Game
 from backend.games.common.endpoints.end_game import end_game as general_end_game
+from ..constants import LEADER_BOARD_TABLE
 
 
 async def end_game(request: web.Request) -> web.Response:
@@ -16,4 +17,4 @@ async def end_game(request: web.Request) -> web.Response:
     return await general_end_game(pool=request.app['db'], game_id=game_id,
                                   token=request.rel_url.query['token'],
                                   get_game_from_database=get_game_from_database,
-                                  leader_board_database='catan_leader_board')
+                                  leader_board_database=LEADER_BOARD_TABLE)

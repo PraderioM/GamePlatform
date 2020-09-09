@@ -3,6 +3,7 @@ import json
 from typing import Set, Dict
 
 from aiohttp import web
+import asyncpg
 
 from .core import Play, register_play
 from ..player import Player
@@ -76,6 +77,19 @@ class BuildPlay(Play):
 
         game.get_player_score(self.player)
         self.update_post_processing(game)
+
+    async def update_database(self, db: asyncpg.connection, active_games_table: str, database_data: Dict):
+        await db.execute(f"""
+                         UPDATE {active_games_table}
+                         SET player_list = $1,
+                             play_list = $2,
+                             materials_deck = $3,
+                         WHERE id = $4
+                         """,
+                         database_data['players'],
+                         database_data['plays'],
+                         database_data['materials_deck'],
+                         database_data['id'])
 
     @staticmethod
     def is_building_free(game) -> bool:
@@ -182,6 +196,23 @@ class BuildRoad(BuildPlay):
 
     def can_build_before_dice(self, game) -> bool:
         return game.to_build_roads > 0
+
+    async def update_database(self, db: asyncpg.connection, active_games_table: str, database_data: Dict):
+        await db.execute(f"""
+                         UPDATE {active_games_table}
+                         SET player_list = $1,
+                             play_list = $2,
+                             materials_deck = $3,
+                             long_road_player = $4,
+                             to_build_roads = $5
+                         WHERE id = $6
+                         """,
+                         database_data['players'],
+                         database_data['plays'],
+                         database_data['materials_deck'],
+                         database_data['long_road_player'],
+                         database_data['to_build_roads'],
+                         database_data['id'])
 
 
 @register_play(play_name='build_settlement')

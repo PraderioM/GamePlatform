@@ -53,105 +53,91 @@ export class StateService extends CommonStateService {
     async makeBuildPlay(token: string, play: BuildPlay, gameId: string) {
       if (!locked) {
         locked = true;
-        const response = await this.http
-          .get<GameDescription>(this.backendURL + '/make-play',
+        await this.http.post(this.backendURL + '/make-play',
             {
               params: this.initPlayParams(token, play, gameId).set('position', JSON.stringify(play.position))
             }
           )
           .toPromise();
         locked = false;
-        return GameDescription.fromJSON(response);
       }
     }
 
     async stealPlayer(token: string, play: Steal, gameId: string) {
       if (!locked) {
         locked = true;
-        const response = await this.http
-          .get<GameDescription>(this.backendURL + '/make-play',
+        await this.http.post(this.backendURL + '/make-play',
             {
               params: this.initPlayParams(token, play, gameId).set('to_steal_player', play.player.name)
             }
           )
           .toPromise();
         locked = false;
-        return GameDescription.fromJSON(response);
       }
     }
 
     async makeOffer(token: string, play: CommercePlay, gameId: string) {
       if (!locked) {
         locked = true;
-        const response = await this.http
-          .get<GameDescription>(this.backendURL + '/make-play',
+        await this.http.post(this.backendURL + '/make-play',
             {
               params: this.initPlayParams(token, play, gameId).set('offer', JSON.stringify(play.offer))
             }
           )
           .toPromise();
         locked = false;
-        return GameDescription.fromJSON(response);
       }
     }
 
     async acceptOffer(token: string, play: AcceptOffer, gameId: string) {
       if (!locked) {
         locked = true;
-        const response = await this.http
-          .get<GameDescription>(this.backendURL + '/make-play',
+        await this.http.post(this.backendURL + '/make-play',
             {
               params: this.initPlayParams(token, play, gameId)
             }
           )
           .toPromise();
         locked = false;
-        return GameDescription.fromJSON(response);
       }
     }
 
     async rejectOffer(token: string, play: RejectOffer, gameId: string) {
       if (!locked) {
         locked = true;
-        const response = await this.http
-          .get<GameDescription>(this.backendURL + '/make-play',
+        await this.http.post(this.backendURL + '/make-play',
             {
               params: this.initPlayParams(token, play, gameId)
             }
           )
           .toPromise();
         locked = false;
-        return GameDescription.fromJSON(response);
       }
     }
 
     async withdrawOffer(token: string, play: WithdrawOffer, gameId: string) {
       if (!locked) {
         locked = true;
-        const response = await this.http
-          .get<GameDescription>(this.backendURL + '/make-play',
+        await this.http.post(this.backendURL + '/make-play',
             {
               params: this.initPlayParams(token, play, gameId)
             }
           )
           .toPromise();
         locked = false;
-        return GameDescription.fromJSON(response);
       }
     }
 
   async buyDevelopment(token: string, play: BuyDevelopment, gameId: string) {
     if (!locked) {
       locked = true;
-      const response = await this.http
-        .get<GameDescription>(this.backendURL + '/make-play',
+      await this.http.post(this.backendURL + '/make-play',
           {
             params: this.initPlayParams(token, play, gameId)
           }
         )
         .toPromise();
       locked = false;
-      return GameDescription.fromJSON(response);
     }
   }
 
@@ -159,15 +145,13 @@ export class StateService extends CommonStateService {
     if (!locked) {
       locked = true;
 
-      const response = await this.http
-        .get<GameDescription>(this.backendURL + '/make-play',
+      await this.http.post(this.backendURL + '/make-play',
           {
             params: this.initPlayParams(token, play, gameId)
           }
         )
         .toPromise();
       locked = false;
-      return GameDescription.fromJSON(response);
     }
   }
 
@@ -175,105 +159,91 @@ export class StateService extends CommonStateService {
     if (!locked) {
       locked = true;
 
-      const response = await this.http
-        .get<GameDescription>(this.backendURL + '/make-play',
+      await this.http.post(this.backendURL + '/make-play',
           {
             params: this.initPlayParams(token, play, gameId)
           }
         )
         .toPromise();
       locked = false;
-      return GameDescription.fromJSON(response);
     }
   }
 
   async playResources(token: string, play: PlayResources, gameId: string) {
     if (!locked) {
       locked = true;
-      const response = await this.http
-        .get<GameDescription>(this.backendURL + '/make-play',
+      await this.http.post(this.backendURL + '/make-play',
           {
             params: this.initPlayParams(token, play, gameId).set('resource1', play.resource1).set('resource2', play.resource2)
           }
         )
         .toPromise();
       locked = false;
-      return GameDescription.fromJSON(response);
     }
   }
 
   async playMonopoly(token: string, play: PlayMonopoly, gameId: string) {
     if (!locked) {
       locked = true;
-      const response = await this.http
-        .get<GameDescription>(this.backendURL + '/make-play',
+      await this.http.post(this.backendURL + '/make-play',
           {
             params: this.initPlayParams(token, play, gameId).set('material', play.material)
           }
         )
         .toPromise();
       locked = false;
-      return GameDescription.fromJSON(response);
     }
   }
 
   async discardPlay(token: string, play: DiscardPlay, gameId: string) {
     if (!locked) {
       locked = true;
-      const response = await this.http
-        .get<GameDescription>(this.backendURL + '/make-play',
+      await this.http.post(this.backendURL + '/make-play',
           {
             params: this.initPlayParams(token, play, gameId).set('materials_deck', JSON.stringify(play.discardedDeck))
           }
         )
         .toPromise();
       locked = false;
-      return GameDescription.fromJSON(response);
     }
   }
 
   async endTurn(token: string, play: EndTurnPlay, gameId: string) {
     if (!locked) {
       locked = true;
-      const response = await this.http
-        .get<GameDescription>(this.backendURL + '/make-play',
+      await this.http.post(this.backendURL + '/make-play',
           {
             params: this.initPlayParams(token, play, gameId)
           }
         )
         .toPromise();
       locked = false;
-      return GameDescription.fromJSON(response);
     }
   }
 
   async moveThief(token: string, play: MoveThiefPlay, gameId: string) {
     if (!locked) {
       locked = true;
-      const response = await this.http
-        .get<GameDescription>(this.backendURL + '/make-play',
+      await this.http.post(this.backendURL + '/make-play',
           {
             params: this.initPlayParams(token, play, gameId).set('dst_index', play.position.toString())
           }
         )
         .toPromise();
       locked = false;
-      return GameDescription.fromJSON(response);
     }
   }
 
   async throwDice(token: string, play: ThrowDicePlay, gameId: string) {
     if (!locked) {
       locked = true;
-      const response = await this.http
-        .get<GameDescription>(this.backendURL + '/make-play',
+      await this.http.post(this.backendURL + '/make-play',
           {
             params: this.initPlayParams(token, play, gameId)
           }
         )
         .toPromise();
       locked = false;
-      return GameDescription.fromJSON(response);
     }
   }
 

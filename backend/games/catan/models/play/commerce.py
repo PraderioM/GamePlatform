@@ -2,6 +2,7 @@ import json
 from typing import Dict
 
 from aiohttp import web
+import asyncpg
 
 from .core import Play, register_play
 from ..offer import Offer
@@ -50,6 +51,15 @@ class MakeOffer(Play):
     def update_game(self, game):
         game.offer = self.offer
 
+    async def update_database(self, db: asyncpg.connection, active_games_table: str, database_data: Dict):
+        await db.execute(f"""
+                         UPDATE {active_games_table}
+                         SET offer = $1,
+                         WHERE id = $2
+                         """,
+                         database_data['offer'],
+                         database_data['id'])
+
 
 @register_play(play_name='withdraw_offer')
 class WithdrawOffer(Play):
@@ -67,6 +77,15 @@ class WithdrawOffer(Play):
 
     def update_game(self, game):
         game.reset_offer()
+
+    async def update_database(self, db: asyncpg.connection, active_games_table: str, database_data: Dict):
+        await db.execute(f"""
+                         UPDATE {active_games_table}
+                         SET offer = $1,
+                         WHERE id = $2
+                         """,
+                         database_data['offer'],
+                         database_data['id'])
 
 
 @register_play(play_name='accept_offer')
@@ -128,6 +147,17 @@ class AcceptOffer(Play):
     def game_pre_processing(game):
         pass
 
+    async def update_database(self, db: asyncpg.connection, active_games_table: str, database_data: Dict):
+        await db.execute(f"""
+                         UPDATE {active_games_table}
+                         SET player_list = $1,
+                             offer = $2
+                         WHERE id = $3
+                         """,
+                         database_data['players'],
+                         database_data['offer'],
+                         database_data['id'])
+
 
 @register_play(play_name='reject_offer')
 class RejectOffer(Play):
@@ -170,6 +200,15 @@ class RejectOffer(Play):
     @staticmethod
     def game_pre_processing(game):
         pass
+
+    async def update_database(self, db: asyncpg.connection, active_games_table: str, database_data: Dict):
+        await db.execute(f"""
+                         UPDATE {active_games_table}
+                         SET offer = $1
+                         WHERE id = $2
+                         """,
+                         database_data['offer'],
+                         database_data['id'])
 
 
 @register_play(play_name='commerce_with_bank')
@@ -271,3 +310,16 @@ class CommerceWithBank(Play):
         for material, number in self.offer.requested_deck.deck.items():
             game.update_materials(material=material, number=-number)
             player.update_materials(material=material, number=number)
+
+    async def update_database(self, db: asyncpg.connection, active_games_table: str, database_data: Dict):
+        await db.execute(f"""
+                         UPDATE {active_games_table}
+                         SET player_list = $1,
+                             offer = $2,
+                             materials_deck = $3
+                         WHERE id = $4
+                         """,
+                         database_data['players'],
+                         database_data['offer'],
+                         database_data['materials_deck'],
+                         database_data['id'])

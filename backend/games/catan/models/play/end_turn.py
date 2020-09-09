@@ -1,6 +1,7 @@
 from typing import Dict
 
 from aiohttp import web
+import asyncpg
 
 from ..player import Player
 from .core import Play, register_play
@@ -26,3 +27,15 @@ class EndTurn(Play):
     def pre_process_web_request(cls, request: web.Request) -> Dict:
         return {}
 
+    async def update_database(self, db: asyncpg.connection, active_games_table: str, database_data: Dict):
+        await db.execute(f"""
+                         UPDATE {active_games_table}
+                         SET current_player_index = $1,
+                             player_list = $2,
+                             turn_index = $3
+                         WHERE id = $4
+                         """,
+                         database_data['current_player_index'],
+                         database_data['players'],
+                         database_data['turn_index'],
+                         database_data['id'])

@@ -8,6 +8,7 @@ from backend.registration.identify import get_name_from_token
 from backend.games.common.endpoints.create_game import create_game as general_create_game
 from ..models.game import Game
 from ..models.player import Player
+from ..constants import ACTIVE_GAMES_TABLE
 
 
 async def create_game(request: web.Request) -> web.Response:
@@ -56,9 +57,9 @@ async def create_game(request: web.Request) -> web.Response:
         database_game = new_game.to_database()
 
         # Insert game in database.
-        await db.execute("""
-                         INSERT INTO catan_active_games (id, player_list, play_list, extended, development_deck,
-                                                         materials_deck, land_list)
+        await db.execute(f"""
+                         INSERT INTO {ACTIVE_GAMES_TABLE} (id, player_list, play_list, extended, development_deck,
+                                                           materials_deck, land_list)
                          VALUES ($1, $2, $3, $4, $5, $6, $7)
                          """,
                          new_game.id,

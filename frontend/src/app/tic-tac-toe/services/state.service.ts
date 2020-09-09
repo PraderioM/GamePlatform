@@ -33,8 +33,7 @@ export class StateService extends CommonStateService {
     }
 
     async makePlay(token: string, play: Play, gameId: string) {
-      return await this.http
-        .get<GameDescription>(this.backendURL + '/make-play',
+      return await this.http.post(this.backendURL + '/make-play',
           {params: new HttpParams().set('token', token).set('game_id', gameId)
                                           .set('row', play.row.toString()).set('col', play.col.toString())})
         .toPromise();

@@ -1,4 +1,3 @@
-import json
 from typing import Awaitable, Callable, Dict, Optional
 
 from aiohttp import web
@@ -15,8 +14,7 @@ async def _update_database(db: asyncpg.connection, active_games_table: str, data
                      UPDATE {active_games_table}
                      SET current_player_index = $1,
                          player_list = $2,
-                         play_list = $3,
-                         last_updated = now()
+                         play_list = $3
                      WHERE id = $4
                      """,
                      database_data['current_player_index'],
@@ -39,10 +37,7 @@ async def make_play(pool: asyncpg.pool.Pool,
 
             # If all players aren't ready we cannot make any play.
             if game.n_missing > 0:
-                return web.Response(
-                    status=200,
-                    body=json.dumps(game.to_frontend(db=db))
-                )
+                return web.Response(status=200)
 
             # Get player requesting to make play.
             name = await get_name_from_token(token=token, db=db)
@@ -64,7 +59,4 @@ async def make_play(pool: asyncpg.pool.Pool,
             database_data = game.to_database()
             await update_database(db, active_games_table, database_data)
 
-            return web.Response(
-                status=200,
-                body=json.dumps(game.to_frontend(db=db))
-            )
+            return web.Response(status=200)

@@ -1,4 +1,3 @@
-import json
 from typing import Dict
 
 from aiohttp import web
@@ -23,10 +22,7 @@ async def make_play(request: web.Request) -> web.Response:
 
             # If all players aren't ready we cannot make any play.
             if game.n_missing_players > 0:
-                return web.Response(
-                    status=200,
-                    body=json.dumps(game.to_frontend())
-                )
+                return web.Response(status=200)
 
             # Get player requesting to make play.
             name = await get_name_from_token(token=token, db=db)
@@ -40,10 +36,7 @@ async def make_play(request: web.Request) -> web.Response:
             database_data = game.to_database()
             await update_database(db, database_data)
 
-            return web.Response(
-                status=200,
-                body=json.dumps(game.to_frontend())
-            )
+            return web.Response(status=200)
 
 
 async def update_database(db: asyncpg.connection, database_data: Dict):
@@ -51,8 +44,7 @@ async def update_database(db: asyncpg.connection, database_data: Dict):
                      UPDATE rock_paper_scissors_active_games
                      SET player_list = $1,
                          current_round = $2,
-                         n_plays = $3,
-                         last_updated = now()
+                         n_plays = $3
                      WHERE id = $4
                      """,
                      database_data['player_list'],

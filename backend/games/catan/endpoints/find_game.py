@@ -6,6 +6,7 @@ import asyncpg
 from .utils import get_game_data
 from ..models.game import Game
 from backend.games.common.endpoints.find_game import find_game as general_find_game
+from ..constants import ACTIVE_GAMES_TABLE
 
 
 async def find_game(request: web.Request) -> web.Response:
@@ -27,7 +28,7 @@ async def find_game(request: web.Request) -> web.Response:
 
     return await general_find_game(token=request.rel_url.query['token'],
                                    pool=request.app['db'],
-                                   active_games_table='catan_active_games',
+                                   active_games_table=ACTIVE_GAMES_TABLE,
                                    get_game_from_database=get_game_from_database,
                                    get_dummy_frontend_game=get_dummy_frontend_game,
                                    shuffle_before_start=True)

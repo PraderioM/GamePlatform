@@ -3,6 +3,7 @@ from math import floor
 from typing import Dict
 
 from aiohttp import web
+import asyncpg
 
 from .core import Play, register_play
 from ..materials_deck import MaterialsDeck
@@ -68,3 +69,16 @@ class DiscardCards(Play):
             game.update_materials(material=material, number=n_materials)
 
         player.cards_discarded = True
+
+    async def update_database(self, db: asyncpg.connection, active_games_table: str, database_data: Dict):
+        await db.execute(f"""
+                         UPDATE {active_games_table}
+                         SET player_list = $1,
+                             materials_deck = $2,
+                             discard_cards = $3
+                         WHERE id = $4
+                         """,
+                         database_data['players'],
+                         database_data['materials_deck'],
+                         database_data['discard_cards'],
+                         database_data['id'])

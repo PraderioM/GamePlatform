@@ -2,6 +2,7 @@ from random import randint
 from typing import Dict
 
 from aiohttp import web
+import asyncpg
 
 from ..player import Player
 from .core import Play, register_play
@@ -39,3 +40,19 @@ class ThrowDice(Play):
     def pre_process_web_request(cls, request: web.Request) -> Dict:
         return {}
 
+    async def update_database(self, db: asyncpg.connection, active_games_table: str, database_data: Dict):
+        await db.execute(f"""
+                         UPDATE {active_games_table}
+                         SET player_list = $1,
+                             last_dice_result = $2,
+                             materials_deck = $3,
+                             discard_cards = $4,
+                             thief_moved = $5
+                         WHERE id = $6
+                         """,
+                         database_data['players'],
+                         database_data['last_dice_result'],
+                         database_data['materials_deck'],
+                         database_data['discard_cards'],
+                         database_data['thief_moved'],
+                         database_data['id'])

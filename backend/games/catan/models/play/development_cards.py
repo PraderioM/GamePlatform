@@ -2,6 +2,7 @@ import abc
 from typing import Dict
 
 from aiohttp import web
+import asyncpg
 
 from .core import Play, register_play
 from ..player import Player
@@ -52,6 +53,19 @@ class BuyDevelopment(Play):
 
         # Pick card.
         game.pick_random_development_card(player=player)
+
+    async def update_database(self, db: asyncpg.connection, active_games_table: str, database_data: Dict):
+        await db.execute(f"""
+                         UPDATE {active_games_table}
+                         SET player_list = $1,
+                             development_deck = $2,
+                             materials_deck = $3
+                         WHERE id = $4
+                         """,
+                         database_data['players'],
+                         database_data['development_deck'],
+                         database_data['materials_deck'],
+                         database_data['id'])
 
 
 class DevelopmentPlay(Play):
@@ -104,6 +118,19 @@ class PlayKnight(DevelopmentPlay):
     def has_available_cards(player: Player) -> bool:
         return player.n_available_knight > 0
 
+    async def update_database(self, db: asyncpg.connection, active_games_table: str, database_data: Dict):
+        await db.execute(f"""
+                         UPDATE {active_games_table}
+                         SET player_list = $1,
+                             knight_player = $2,
+                             thief_moved = $3
+                         WHERE id = $4
+                         """,
+                         database_data['players'],
+                         database_data['knight_player'],
+                         database_data['thief_moved'],
+                         database_data['id'])
+
 
 @register_play(play_name='play_roads')
 class PlayRoads(DevelopmentPlay):
@@ -124,6 +151,17 @@ class PlayRoads(DevelopmentPlay):
     @staticmethod
     def has_available_cards(player: Player) -> bool:
         return player.n_available_roads > 0
+
+    async def update_database(self, db: asyncpg.connection, active_games_table: str, database_data: Dict):
+        await db.execute(f"""
+                         UPDATE {active_games_table}
+                         SET player_list = $1,
+                             to_build_roads = $2
+                         WHERE id = $3
+                         """,
+                         database_data['players'],
+                         database_data['to_build_roads'],
+                         database_data['id'])
 
 
 def _resource_from_name(land_name: str) -> LandType:
@@ -191,6 +229,17 @@ class PlayResources(DevelopmentPlay):
     def resource_dict(self) -> Dict[LandType, int]:
         return {self._resource_1: 1, self._resource_2: 1}
 
+    async def update_database(self, db: asyncpg.connection, active_games_table: str, database_data: Dict):
+        await db.execute(f"""
+                         UPDATE {active_games_table}
+                         SET player_list = $1,
+                             materials_deck = $2
+                         WHERE id = $3
+                         """,
+                         database_data['players'],
+                         database_data['materials_deck'],
+                         database_data['id'])
+
 
 @register_play(play_name='play_monopoly')
 class PlayMonopoly(DevelopmentPlay):
@@ -236,3 +285,12 @@ class PlayMonopoly(DevelopmentPlay):
     @staticmethod
     def has_available_cards(player: Player) -> bool:
         return player.n_available_monopoly > 0
+
+    async def update_database(self, db: asyncpg.connection, active_games_table: str, database_data: Dict):
+        await db.execute(f"""
+                         UPDATE {active_games_table}
+                         SET player_list = $1
+                         WHERE id = $2
+                         """,
+                         database_data['players'],
+                         database_data['id'])

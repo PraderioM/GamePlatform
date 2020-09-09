@@ -1,6 +1,7 @@
 from typing import Dict
 
 from aiohttp import web
+import asyncpg
 
 from ..player import Player
 from .core import Play, register_play
@@ -68,3 +69,14 @@ class Steal(Play):
             **Play.to_database(self),
             'to_steal_player': self.to_steal_player.name
         }
+
+    async def update_database(self, db: asyncpg.connection, active_games_table: str, database_data: Dict):
+        await db.execute(f"""
+                         UPDATE {active_games_table}
+                         SET player_list = $1,
+                             to_steal_players = $2
+                         WHERE id = $3
+                         """,
+                         database_data['players'],
+                         database_data['to_steal_players'],
+                         database_data['id'])

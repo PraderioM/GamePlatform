@@ -2,6 +2,7 @@ from abc import abstractmethod
 from typing import Dict, Type
 
 from aiohttp import web
+import asyncpg
 
 from backend.games.common.models.play import Play as BasePlay
 from ..player import Player
@@ -50,6 +51,10 @@ class Play(BasePlay):
 
     @abstractmethod
     def update_game(self, game):
+        raise NotImplementedError('`update_game` is not implemented.')
+
+    @abstractmethod
+    async def update_database(self, db: asyncpg.connection, active_games_table: str, database_data: Dict):
         raise NotImplementedError('`update_game` is not implemented.')
 
     @staticmethod
