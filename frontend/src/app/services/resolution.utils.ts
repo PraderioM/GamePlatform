@@ -14,7 +14,7 @@ import {GameResolution} from './models';
 export function getImageURL(gameResolution: GameResolution) {
   let scope: string;
   let imageArray: string[];
-  if (this.gameResolution.isLoser) {
+  if (gameResolution.isLoser) {
     scope = lossScope;
     imageArray = lossImageArray;
   } else if (gameResolution.isTie) {
