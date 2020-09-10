@@ -341,7 +341,6 @@ class Game(BaseGame):
                 out_points += play.play_points
 
         # Get player victory points.
-        print(compute_victory_points)
         if compute_victory_points:
             out_points += player.n_point
 

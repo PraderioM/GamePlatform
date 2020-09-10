@@ -201,14 +201,18 @@ class BuildRoad(BuildPlay):
     async def update_database(self, db: asyncpg.connection, active_games_table: str, database_data: Dict):
         await db.execute(f"""
                          UPDATE {active_games_table}
-                         SET player_list = $1,
-                             play_list = $2,
-                             materials_deck = $3,
-                             long_road_player = $4,
-                             to_build_roads = $5,
+                         SET current_player_index = $1,
+                             turn_index = $2,
+                             player_list = $3,
+                             play_list = $4,
+                             materials_deck = $5,
+                             long_road_player = $6,
+                             to_build_roads = $7,
                              last_updated = now()
-                         WHERE id = $6
+                         WHERE id = $8
                          """,
+                         database_data['current_player_index'],
+                         database_data['turn_index'],
                          database_data['players'],
                          database_data['plays'],
                          database_data['materials_deck'],
