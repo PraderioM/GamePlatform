@@ -9,6 +9,7 @@ import {BuyDevelopment, PlayKnight, PlayMonopoly, PlayResources, PlayRoads} from
 import {EndTurnPlay} from '../services/plays/end.turn';
 import {AcceptOffer, CommerceWithBank, MakeOffer, RejectOffer, WithdrawOffer} from '../services/plays/commerce';
 import {DiscardPlay} from '../services/plays/discard';
+import {delay} from 'rxjs/operators';
 
 @Component({
   selector: 'app-board',
@@ -21,7 +22,6 @@ export class BoardComponent implements OnInit {
   @Input() name: string;
   @Input() description: GameDescription;
 
-  interval;
   gameResolution: GameResolution;
   isPlaying = true;
   buildingElement?: string = null;
@@ -33,9 +33,7 @@ export class BoardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.interval = setInterval(() => {
-      this.updateGame();
-    }, 500);
+    this.updateGame();
   }
 
   async updateGame() {
@@ -46,13 +44,16 @@ export class BoardComponent implements OnInit {
                                            this.description.longRoadPlayer, this.description.discardCards, this.description.thiefMoved,
                                            this.description.toBuildRoads, this.description.lastDiceResult, this.description.hasEnded,
                                            this.description.offer, this.description.id);
-    const description = await this.stateService.findGame(this.token, this.description.id);
-    if (description.id != null) {
+    const description = await this.stateService.getGameUpdate(this.token, this.description.id);
+    if (!(description === undefined || description == null) && description.id != null) {
       this.description = description;
       if (description.hasEnded) {
         await this.endGame();
+        return;
       }
     }
+    await delay(500);
+    await this.updateGame();
   }
 
   async onClickLand(landNumber: number) {
@@ -169,7 +170,6 @@ export class BoardComponent implements OnInit {
   }
 
   async endGame() {
-    clearInterval(this.interval);
     this.gameResolution = await this.stateService.endGame(this.token, this.description.id);
     this.isPlaying = false;
   }
@@ -182,7 +182,6 @@ export class BoardComponent implements OnInit {
   }
 
   onBackToMenu() {
-    clearInterval(this.interval);
     this.backToMenu.emit();
   }
 

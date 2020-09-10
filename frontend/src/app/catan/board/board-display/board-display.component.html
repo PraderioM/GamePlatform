@@ -5,6 +5,9 @@
 <p *ngIf="!description.thiefMoved">
   {{description.getCurrentPlayer().name}} must move thief
 </p>
+<p *ngIf="description.discardCards">
+  <span *ngFor="let player of getCardDiscardingPlayers()">{{player.name}} </span> must discard cards
+</p>
 
 <canvas #catanBoard width="1400" height="800" class="board" (click)="processClick($event)"></canvas>
 </div>

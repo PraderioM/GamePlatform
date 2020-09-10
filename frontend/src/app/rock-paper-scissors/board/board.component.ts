@@ -3,6 +3,7 @@ import {GameDescription} from '../services/models';
 import {StateService} from '../services/state.service';
 import {Play} from '../services/models';
 import {GameResolution} from '../../services/models';
+import {delay} from 'rxjs/operators';
 
 @Component({
   selector: 'app-board',
@@ -24,25 +25,21 @@ export class BoardComponent implements OnInit {
 
   ngOnInit() {
 
-    this.interval = setInterval(() => {
-      this.updateGame();
-    }, 200);
+    this.updateGame();
   }
 
   async updateGame() {
-    const description = await this.stateService.findGame(this.token, this.description.id);
-    if (description.id != null) {
+    const description = await this.stateService.getGameUpdate(this.token, this.description.id);
+
+    if (!(description === undefined || description == null) && description.id != null) {
       this.description = description;
-      let nActivePlayers = 0;
-      for (const player of description.playerList) {
-        if (player.isActive) {
-          nActivePlayers += 1;
-        }
-      }
       if (description.hasEnded) {
         await this.endGame();
+        return;
       }
     }
+    await delay(500);
+    await this.updateGame();
   }
 
   async makePlay(play: Play) {

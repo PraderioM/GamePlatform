@@ -74,7 +74,8 @@ class Steal(Play):
         await db.execute(f"""
                          UPDATE {active_games_table}
                          SET player_list = $1,
-                             to_steal_players = $2
+                             to_steal_players = $2,
+                             last_updated = now()
                          WHERE id = $3
                          """,
                          database_data['players'],

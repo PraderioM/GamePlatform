@@ -59,7 +59,8 @@ class BuyDevelopment(Play):
                          UPDATE {active_games_table}
                          SET player_list = $1,
                              development_deck = $2,
-                             materials_deck = $3
+                             materials_deck = $3,
+                             last_updated = now()
                          WHERE id = $4
                          """,
                          database_data['players'],
@@ -123,7 +124,8 @@ class PlayKnight(DevelopmentPlay):
                          UPDATE {active_games_table}
                          SET player_list = $1,
                              knight_player = $2,
-                             thief_moved = $3
+                             thief_moved = $3,
+                             last_updated = now()
                          WHERE id = $4
                          """,
                          database_data['players'],
@@ -156,7 +158,8 @@ class PlayRoads(DevelopmentPlay):
         await db.execute(f"""
                          UPDATE {active_games_table}
                          SET player_list = $1,
-                             to_build_roads = $2
+                             to_build_roads = $2,
+                             last_updated = now()
                          WHERE id = $3
                          """,
                          database_data['players'],
@@ -233,7 +236,8 @@ class PlayResources(DevelopmentPlay):
         await db.execute(f"""
                          UPDATE {active_games_table}
                          SET player_list = $1,
-                             materials_deck = $2
+                             materials_deck = $2,
+                             last_updated = now()
                          WHERE id = $3
                          """,
                          database_data['players'],
@@ -289,7 +293,8 @@ class PlayMonopoly(DevelopmentPlay):
     async def update_database(self, db: asyncpg.connection, active_games_table: str, database_data: Dict):
         await db.execute(f"""
                          UPDATE {active_games_table}
-                         SET player_list = $1
+                         SET player_list = $1,
+                             last_updated = now()
                          WHERE id = $2
                          """,
                          database_data['players'],

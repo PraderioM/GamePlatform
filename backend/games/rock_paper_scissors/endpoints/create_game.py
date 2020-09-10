@@ -1,4 +1,3 @@
-import json
 from typing import Dict, Optional, Tuple
 from uuid import uuid4
 
@@ -6,6 +5,7 @@ from aiohttp import web
 import asyncpg
 
 from backend.registration.identify import get_name_from_token
+from backend.games.common.endpoints.create_game import create_game as general_create_game
 from ..models.game import Game
 from ..models.player import Player
 from ..models.vidtory_criterion import VictoryCriterion
@@ -20,21 +20,15 @@ async def create_game(request: web.Request) -> web.Response:
 
     token = request.rel_url.query['token']
 
-    async with request.app['db'].acquire() as db:
-        # If settings are correct we create a new game.
-        new_game, error_game = await get_new_game(db=db, pc=pc, npc=npc, n_plays=n_plays,
-                                                  victory_criterion=victory_criterion, token=token)
-        if error_game is not None:
-            return web.Response(status=200, body=json.dumps(error_game))
-
-        async with db.transaction():
-            await add_new_game_to_database(new_game, db)
-
-            frontend_new_game = new_game.to_frontend()
-            return web.Response(
-                status=200,
-                body=json.dumps(frontend_new_game)
-            )
+    return await general_create_game(pool=request.app['db'],
+                                     token=token,
+                                     get_new_game=lambda db: get_new_game(db,
+                                                                          pc=pc,
+                                                                          npc=npc,
+                                                                          n_plays=n_plays,
+                                                                          victory_criterion=victory_criterion,
+                                                                          token=token),
+                                     add_new_game_to_database=add_new_game_to_database)
 
 
 async def get_new_game(db: asyncpg.Connection, pc: int, npc: int, n_plays: int,

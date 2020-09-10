@@ -55,6 +55,7 @@ class MakeOffer(Play):
         await db.execute(f"""
                          UPDATE {active_games_table}
                          SET offer = $1,
+                             last_updated = now()
                          WHERE id = $2
                          """,
                          database_data['offer'],
@@ -82,6 +83,7 @@ class WithdrawOffer(Play):
         await db.execute(f"""
                          UPDATE {active_games_table}
                          SET offer = $1,
+                             last_updated = now()
                          WHERE id = $2
                          """,
                          database_data['offer'],
@@ -151,7 +153,8 @@ class AcceptOffer(Play):
         await db.execute(f"""
                          UPDATE {active_games_table}
                          SET player_list = $1,
-                             offer = $2
+                             offer = $2,
+                             last_updated = now()
                          WHERE id = $3
                          """,
                          database_data['players'],
@@ -204,7 +207,8 @@ class RejectOffer(Play):
     async def update_database(self, db: asyncpg.connection, active_games_table: str, database_data: Dict):
         await db.execute(f"""
                          UPDATE {active_games_table}
-                         SET offer = $1
+                         SET offer = $1,
+                             last_updated = now()
                          WHERE id = $2
                          """,
                          database_data['offer'],
@@ -316,7 +320,8 @@ class CommerceWithBank(Play):
                          UPDATE {active_games_table}
                          SET player_list = $1,
                              offer = $2,
-                             materials_deck = $3
+                             materials_deck = $3,
+                             last_updated = now()
                          WHERE id = $4
                          """,
                          database_data['players'],

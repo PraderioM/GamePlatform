@@ -71,5 +71,6 @@ async def create_game(request: web.Request) -> web.Response:
                          new_game.gravity)
 
     return await general_create_game(pool=request.app['db'],
+                                     token=token,
                                      get_new_game=get_new_game,
                                      add_new_game_to_database=add_new_game_to_database)

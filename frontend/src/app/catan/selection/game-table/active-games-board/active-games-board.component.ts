@@ -24,7 +24,7 @@ export class ActiveGamesBoardComponent implements OnInit {
   }
 
   async tryEnterGame(activeGame: ActiveGame) {
-    const gameDescription = await this.stateService.findGame(this.token, activeGame.gameId);
+    const gameDescription = await this.stateService.enterGame(this.token, activeGame.gameId);
     if (gameDescription.id != null) {
       this.enterGame.emit(gameDescription);
     } else {

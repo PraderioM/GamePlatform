@@ -75,7 +75,8 @@ class DiscardCards(Play):
                          UPDATE {active_games_table}
                          SET player_list = $1,
                              materials_deck = $2,
-                             discard_cards = $3
+                             discard_cards = $3,
+                             last_updated = now()
                          WHERE id = $4
                          """,
                          database_data['players'],

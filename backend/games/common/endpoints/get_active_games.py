@@ -11,18 +11,16 @@ async def get_active_games(pool: asyncpg.pool.Pool, active_games_table: str,
                            get_games_from_database: Callable[[asyncpg.Connection],
                                                              Awaitable[List[Game]]]) -> web.Response:
     async with pool.acquire() as db:
-        db: asyncpg.Connection = db
-        async with db.transaction():
-            await remove_old_games(db=db, active_games_table=active_games_table)
-            game_list = await get_games_from_database(db)
+        await remove_old_games(db=db, active_games_table=active_games_table)
+        game_list = await get_games_from_database(db)
 
-            return web.Response(
-                status=200,
-                body=json.dumps([game.to_display() for game in game_list if not game.has_ended])
-            )
+        return web.Response(
+            status=200,
+            body=json.dumps([game.to_display() for game in game_list if not game.has_ended])
+        )
 
 
-async def remove_old_games(db: asyncpg.Connection, active_games_table: str, minute_limits: int = 5):
+async def remove_old_games(db: asyncpg.Connection, active_games_table: str, minute_limits: int = 60 * 24):
     # Get ids that need to be removed.
     to_remove_ids = await db.fetch(f"""
                                    SELECT id

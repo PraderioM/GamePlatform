@@ -16,7 +16,7 @@ export class ExistingGameSearchComponent implements OnInit {
   ngOnInit() {
   }
   async tryEnterGame(gameId: string) {
-    const gameDescription = await this.stateService.findGame(this.token, gameId);
+    const gameDescription = await this.stateService.enterGame(this.token, gameId);
     if (gameDescription.id != null) {
       this.enterGame.emit(gameDescription);
     } else {

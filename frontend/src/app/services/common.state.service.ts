@@ -18,10 +18,12 @@ export class CommonStateService {
   }
 
   async endGame(token: string, gameId: string) {
-    return await this.http
+    const resolution = await this.http
       .get<GameResolution>(this.backendURL + '/end-game',
         {params: new HttpParams().set('token', token).set('game_id', gameId)})
       .toPromise();
+    console.log(resolution);
+    return resolution;
   }
 
 }

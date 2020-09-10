@@ -78,8 +78,8 @@ async def login(request: web.Request) -> web.Response:
             # Update the token in the database.
             await db.execute("""
                              UPDATE users
-                             SET token=$1
-                             WHERE name=$2
+                             SET token = $1
+                             WHERE name = $2
                              """, token, name)
 
             return web.Response(

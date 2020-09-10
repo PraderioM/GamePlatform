@@ -32,7 +32,8 @@ class EndTurn(Play):
                          UPDATE {active_games_table}
                          SET current_player_index = $1,
                              player_list = $2,
-                             turn_index = $3
+                             turn_index = $3,
+                             last_updated = now()
                          WHERE id = $4
                          """,
                          database_data['current_player_index'],

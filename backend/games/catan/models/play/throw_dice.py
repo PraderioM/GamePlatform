@@ -47,7 +47,8 @@ class ThrowDice(Play):
                              last_dice_result = $2,
                              materials_deck = $3,
                              discard_cards = $4,
-                             thief_moved = $5
+                             thief_moved = $5,
+                             last_updated = now()
                          WHERE id = $6
                          """,
                          database_data['players'],

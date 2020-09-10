@@ -25,15 +25,23 @@ export class StateService extends CommonStateService {
         .toPromise();
     }
 
-    async findGame(token: string, gameId: string) {
+    async enterGame(token: string, gameId: string) {
       return await this.http
-        .get<GameDescription>(this.backendURL + '/find-game',
+        .get<GameDescription>(this.backendURL + '/enter-game',
+          {params: new HttpParams().set('token', token).set('game_id', gameId)})
+        .toPromise();
+    }
+
+    async getGameUpdate(token: string, gameId: string) {
+      return await this.http
+        .get<GameDescription>(this.backendURL + '/get-game-update',
           {params: new HttpParams().set('token', token).set('game_id', gameId)})
         .toPromise();
     }
 
     async makePlay(token: string, play: Play, gameId: string) {
-      return await this.http.post(this.backendURL + '/make-play',
+      await this.http.post(this.backendURL + '/make-play',
+          '',
           {params: new HttpParams().set('token', token).set('game_id', gameId)
                                           .set('row', play.row.toString()).set('col', play.col.toString())})
         .toPromise();

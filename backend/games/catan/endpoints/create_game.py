@@ -46,7 +46,8 @@ async def create_game(request: web.Request) -> web.Response:
 
         # If settings are correct we create a new game.
         name_list = [await get_name_from_token(token=token, db=db)] + [None] * (npc + pc - 1)
-        color_list = ['red', 'blue', 'green', 'yellow', 'white', 'brown'][:npc+pc]
+        color_list = ['red', 'blue', 'green', 'yellow', 'white', 'brown',
+                      'pink', 'aqua', 'chartreuse', 'gold', 'blanchedalmond', 'chocolate'][:npc+pc]
         # is_bot_list = [False] * pc + [True] * npc
         player_list = [Player(name=name, color=color) for name, color in zip(name_list, color_list)]
 
@@ -71,5 +72,6 @@ async def create_game(request: web.Request) -> web.Response:
                          database_game['land_list'])
 
     return await general_create_game(pool=request.app['db'],
+                                     token=token,
                                      get_new_game=get_new_game,
                                      add_new_game_to_database=add_new_game_to_database)

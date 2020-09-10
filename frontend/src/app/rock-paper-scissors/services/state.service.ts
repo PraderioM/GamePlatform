@@ -24,9 +24,16 @@ export class StateService extends CommonStateService {
         .toPromise();
     }
 
-    async findGame(token: string, gameId: string) {
+    async enterGame(token: string, gameId: string) {
       return await this.http
-        .get<GameDescription>(this.backendURL + '/find-game',
+        .get<GameDescription>(this.backendURL + '/enter-game',
+          {params: new HttpParams().set('token', token).set('game_id', gameId)})
+        .toPromise();
+    }
+
+    async getGameUpdate(token: string, gameId: string) {
+      return await this.http
+        .get<GameDescription>(this.backendURL + '/get-game-update',
           {params: new HttpParams().set('token', token).set('game_id', gameId)})
         .toPromise();
     }
@@ -34,7 +41,8 @@ export class StateService extends CommonStateService {
     async makePlay(token: string, play: Play, gameId: string) {
       const modifier = play.modifier == null ? 'clone' : play.modifier;
       await this.http.post(this.backendURL + '/make-play',
-          {params: new HttpParams().set('token', token)
+        '',
+        {params: new HttpParams().set('token', token)
                                           .set('game_id', gameId)
                                           .set('play', play.play.toString())
                                           .set('modifier', modifier)})

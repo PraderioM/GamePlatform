@@ -3,6 +3,7 @@ from typing import Dict, Optional
 import asyncpg
 
 from backend.games.rock_paper_scissors.models.game import Game
+from backend.games.rock_paper_scissors.models.player import Player
 
 
 async def get_game_from_database(db: asyncpg.Connection, game_id: str) -> Optional[Game]:
@@ -27,3 +28,8 @@ async def get_game_data(game_id: str, db: asyncpg.Connection) -> Optional[Dict]:
                              FROM rock_paper_scissors_active_games
                              WHERE id = $1
                              """, game_id)
+
+
+def get_dummy_frontend_game(description: str) -> Dict:
+    dummy_game = Game(player_list=[Player(name='player1'), Player(name='player2')])
+    return {**dummy_game.to_frontend(), 'description': description}

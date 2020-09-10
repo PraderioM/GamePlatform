@@ -1,5 +1,5 @@
 import {Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
-import {GameDescription, NumberedLand} from '../../services/models';
+import {GameDescription, NumberedLand, Player} from '../../services/models';
 import {assetsPath} from '../../services/constants';
 import {BuildPlay, BuildRoad, BuildSettlement, BuildCity} from '../../services/plays/build';
 import {LandPosition, Port} from './utils/models';
@@ -492,6 +492,15 @@ export class BoardDisplayComponent implements OnInit, OnChanges {
     return neighbourLandIndexes;
   }
 
+  getCardDiscardingPlayers(): Player[] {
+    const playerList: Player[] = [];
+    for (const player of this.description.players) {
+      if (!player.cardsDiscarded) {
+        playerList.push(player);
+      }
+    }
+    return playerList;
+  }
 }
 
 function isNeighbour(land0: LandPosition, land1: LandPosition): boolean {

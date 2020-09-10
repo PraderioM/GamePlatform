@@ -3,6 +3,7 @@ import {GameDescription, Play} from '../services/models';
 import {GameResolution} from '../../services/models';
 import {StateService} from '../services/state.service';
 import { GameResolutionDisplayComponent } from '../../services/common-components/game-resolution-display/game-resolution-display.component';
+import {delay} from 'rxjs/operators';
 
 @Component({
   selector: 'app-board',
@@ -25,21 +26,21 @@ export class BoardComponent implements OnInit {
   constructor(private stateService: StateService) { }
 
   ngOnInit() {
-
-    this.interval = setInterval(() => {
-      this.updateGame();
-    }, 200);
+    this.updateGame();
   }
 
   async updateGame() {
-    const description = await this.stateService.findGame(this.token, this.description.id);
-    if (description.id != null) {
+    const description = await this.stateService.getGameUpdate(this.token, this.description.id);
+    if (! (description === undefined || description == null) && description.id != null) {
       this.description = description;
       const hasEnded = description.rows * description.cols <= description.plays.length;
       if (hasEnded) {
         await this.endGame();
+        return;
       }
     }
+    await delay(500);
+    await this.updateGame();
   }
 
   async makePlay(play: Play) {
