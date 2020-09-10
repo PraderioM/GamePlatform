@@ -31,7 +31,6 @@ async def make_play(pool: asyncpg.pool.Pool,
                     update_database: Callable[[asyncpg.Connection, str, Dict],
                                               Awaitable[None]] = _update_database) -> web.Response:
     async with pool.acquire() as db:
-        db: asyncpg.Connection = db
         async with db.transaction():
             game = await get_game_from_database(db)
 
