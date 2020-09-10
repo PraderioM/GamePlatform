@@ -647,6 +647,18 @@ class Game(BaseGame):
         else:
             last_road = previous_road_combination[-1]
             neighbour_intersections = self.get_neighbour_intersections(segment=last_road)
+
+            # We cannot go back so we need to remove one of the intersections
+            # if the previous road combination was of length at least 2.
+            if len(previous_road_combination) >= 2:
+                second_to_last_road = previous_road_combination[-2]
+                forbidden_intersections = self.get_neighbour_intersections(segment=second_to_last_road)
+                neighbour_intersections = [
+                    intersection
+                    for intersection in neighbour_intersections
+                    if intersection not in forbidden_intersections
+                ]
+
             neighbour_roads = []
             for intersection in neighbour_intersections:
                 if intersection in other_player_built_posts:
