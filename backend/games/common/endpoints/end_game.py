@@ -9,11 +9,11 @@ from backend.registration.identify import get_name_from_token
 
 
 async def end_game(pool: asyncpg.pool.Pool, game_id: str, token: str,
-                   get_game_from_database: Callable[[asyncpg.Connection], Awaitable[Game]],
-                   leader_board_database: str) -> web.Response:
+                   get_game_from_database: Callable[[asyncpg.Connection, str], Awaitable[Game]],
+                   leader_board_table: str) -> web.Response:
 
     async with pool.acquire() as db:
-        game = await get_game_from_database(db)
+        game = await get_game_from_database(db, game_id)
 
         name = await get_name_from_token(token=token, db=db)
         player = game.get_player_from_name(name=name)
@@ -26,7 +26,7 @@ async def end_game(pool: asyncpg.pool.Pool, game_id: str, token: str,
             # Get last played game.
             last_played = await db.fetchval(f"""
                                             SELECT last_played
-                                            FROM {leader_board_database}
+                                            FROM {leader_board_table}
                                             WHERE player_name = $1
                                             """, player.name)
 
@@ -36,7 +36,7 @@ async def end_game(pool: asyncpg.pool.Pool, game_id: str, token: str,
             # new player in the database.
             if last_played is None:
                 await db.execute(f"""
-                                 INSERT INTO {leader_board_database}
+                                 INSERT INTO {leader_board_table}
                                              (player_name, wins, last_played, played, points)
                                  VALUES ($1, $2, $3, 1, $4)
                                  """, player.name, win, game_id, resolution_points)
@@ -44,7 +44,7 @@ async def end_game(pool: asyncpg.pool.Pool, game_id: str, token: str,
             # update its points.
             elif last_played != game_id:
                 await db.execute(f"""
-                                 UPDATE {leader_board_database}
+                                 UPDATE {leader_board_table}
                                  SET last_played = $1, wins = wins + $2, played = played + 1, points = points + $3
                                  WHERE player_name = $4 and last_played != $1
                                  """,

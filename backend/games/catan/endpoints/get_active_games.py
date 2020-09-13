@@ -5,7 +5,7 @@ import asyncpg
 
 from backend.games.common.endpoints.get_active_games import get_active_games as general_get_active_games
 from ..models.game import Game
-from ..constants import ACTIVE_GAMES_TABLE
+from ..global_variables import ACTIVE_GAMES_DICT
 
 
 async def get_active_games(request: web.Request) -> web.Response:
@@ -13,19 +13,10 @@ async def get_active_games(request: web.Request) -> web.Response:
     offset = int(request.rel_url.query.get('offset', '0'))
 
     async def get_games_from_database(db: asyncpg.Connection) -> List[Game]:
-        active_games = await db.fetch(f"""
-                                      SELECT id as id,
-                                             play_list as plays,
-                                             player_list as players,
-                                             extended as extended
-                                      FROM {ACTIVE_GAMES_TABLE}
-                                      ORDER BY creation_date DESC
-                                      LIMIT $1 OFFSET $2
-                                      """, limit, offset)
-
         # Return a list of the desired results
-        return [Game.from_database(json_data=game_data) for game_data in active_games]
+        game_list = [game for game in ACTIVE_GAMES_DICT.values()]
+        return sorted(game_list, key=lambda game: game.last_updated)[offset: offset + limit]
 
     return await general_get_active_games(pool=request.app['db'],
-                                          active_games_table=ACTIVE_GAMES_TABLE,
-                                          get_games_from_database=get_games_from_database)
+                                          get_games_from_database=get_games_from_database,
+                                          remove_old_games=None)

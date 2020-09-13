@@ -1,5 +1,5 @@
 import json
-from typing import Awaitable, Callable, Dict, Tuple
+from typing import Awaitable, Callable, Dict, Optional, Tuple
 
 from aiohttp import web
 import asyncpg
@@ -10,7 +10,7 @@ from backend.registration.updating import update_last_received_update_by_token
 
 async def create_game(pool: asyncpg.pool.Pool,
                       token: str,
-                      get_new_game: Callable[[asyncpg.Connection], Awaitable[Tuple[Game, Dict]]],
+                      get_new_game: Callable[[asyncpg.Connection], Awaitable[Tuple[Game, Optional[Dict]]]],
                       add_new_game_to_database: Callable[[Game, asyncpg.Connection], Awaitable[None]]) -> web.Response:
     async with pool.acquire() as db:
         # If settings are correct we create a new game.

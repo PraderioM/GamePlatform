@@ -8,7 +8,7 @@ from backend.registration.identify import get_name_from_token
 from backend.games.common.endpoints.create_game import create_game as general_create_game
 from ..models.game import Game
 from ..models.player import Player
-from ..constants import ACTIVE_GAMES_TABLE
+from ..global_variables import ACTIVE_GAMES_DICT
 
 
 async def create_game(request: web.Request) -> web.Response:
@@ -55,21 +55,7 @@ async def create_game(request: web.Request) -> web.Response:
                     player_list=player_list, id_=str(uuid4()), extended=extended), None
 
     async def add_new_game_to_database(new_game: Game, db: asyncpg.Connection):
-        database_game = new_game.to_database()
-
-        # Insert game in database.
-        await db.execute(f"""
-                         INSERT INTO {ACTIVE_GAMES_TABLE} (id, player_list, play_list, extended, development_deck,
-                                                           materials_deck, land_list)
-                         VALUES ($1, $2, $3, $4, $5, $6, $7)
-                         """,
-                         new_game.id,
-                         database_game['players'],
-                         database_game['plays'],
-                         new_game.extended,
-                         database_game['development_deck'],
-                         database_game['materials_deck'],
-                         database_game['land_list'])
+        ACTIVE_GAMES_DICT[new_game.id] = new_game
 
     return await general_create_game(pool=request.app['db'],
                                      token=token,

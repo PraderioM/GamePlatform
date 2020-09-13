@@ -2,6 +2,7 @@ from copy import deepcopy
 import json
 from random import choice, shuffle
 from typing import Dict, List, Optional, Set, Union
+from datetime import datetime
 
 import asyncpg
 
@@ -36,7 +37,8 @@ class Game(BaseGame):
                  to_build_roads: int = 0,
                  extended: bool = False,
                  last_dice_result: int = 7,
-                 thief_position: Optional[int] = None):
+                 thief_position: Optional[int] = None,
+                 last_updated: Optional[datetime] = None):
         BaseGame.__init__(self, current_player_index=current_player_index, player_list=player_list,
                           play_list=play_list, id_=id_)
         self.turn_index = turn_index
@@ -53,6 +55,7 @@ class Game(BaseGame):
         self._knight_player = knight_player
         self._long_road_player = long_road_player
         self._thief_position = thief_position
+        self.last_updated = datetime.now() if last_updated is None else last_updated
 
     # region frontend conversion.1
     @classmethod
@@ -216,6 +219,7 @@ class Game(BaseGame):
             play.update_game(self)
             if is_setup:
                 play.setup_round_post_processing(self)
+            self.last_updated = datetime.now()
 
     def reset_offer(self):
         self.offer = None

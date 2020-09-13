@@ -1,19 +1,20 @@
 import json
 from random import shuffle
-from typing import Awaitable, Callable, Dict
+from typing import Awaitable, Callable, Dict, List
 
 from aiohttp import web
 import asyncpg
 
 from backend.games.common.models.game import Game
+from backend.games.common.models.player import Player
 from backend.registration.identify import get_name_from_token
 
 
 async def enter_game(token: str, pool: asyncpg.pool.Pool,
-                     active_games_table: str,
                      game_id: str,
                      get_game_from_database: Callable[[asyncpg.Connection, str], Awaitable[Game]],
                      get_dummy_frontend_game: Callable[[str], Dict],
+                     update_player_list: Callable[[asyncpg.Connection, Game, List[Player], str], Awaitable[None]],
                      shuffle_before_start: bool = False) -> web.Response:
     async with pool.acquire() as db:
         # Get username corresponding to token.
@@ -43,14 +44,10 @@ async def enter_game(token: str, pool: asyncpg.pool.Pool,
             # Add new player if needed and update database.
             if out_game.n_missing > 0:
                 out_game.add_new_player_name(name=player_name)
-                database_player_list = [player.to_database() for player in out_game.player_list]
+                new_player_list = out_game.player_list[:]
                 if shuffle_before_start and out_game.n_missing == 0:
-                    shuffle(database_player_list)
-                await db.execute(f"""
-                                 UPDATE {active_games_table}
-                                 SET last_updated = now(), player_list = $1
-                                 WHERE id = $2
-                                 """, json.dumps(database_player_list), out_game.id)
+                    shuffle(new_player_list)
+                await update_player_list(db, out_game, new_player_list, out_game.id)
 
         # Update player last received update.
         await db.execute(f"""
@@ -64,3 +61,16 @@ async def enter_game(token: str, pool: asyncpg.pool.Pool,
             status=200,
             body=json.dumps(frontend_out_game)
         )
+
+
+def generate_update_player_list(active_games_table: str) -> Callable[[asyncpg.Connection, Game, List[Player], str],
+                                                                     Awaitable[None]]:
+    async def update_player_list(db: asyncpg.Connection, game: Game, player_list: List[Player], game_id: str):
+        database_player_list = [player.to_database() for player in player_list]
+        await db.execute(f"""
+                         UPDATE {active_games_table}
+                         SET last_updated = now(), player_list = $1
+                         WHERE id = $2
+                         """, json.dumps(database_player_list), game_id)
+
+    return update_player_list

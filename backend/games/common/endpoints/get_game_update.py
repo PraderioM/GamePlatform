@@ -9,23 +9,24 @@ from backend.games.common.models.game import Game
 from backend.registration.updating import get_last_received_update_from_token, update_last_received_update_by_token
 
 
-async def _get_last_updated_time(db: asyncpg.Connection, active_games_table: str, game_id: str) -> Optional[time]:
-    return await db.fetchval(f"""
-                             SELECT last_updated
-                             FROM {active_games_table}
-                             WHERE id = $1
-                             """, game_id)
+def generate_get_last_updated_time(active_games_table: str) -> Callable[[asyncpg.Connection, str],
+                                                                        Awaitable[Optional[time]]]:
+    async def get_last_updated_time(db: asyncpg.Connection, game_id: str) -> Optional[time]:
+        return await db.fetchval(f"""
+                                 SELECT last_updated
+                                 FROM {active_games_table}
+                                 WHERE id = $1
+                                 """, game_id)
+
+    return get_last_updated_time
 
 
 async def get_game_update(token: str, pool: asyncpg.pool.Pool,
-                          active_games_table: str,
                           game_id: str,
                           get_game_from_database: Callable[[asyncpg.Connection, str], Awaitable[Game]],
                           get_dummy_frontend_game: Callable[[str], Dict],
-                          get_last_updated_time: Callable[
-                              [asyncpg.Connection, str, str],
-                              Awaitable[Optional[time]]
-                          ] = _get_last_updated_time) -> web.Response:
+                          get_last_updated_time: Callable[[asyncpg.Connection, str],
+                                                          Awaitable[Optional[time]]]) -> web.Response:
     async with pool.acquire() as db:
         # Get last time player has received an update.
         last_received_update = await get_last_received_update_from_token(token=token, db=db)
@@ -39,7 +40,7 @@ async def get_game_update(token: str, pool: asyncpg.pool.Pool,
             )
 
         # Get last time game was updated.
-        last_updated = await get_last_updated_time(db, active_games_table, game_id)
+        last_updated = await get_last_updated_time(db, game_id)
 
         # If unable to do so then game does not exist and we return an error message.
         if last_updated is None:

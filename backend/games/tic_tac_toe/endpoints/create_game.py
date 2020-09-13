@@ -6,6 +6,7 @@ import asyncpg
 
 from backend.registration.identify import get_name_from_token
 from backend.games.common.endpoints.create_game import create_game as general_create_game
+from ..constants import ACTIVE_GAMES_TABLE
 from ..models.game import Game
 from ..models.player import Player
 
@@ -63,8 +64,8 @@ async def create_game(request: web.Request) -> web.Response:
     async def add_new_game_to_database(new_game: Game, db: asyncpg.Connection):
         database_game = new_game.to_database()
         # Inset name in database.
-        await db.execute("""
-                         INSERT INTO tic_tac_toe_active_games (id, rows, cols, player_list, play_list, gravity)
+        await db.execute(f"""
+                         INSERT INTO {ACTIVE_GAMES_TABLE} (id, rows, cols, player_list, play_list, gravity)
                          VALUES ($1, $2, $3, $4, $5, $6)
                          """, new_game.id, new_game.rows, new_game.cols,
                          database_game['players'], database_game['plays'],
