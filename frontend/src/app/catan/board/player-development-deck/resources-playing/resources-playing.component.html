@@ -1,11 +1,18 @@
-<div class="ver-container">
+<div>
   <p>select materials</p>
-  <div class="hor-container">
-    <img *ngFor="let material of ['wood', 'brick', 'sheep', 'wheat', 'stone']"
+  <div class="container">
+    <img *ngFor="let material of getMaterials()"
          [src]="imgPaths[material]"
-         [ngClass]="getNgClass(material)"
+         [ngClass]="getNgClass1(material)"
          alt="{{material}}"
-         (click)="updateResources(material)">
+         (click)="updateResource1(material)">
+  </div>
+  <div class="container">
+    <img *ngFor="let material of getMaterials()"
+         [src]="imgPaths[material]"
+         [ngClass]="getNgClass2(material)"
+         alt="{{material}}"
+         (click)="updateResource2(material)">
   </div>
   <button (click)="submit()">get resources</button>
   <button (click)="goBack()">back</button>

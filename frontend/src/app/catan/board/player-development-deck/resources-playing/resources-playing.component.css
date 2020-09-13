@@ -8,7 +8,13 @@
   border-style: solid;
 }
 
-.doubly-selected-card {
-  border-color: red;
-  border-style: solid;
+.container {
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+  flex-flow: wrap;
+  justify-content: center;
+  align-content: center;
 }
+

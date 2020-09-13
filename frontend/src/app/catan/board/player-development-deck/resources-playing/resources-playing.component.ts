@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {PlayMonopoly, PlayResources} from '../../../services/plays/development';
+import {PlayResources} from '../../../services/plays/development';
 import {assetsPath} from '../../../services/constants';
 
 @Component({
@@ -28,9 +28,20 @@ export class ResourcesPlayingComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  updateResources(newResource: string) {
-    this.resource1 = this.resource2;
-    this.resource2 = newResource;
+  updateResource1(newResource: string) {
+    if (newResource === this.resource1) {
+      this.resource1 = null;
+    } else {
+      this.resource1 = newResource;
+    }
+  }
+
+  updateResource2(newResource: string) {
+    if (newResource === this.resource2) {
+      this.resource2 = null;
+    } else {
+      this.resource2 = newResource;
+    }
   }
 
   goBack() {
@@ -44,14 +55,20 @@ export class ResourcesPlayingComponent implements OnInit {
     }
   }
 
-  getNgClass(material: string) {
-    let isOnceSelected = this.resource1 === material && this.resource2 !== material;
-    isOnceSelected = isOnceSelected || (this.resource1 !== material && this.resource2 === material);
-
+  getNgClass1(material: string) {
     return {card: true,
-      'selected-card': isOnceSelected,
-      'doubly-selected-card': this.resource1 === material && this.resource2 === 'wood',
+      'selected-card': this.resource1 === material,
     };
+  }
+
+  getNgClass2(material: string) {
+    return {card: true,
+      'selected-card': this.resource2 === material,
+    };
+  }
+
+  getMaterials(): string[] {
+    return ['wood', 'brick', 'sheep', 'wheat', 'stone'];
   }
 
 }
