@@ -307,7 +307,7 @@ class BuildCity(BuildPlay):
         return built_cities < game.board.n_per_player_cities
 
     def is_position_valid(self, game) -> bool:
-        for play_index, play in enumerate(game.play_list):
+        for play in game.play_list:
             is_settlement = isinstance(play, BuildSettlement)
             is_correct_player = play.player.name == self.player.name
             is_same_position = play.position == self.position
@@ -319,7 +319,10 @@ class BuildCity(BuildPlay):
         # Remove previous settlement before replacing it with a city.
         remove_index = None
         for play_index, play in enumerate(game.play_list):
-            if isinstance(play, BuildSettlement) and play.player.name == self.player.name:
+            is_settlement = isinstance(play, BuildSettlement)
+            is_correct_player = play.player.name == self.player.name
+            is_same_position = play.position == self.position
+            if is_settlement and is_correct_player and is_same_position:
                 remove_index = play_index
                 break
         game.play_list.pop(remove_index)
