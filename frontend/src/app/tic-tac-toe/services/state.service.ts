@@ -16,20 +16,26 @@ export class StateService extends CommonStateService {
       } else {
         gravityStr = 'false';
       }
-      return await this.http
+      console.log('creating game.');
+      const response = await this.http
         .get<GameDescription>(this.backendURL + '/create-game',
           {params: new HttpParams().set('token', token)
               .set('rows', rows.toString()).set('cols', cols.toString())
               .set('npc', npc.toString()).set('pc', pc.toString())
               .set('gravity', gravityStr)})
         .toPromise();
+      console.log('done.');
+      return response;
     }
 
     async enterGame(token: string, gameId: string) {
-      return await this.http
+      console.log('entering game.');
+      const response = await this.http
         .get<GameDescription>(this.backendURL + '/enter-game',
           {params: new HttpParams().set('token', token).set('game_id', gameId)})
         .toPromise();
+      console.log('done.');
+      return response;
     }
 
     async getGameUpdate(token: string, gameId: string) {
@@ -40,18 +46,23 @@ export class StateService extends CommonStateService {
     }
 
     async makePlay(token: string, play: Play, gameId: string) {
+      console.log('making play.');
       await this.http.post(this.backendURL + '/make-play',
           '',
           {params: new HttpParams().set('token', token).set('game_id', gameId)
                                           .set('row', play.row.toString()).set('col', play.col.toString())})
         .toPromise();
+      console.log('done.');
     }
 
     async getActiveGames(token: string) {
-      return await this.http
+      console.log('Getting active games.');
+      const response = await this.http
         .get<ActiveGame[]>(this.backendURL + '/get-active-games',
           {params: new HttpParams().set('token', token)})
         .toPromise();
+      console.log('done.');
+      return response;
     }
 
 }
