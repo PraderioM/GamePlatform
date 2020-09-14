@@ -72,5 +72,6 @@ def generate_update_player_list(active_games_table: str) -> Callable[[asyncpg.Co
                          SET last_updated = now(), player_list = $1
                          WHERE id = $2
                          """, json.dumps(database_player_list), game_id)
+        game.player_list = player_list
 
     return update_player_list
