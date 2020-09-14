@@ -23,13 +23,14 @@ async def get_active_games(pool: asyncpg.pool.Pool,
 
 
 def generate_remove_old_games(active_games_table: str,
-                              minute_limits: int = 60 * 24) -> Callable[[asyncpg.Connection], Awaitable[None]]:
+                              minute_limits: int = 30) -> Callable[[asyncpg.Connection], Awaitable[None]]:
     async def remove_old_games(db: asyncpg.Connection):
-        # Get ids that need to be removed.
+        # # Get ids that need to be removed.
         to_remove_ids = await db.fetch(f"""
                                        SELECT id
                                        FROM {active_games_table}
-                                       WHERE (now()::time - last_updated) > INTERVAL '{minute_limits} mins' 
+                                       WHERE (now()::time - last_updated) > INTERVAL '{minute_limits} mins' or
+                                             (now()::time - last_updated) < INTERVAL '0 mins'
                                        """)
         if len(to_remove_ids) == 0:
             return
