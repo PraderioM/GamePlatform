@@ -39,7 +39,8 @@ async def update_database(db: asyncpg.connection, game: Game):
                      UPDATE {ACTIVE_GAMES_TABLE}
                      SET current_player_index = $1,
                          player_list = $2,
-                         play_list = $3
+                         play_list = $3,
+                         last_updated = now()
                      WHERE id = $4
                      """,
                      database_data['current_player_index'],
