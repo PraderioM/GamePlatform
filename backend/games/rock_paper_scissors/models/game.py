@@ -1,6 +1,7 @@
 import json
 from typing import List, Optional, Tuple, Dict
 
+import asyncpg
 
 from ..models.play_mode import PlayMode
 from ..models.vidtory_criterion import VictoryCriterion
@@ -47,7 +48,7 @@ class Game:
 
     def to_database(self) -> Dict:
         return {
-            'player_list': [player.to_database() for player in self.player_list],
+            'player_list': json.dumps([player.to_database() for player in self.player_list]),
             'n_plays': self.n_plays,
             'victory_criterion': self.victory_criterion.name,
             'play_mode': self.play_mode.name,
@@ -56,7 +57,7 @@ class Game:
             'id': self.id,
         }
 
-    def to_frontend(self):
+    def to_frontend(self, db: asyncpg.Connection):
         return {
             'playerList': [player.to_frontend() for player in self.player_list],
             'nPlays': self.n_plays,
@@ -65,14 +66,14 @@ class Game:
             'hasEnded': self.has_ended,
             'totalPoints': self.total_points,
             'currentRound': self.current_round,
-            'id': self.id,
+            'id': str(self.id),
         }
 
     def to_game_resolution(self, player: Player) -> Dict:
         if player is None:
             return {'isObserver': True}
 
-        current_player = self.get_player_by_name(player.name)
+        current_player = self.get_player_from_name(player.name)
 
         sorted_scores = sorted(
             [
@@ -123,11 +124,11 @@ class Game:
         self.current_round += 1
 
     def resolution_points(self, player: Player) -> int:
-        player = self.get_player_by_name(player.name)
+        player = self.get_player_from_name(player.name)
         return player.last_played_round
 
     def add_play(self, play: Play):
-        player = self.get_player_by_name(play.player.name)
+        player = self.get_player_from_name(play.player.name)
 
         # Do not update if player is not playing.
         if player is None or not player.is_active or player.last_played_round == self.current_round:
@@ -149,13 +150,18 @@ class Game:
         self.play_round()
 
     def add_new_player_name(self, name: str):
+        # Cannot add twice the same player.
         for player in self.player_list:
-            if player.is_bot or player.name is not None:
-                continue
+            if player.name == name:
+                return
 
-            player.name = name
+        if self.n_missing > 0:
+            for player in self.player_list:
+                if player.name is None and not player.is_bot:
+                    player.name = name
+                    break
 
-    def get_player_by_name(self, name: str) -> Optional[Player]:
+    def get_player_from_name(self, name: str) -> Optional[Player]:
         for player in self.player_list:
             if player.name == name:
                 return player
@@ -256,7 +262,7 @@ class Game:
         return len(self.registered_players)
 
     @property
-    def n_missing_players(self) -> int:
+    def n_missing(self) -> int:
         return self.n_players - self.n_registered_players
 
     @property

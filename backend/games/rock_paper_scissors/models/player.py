@@ -18,7 +18,7 @@ class Player:
         self.name = name
         self.is_bot = is_bot
         self.last_play = last_play
-        self.modifier = modifier
+        self._modifier = modifier
         self._points = points
         self.imaginary_points = imaginary_points
         self.current_play = current_play
@@ -106,3 +106,14 @@ class Player:
     @points.setter
     def points(self, val: int):
         self._points = val
+
+    @property
+    def modifier(self) -> Modifier:
+        if self._modifier is None:
+            return Modifier.CLONE
+        else:
+            return self._modifier
+
+    @modifier.setter
+    def modifier(self, mod: Optional[Modifier]):
+        self._modifier = mod

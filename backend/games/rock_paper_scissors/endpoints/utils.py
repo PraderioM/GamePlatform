@@ -4,6 +4,7 @@ import asyncpg
 
 from backend.games.rock_paper_scissors.models.game import Game
 from backend.games.rock_paper_scissors.models.player import Player
+from ..constants import ACTIVE_GAMES_TABLE
 
 
 async def get_game_from_database(db: asyncpg.Connection, game_id: str) -> Optional[Game]:
@@ -17,7 +18,7 @@ async def get_game_from_database(db: asyncpg.Connection, game_id: str) -> Option
 
 
 async def get_game_data(game_id: str, db: asyncpg.Connection) -> Optional[Dict]:
-    return await db.fetchrow("""
+    return await db.fetchrow(f"""
                              SELECT id AS id,
                                     player_list AS player_list, 
                                     current_round AS current_round,
@@ -25,11 +26,11 @@ async def get_game_data(game_id: str, db: asyncpg.Connection) -> Optional[Dict]:
                                     play_mode AS play_mode,
                                     total_points AS total_points,
                                     n_plays AS n_plays
-                             FROM rock_paper_scissors_active_games
+                             FROM {ACTIVE_GAMES_TABLE}
                              WHERE id = $1
                              """, game_id)
 
 
 def get_dummy_frontend_game(description: str) -> Dict:
     dummy_game = Game(player_list=[Player(name='player1'), Player(name='player2')])
-    return {**dummy_game.to_frontend(), 'description': description}
+    return {**dummy_game.to_frontend(None), 'description': description}
