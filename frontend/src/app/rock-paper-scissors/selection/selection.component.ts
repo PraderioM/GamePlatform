@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {GameDescription} from '../services/models';
+import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
+import { GameDescription } from '../services/models';
 import {StateService} from '../services/state.service';
 
 @Component({
@@ -21,6 +21,7 @@ export class SelectionComponent implements OnInit {
   }
 
   onEnterGame(gameDescription: GameDescription) {
+    console.log('Selection: entering game');
     this.enterGame.emit(gameDescription);
   }
 
@@ -40,6 +41,8 @@ export class SelectionComponent implements OnInit {
   }
 
   onBackToGameSelection() {
+    console.log('Selection: back to game selection');
     this.backToGameSelection.emit();
   }
+
 }

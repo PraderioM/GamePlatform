@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RockPaperScissorsComponent } from './rock-paper-scissors.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {HttpClientModule} from '@angular/common/http';
-import {StateService} from '../services/state.service';
+import {StateService} from './services/state.service';
 import {SelectionComponent} from './selection/selection.component';
 import {BoardComponent} from './board/board.component';
 import {GameTableComponent} from './selection/game-table/game-table.component';
@@ -34,6 +34,7 @@ const MODULES = [
   CommonModule,
   NgbModule,
   CommonComponentsModule,
+  ReactiveFormsModule,
 ];
 
 @Injectable()
@@ -42,10 +43,7 @@ const MODULES = [
   exports: [
     RockPaperScissorsComponent,
   ],
-  imports: [
-    MODULES,
-    ReactiveFormsModule
-  ],
+  imports: MODULES,
   providers: [ HttpClientModule, StateService ],
 })
 export class RockPaperScissorsModule { }

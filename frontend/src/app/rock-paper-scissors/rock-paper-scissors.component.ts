@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {GameDescription} from '../catan/services/models';
+import {GameDescription} from './services/models';
 
 @Component({
   selector: 'app-rock-paper-scissors',
