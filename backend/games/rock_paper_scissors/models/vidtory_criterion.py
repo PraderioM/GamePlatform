@@ -4,7 +4,7 @@ import enum
 class VictoryCriterion(enum.Enum):
     BY_PLAY = 0
     BY_PLAYER = 1
-    BY_POINTS = 1
+    BY_POINTS = 2
 
     @classmethod
     def from_name(cls, criterion_name: str) -> 'VictoryCriterion':
