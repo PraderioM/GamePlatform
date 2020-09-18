@@ -12,7 +12,7 @@ import {MoveThiefPlay} from './plays/move.thief';
 import {ThrowDicePlay} from './plays/throw.dice';
 import {Steal} from './plays/steal';
 
-const availableList: boolean[] = [true];
+let locked = false;
 
 @Injectable()
 export class StateService extends CommonStateService {
@@ -21,8 +21,8 @@ export class StateService extends CommonStateService {
   }
 
     async createGame(token: string, npc: number, pc: number, expansion: boolean) {
-      const available = availableList.pop();
-      if (available) {
+      if (!locked) {
+        locked = true;
         let expansionStr: string;
         if (expansion) {
           expansionStr = 'true';
@@ -38,26 +38,21 @@ export class StateService extends CommonStateService {
                 .set('expansion', expansionStr)
             })
           .toPromise();
-        availableList.push(true);
+        locked = false;
         return GameDescription.fromJSON(response);
       }
     }
 
     async enterGame(token: string, gameId: string) {
-      const available = availableList.pop();
-      if (available) {
-        console.log('entering game.');
-        const response = await this.http
-          .get<GameDescription>(this.backendURL + '/enter-game',
-            {params: new HttpParams().set('token', token).set('game_id', gameId)})
-          .toPromise();
-        if (response === undefined || response == null) {
-          availableList.push(true);
-          return null;
-        } else {
-          availableList.push(true);
-          return GameDescription.fromJSON(response);
-        }
+      console.log('entering game.');
+      const response = await this.http
+        .get<GameDescription>(this.backendURL + '/enter-game',
+          {params: new HttpParams().set('token', token).set('game_id', gameId)})
+        .toPromise();
+      if (response === undefined || response == null) {
+        return null;
+      } else {
+        return GameDescription.fromJSON(response);
       }
     }
 
@@ -74,8 +69,8 @@ export class StateService extends CommonStateService {
     }
 
     async makeBuildPlay(token: string, play: BuildPlay, gameId: string) {
-      const available = availableList.pop();
-      if (available) {
+      if (!locked) {
+        locked = true;
         console.log('building ', play.playName);
         await this.http.post(this.backendURL + '/make-play',
           '',
@@ -85,13 +80,13 @@ export class StateService extends CommonStateService {
           )
           .toPromise();
         console.log('done');
-        availableList.push(true);
+        locked = false;
       }
     }
 
     async stealPlayer(token: string, play: Steal, gameId: string) {
-      const available = availableList.pop();
-      if (available) {
+      if (!locked) {
+        locked = true;
         console.log('stealing from ', play.player.name);
         await this.http.post(this.backendURL + '/make-play',
           '',
@@ -101,13 +96,13 @@ export class StateService extends CommonStateService {
           )
           .toPromise();
         console.log('done');
-        availableList.push(true);
+        locked = false;
       }
     }
 
     async makeOffer(token: string, play: CommercePlay, gameId: string) {
-      const available = availableList.pop();
-      if (available) {
+      if (!locked) {
+        locked = true;
         console.log('making offer.');
         await this.http.post(this.backendURL + '/make-play',
           '',
@@ -117,13 +112,13 @@ export class StateService extends CommonStateService {
           )
           .toPromise();
         console.log('done');
-        availableList.push(true);
+        locked = false;
       }
     }
 
     async acceptOffer(token: string, play: AcceptOffer, gameId: string) {
-      const available = availableList.pop();
-      if (available) {
+      if (!locked) {
+        locked = true;
         console.log('accepting offer.');
         await this.http.post(this.backendURL + '/make-play',
           '',
@@ -133,13 +128,13 @@ export class StateService extends CommonStateService {
           )
           .toPromise();
         console.log('done');
-        availableList.push(true);
+        locked = false;
       }
     }
 
     async rejectOffer(token: string, play: RejectOffer, gameId: string) {
-      const available = availableList.pop();
-      if (available) {
+      if (!locked) {
+        locked = true;
         console.log('rejecting offer.');
         await this.http.post(this.backendURL + '/make-play',
           '',
@@ -149,13 +144,13 @@ export class StateService extends CommonStateService {
           )
           .toPromise();
         console.log('done');
-        availableList.push(true);
+        locked = false;
       }
     }
 
     async withdrawOffer(token: string, play: WithdrawOffer, gameId: string) {
-      const available = availableList.pop();
-      if (available) {
+      if (!locked) {
+        locked = true;
         console.log('withdrawing offer.');
         await this.http.post(this.backendURL + '/make-play',
           '',
@@ -165,13 +160,13 @@ export class StateService extends CommonStateService {
           )
           .toPromise();
         console.log('done');
-        availableList.push(true);
+        locked = false;
       }
     }
 
   async buyDevelopment(token: string, play: BuyDevelopment, gameId: string) {
-    const available = availableList.pop();
-    if (available) {
+    if (!locked) {
+      locked = true;
       console.log('buying development.');
       await this.http.post(this.backendURL + '/make-play',
         '',
@@ -181,13 +176,14 @@ export class StateService extends CommonStateService {
         )
         .toPromise();
       console.log('done');
-      availableList.push(true);
+      locked = false;
     }
   }
 
   async playKnight(token: string, play: PlayKnight, gameId: string) {
-    const available = availableList.pop();
-    if (available) {
+    if (!locked) {
+      locked = true;
+
       console.log('Playing knight.');
       await this.http.post(this.backendURL + '/make-play',
         '',
@@ -197,13 +193,14 @@ export class StateService extends CommonStateService {
         )
         .toPromise();
       console.log('done');
-      availableList.push(true);
+      locked = false;
     }
   }
 
   async playRoads(token: string, play: PlayRoads, gameId: string) {
-    const available = availableList.pop();
-    if (available) {
+    if (!locked) {
+      locked = true;
+
       console.log('Playing ', play.playName);
       await this.http.post(this.backendURL + '/make-play',
         '',
@@ -213,13 +210,13 @@ export class StateService extends CommonStateService {
         )
         .toPromise();
       console.log('done');
-      availableList.push(true);
+      locked = false;
     }
   }
 
   async playResources(token: string, play: PlayResources, gameId: string) {
-    const available = availableList.pop();
-    if (available) {
+    if (!locked) {
+      locked = true;
       console.log('getting  ', play.resource1, ' and ', play.resource2);
       await this.http.post(this.backendURL + '/make-play',
         '',
@@ -229,13 +226,13 @@ export class StateService extends CommonStateService {
         )
         .toPromise();
       console.log('done');
-      availableList.push(true);
+      locked = false;
     }
   }
 
   async playMonopoly(token: string, play: PlayMonopoly, gameId: string) {
-    const available = availableList.pop();
-    if (available) {
+    if (!locked) {
+      locked = true;
       console.log('Monopolizing  ', play.material);
       await this.http.post(this.backendURL + '/make-play',
         '',
@@ -245,13 +242,13 @@ export class StateService extends CommonStateService {
         )
         .toPromise();
       console.log('done');
-      availableList.push(true);
+      locked = false;
     }
   }
 
   async discardPlay(token: string, play: DiscardPlay, gameId: string) {
-    const available = availableList.pop();
-    if (available) {
+    if (!locked) {
+      locked = true;
       console.log('Discarding cards.');
       await this.http.post(this.backendURL + '/make-play',
         '',
@@ -261,13 +258,13 @@ export class StateService extends CommonStateService {
         )
         .toPromise();
       console.log('done');
-      availableList.push(true);
+      locked = false;
     }
   }
 
   async endTurn(token: string, play: EndTurnPlay, gameId: string) {
-    const available = availableList.pop();
-    if (available) {
+    if (!locked) {
+      locked = true;
       console.log('Ending turn.');
       await this.http.post(this.backendURL + '/make-play',
         '',
@@ -277,13 +274,13 @@ export class StateService extends CommonStateService {
         )
         .toPromise();
       console.log('done');
-      availableList.push(true);
+      locked = false;
     }
   }
 
   async moveThief(token: string, play: MoveThiefPlay, gameId: string) {
-    const available = availableList.pop();
-    if (available) {
+    if (!locked) {
+      locked = true;
       console.log('Moving thief to position ', play.position);
       await this.http.post(this.backendURL + '/make-play',
         '',
@@ -293,13 +290,13 @@ export class StateService extends CommonStateService {
         )
         .toPromise();
       console.log('done');
-      availableList.push(true);
+      locked = false;
     }
   }
 
   async throwDice(token: string, play: ThrowDicePlay, gameId: string) {
-    const available = availableList.pop();
-    if (available) {
+    if (!locked) {
+      locked = true;
       console.log('Throwing dice.');
       await this.http.post(this.backendURL + '/make-play',
         '',
@@ -309,13 +306,13 @@ export class StateService extends CommonStateService {
         )
         .toPromise();
       console.log('done');
-      availableList.push(true);
+      locked = false;
     }
   }
 
     async getActiveGames(token: string) {
-      const available = availableList.pop();
-      if (available) {
+      if (!locked) {
+        locked = true;
         const response = await this.http
           .get<ActiveGame[]>(this.backendURL + '/get-active-games',
             {params: new HttpParams().set('token', token)})
@@ -324,7 +321,7 @@ export class StateService extends CommonStateService {
         for (const activeGameData of response) {
           activeGameList.push(ActiveGame.fromJSON(activeGameData));
         }
-        availableList.push(true);
+        locked = false;
         return activeGameList;
       }
     }
