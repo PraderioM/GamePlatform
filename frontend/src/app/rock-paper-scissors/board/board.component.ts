@@ -3,7 +3,6 @@ import {GameDescription} from '../services/models';
 import {StateService} from '../services/state.service';
 import {Play} from '../services/models';
 import {GameResolution} from '../../services/models';
-import {delay} from 'rxjs/operators';
 
 @Component({
   selector: 'app-board',
@@ -19,12 +18,11 @@ export class BoardComponent implements OnInit {
   interval;
   gameResolution: GameResolution;
   isPlaying = true;
-  instructions = 'Follow this <a href="https://www.smbc-comics.com/comic/2011-01-21">link</a> for instructions on how to play.';
+  link = 'https://www.smbc-comics.com/comic/2011-01-21';
 
   constructor(private stateService: StateService) { }
 
   ngOnInit() {
-
     this.updateGame();
   }
 
@@ -38,8 +36,7 @@ export class BoardComponent implements OnInit {
         return;
       }
     }
-    await delay(500);
-    await this.updateGame();
+    setTimeout(this.updateGame.bind(this), 500);
   }
 
   async makePlay(play: Play) {

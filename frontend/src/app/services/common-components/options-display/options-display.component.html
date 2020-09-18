@@ -1,4 +1,9 @@
 <p> Game id: {{gameId}}</p>
 <button (click)="toggleShowInstructions()">{{getInstructionsHeader()}}</button>
-<p *ngIf="showInstructions">{{instructions}}</p>
+<p *ngIf="showInstructions && instructions != null && instructions != undefined">{{instructions}}</p>
+<p *ngIf="showInstructions && link != null && link != undefined">
+  Follow this
+  <a [href]="link">link</a>
+  for instructions on how to play.
+</p>
 <button (click)="backToMenu.emit()">Back to menu</button>

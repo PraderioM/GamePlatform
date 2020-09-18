@@ -9,6 +9,7 @@ export class OptionsDisplayComponent implements OnInit {
   @Output() backToMenu = new EventEmitter<void>();
   @Input() gameId: string;
   @Input() instructions: string;
+  @Input() link?: string;
 
   showInstructions = false;
 

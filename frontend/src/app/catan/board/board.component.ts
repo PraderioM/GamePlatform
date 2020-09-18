@@ -9,7 +9,6 @@ import {BuyDevelopment, PlayKnight, PlayMonopoly, PlayResources, PlayRoads} from
 import {EndTurnPlay} from '../services/plays/end.turn';
 import {AcceptOffer, CommerceWithBank, MakeOffer, RejectOffer, WithdrawOffer} from '../services/plays/commerce';
 import {DiscardPlay} from '../services/plays/discard';
-import {delay} from 'rxjs/operators';
 
 @Component({
   selector: 'app-board',
@@ -52,8 +51,7 @@ export class BoardComponent implements OnInit {
         return;
       }
     }
-    await delay(500);
-    await this.updateGame();
+    setTimeout(this.updateGame.bind(this), 500);
   }
 
   async onClickLand(landNumber: number) {

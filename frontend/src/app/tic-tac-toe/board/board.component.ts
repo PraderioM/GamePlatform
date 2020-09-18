@@ -2,8 +2,6 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {GameDescription, Play} from '../services/models';
 import {GameResolution} from '../../services/models';
 import {StateService} from '../services/state.service';
-import { GameResolutionDisplayComponent } from '../../services/common-components/game-resolution-display/game-resolution-display.component';
-import {delay} from 'rxjs/operators';
 
 @Component({
   selector: 'app-board',
@@ -39,8 +37,7 @@ export class BoardComponent implements OnInit {
         return;
       }
     }
-    await delay(500);
-    await this.updateGame();
+    setTimeout(this.updateGame.bind(this), 500);
   }
 
   async makePlay(play: Play) {

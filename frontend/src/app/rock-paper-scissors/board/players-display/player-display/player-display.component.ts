@@ -42,17 +42,17 @@ export class PlayerDisplayComponent implements OnInit {
 
   getLastPlayName() {
     if (this.hasPlayed()) {
-      getPlayName(this.player.lastPlay);
+      return getPlayName(this.player.lastPlay);
     } else {
-      getPlayName(this.player.currentPlay);
+      return getPlayName(this.player.currentPlay);
     }
   }
 
   getLastPlayImage() {
     if (this.hasPlayed()) {
-      getPlayImage(this.player.lastPlay);
+      return getPlayImage(this.player.lastPlay);
     } else {
-      getPlayImage(this.player.currentPlay);
+      return getPlayImage(this.player.currentPlay);
     }
   }
 

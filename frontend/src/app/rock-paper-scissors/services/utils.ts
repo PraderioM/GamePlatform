@@ -8,7 +8,7 @@ export function getModifierImage(modifier: string): string {
 
 export function getPlayImage(play?: number): string {
   const playsPath = assetsPath.concat('/plays');
-  if (play === null) {
+  if (play === null || play === undefined) {
     return playsPath.concat('/do_something.png');
   } else if (play === 0) {
     return playsPath.concat('/time_machine.png');
