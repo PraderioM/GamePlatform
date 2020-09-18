@@ -75,7 +75,7 @@ class BuildPlay(Play):
         if is_free:
             self.update_free_count(game)
 
-        game.get_player_score(self.player)
+        game.get_player_score(game.get_player_by_name(self.player.name))
         self.update_post_processing(game)
 
     async def update_database(self, db: asyncpg.connection, active_games_table: str, database_data: Dict):

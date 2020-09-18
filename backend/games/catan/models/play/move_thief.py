@@ -16,7 +16,8 @@ class MoveThief(Play):
     def can_update_game(self, game) -> bool:
         if game.discard_cards or game.to_build_roads > 0:
             return False
-        return game.thief_position != self.dst_index and self.dst_index >= 0 and game.is_current_player(self.player)
+        player = game.get_player_by_name(self.player.name)
+        return game.thief_position != self.dst_index and self.dst_index >= 0 and game.is_current_player(player)
 
     def update_game(self, game):
         game.move_thief(self)

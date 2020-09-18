@@ -107,7 +107,7 @@ class AcceptOffer(Play):
     def can_update_game(self, game) -> bool:
         if game.offer is None:
             return False
-        elif not game.offer.is_target_player(self.player):
+        elif not game.offer.is_target_player(game.get_player_by_name(self.player.name)):
             return False
         elif not game.thief_moved:
             return False
@@ -179,7 +179,7 @@ class RejectOffer(Play):
     def can_update_game(self, game) -> bool:
         if game.offer is None:
             return False
-        elif not game.offer.is_target_player(self.player):
+        elif not game.offer.is_target_player(game.get_player_by_name(self.player.name)):
             return False
         elif not game.thief_moved:
             return False

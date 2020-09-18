@@ -11,7 +11,8 @@ from .core import Play, register_play
 @register_play(play_name='throw_dice')
 class ThrowDice(Play):
     def can_update_game(self, game) -> bool:
-        return not self.player.dice_thrown and game.is_current_player(self.player)
+        player: Player = game.get_player_by_name(self.player.name)
+        return not player.dice_thrown and game.is_current_player(player)
 
     def update_game(self, game):
         # Get random dice throw.

@@ -75,7 +75,7 @@ class DevelopmentPlay(Play):
         return {}
 
     def can_update_game(self, game) -> bool:
-        if not game.is_current_player(self.player):
+        if not game.is_current_player(game.get_player_by_name(self.player.name)):
             return False
         elif not game.thief_moved:
             return False
