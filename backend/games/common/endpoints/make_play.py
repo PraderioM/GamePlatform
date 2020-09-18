@@ -22,6 +22,10 @@ async def make_play(pool: asyncpg.pool.Pool,
         async with db.transaction():
             game = await get_game_from_database(db, game_id)
 
+            # If there is no game we do nothing.
+            if game is None:
+                return web.Response(status=200)
+
             # If all players aren't ready we cannot make any play.
             if game.n_missing > 0:
                 return web.Response(status=200)
