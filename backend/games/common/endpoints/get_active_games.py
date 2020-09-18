@@ -4,7 +4,7 @@ from typing import Awaitable, Callable, List, Optional
 from aiohttp import web
 import asyncpg
 
-from backend.games.common.models.game import Game
+from games.common.models.game import Game
 
 
 async def get_active_games(pool: asyncpg.pool.Pool,

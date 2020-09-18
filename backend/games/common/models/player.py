@@ -3,7 +3,7 @@ from typing import Dict, Optional
 
 import asyncpg
 
-from backend.registration.identify import get_token_from_name
+from registration.identify import get_token_from_name
 from .game_component import GameComponent
 
 

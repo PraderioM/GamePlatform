@@ -1,6 +1,6 @@
-from backend.games.catan.models.board.board import Board
-from backend.games.catan.models.port import Port, PortType
-from backend.games.catan.models.board.generators import start_position_generator, intersections_generator
+from games.catan.models.board.board import Board
+from games.catan.models.port import Port, PortType
+from games.catan.models.board.generators import start_position_generator, intersections_generator
 
 CLASSIC_BOARD = Board(
     n_wood=4,

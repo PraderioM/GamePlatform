@@ -1,6 +1,6 @@
 from typing import Dict, Optional, Union
 
-from backend.games.common.models.player import Player as BasePlayer
+from games.common.models.player import Player as BasePlayer
 
 
 class Player(BasePlayer):

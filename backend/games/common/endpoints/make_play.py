@@ -3,10 +3,10 @@ from typing import Awaitable, Callable, Optional
 from aiohttp import web
 import asyncpg
 
-from backend.registration.identify import get_name_from_token
-from backend.games.common.models.game import Game
-from backend.games.common.models.play import Play
-from backend.games.common.models.player import Player
+from registration.identify import get_name_from_token
+from games.common.models.game import Game
+from games.common.models.play import Play
+from games.common.models.player import Player
 
 
 async def make_play(pool: asyncpg.pool.Pool,

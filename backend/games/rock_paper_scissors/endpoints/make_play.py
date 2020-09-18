@@ -1,7 +1,7 @@
 from aiohttp import web
 import asyncpg
 
-from backend.games.common.endpoints.make_play import make_play as general_make_play
+from games.common.endpoints.make_play import make_play as general_make_play
 from ..models.game import Game
 from ..models.play import Play
 from ..models.player import Player

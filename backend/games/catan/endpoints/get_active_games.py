@@ -3,7 +3,7 @@ from typing import List
 from aiohttp import web
 import asyncpg
 
-from backend.games.common.endpoints.get_active_games import get_active_games as general_get_active_games
+from games.common.endpoints.get_active_games import get_active_games as general_get_active_games
 from ..models.game import Game
 from ..global_variables import ACTIVE_GAMES_DICT
 

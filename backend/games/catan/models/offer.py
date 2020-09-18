@@ -1,6 +1,6 @@
 from typing import List, Dict
 
-from backend.games.common.models.game_component import GameComponent
+from games.common.models.game_component import GameComponent
 from .player import Player
 from .materials_deck import MaterialsDeck
 

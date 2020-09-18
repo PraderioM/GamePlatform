@@ -4,8 +4,8 @@ from typing import Awaitable, Callable, Dict, Optional, Tuple
 from aiohttp import web
 import asyncpg
 
-from backend.games.common.models.game import Game
-from backend.registration.updating import update_last_received_update_by_token
+from games.common.models.game import Game
+from registration.updating import update_last_received_update_by_token
 
 
 async def create_game(pool: asyncpg.pool.Pool,

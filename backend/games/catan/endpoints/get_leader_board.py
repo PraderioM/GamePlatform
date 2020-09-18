@@ -1,6 +1,6 @@
 from aiohttp import web
 
-from backend.games.common.endpoints.get_leader_board import get_leader_board as general_get_leader_board
+from games.common.endpoints.get_leader_board import get_leader_board as general_get_leader_board
 from ..constants import LEADER_BOARD_TABLE
 
 

@@ -3,7 +3,7 @@ import asyncpg
 
 from .utils import get_game_data
 from ..models.game import Game
-from backend.games.common.endpoints.end_game import end_game as general_end_game
+from games.common.endpoints.end_game import end_game as general_end_game
 from ..constants import LEADER_BOARD_TABLE
 
 

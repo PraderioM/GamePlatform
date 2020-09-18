@@ -1,7 +1,7 @@
 from typing import Dict, List, Optional, Union
 
 from .player import Player
-from backend.games.common.models.play import Play as BasePlay
+from games.common.models.play import Play as BasePlay
 
 
 class Play(BasePlay):

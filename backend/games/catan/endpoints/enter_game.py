@@ -7,7 +7,7 @@ import asyncpg
 from .utils import get_game_from_database, get_dummy_frontend_game
 from ..models.game import Game
 from ..models.player import Player
-from backend.games.common.endpoints.enter_game import enter_game as general_enter_game
+from games.common.endpoints.enter_game import enter_game as general_enter_game
 from ..global_variables import ACTIVE_GAMES_DICT, LOCK
 
 

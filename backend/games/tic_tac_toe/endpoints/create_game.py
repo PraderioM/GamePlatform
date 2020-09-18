@@ -4,8 +4,8 @@ from uuid import uuid4
 from aiohttp import web
 import asyncpg
 
-from backend.registration.identify import get_name_from_token
-from backend.games.common.endpoints.create_game import create_game as general_create_game
+from registration.identify import get_name_from_token
+from games.common.endpoints.create_game import create_game as general_create_game
 from ..constants import ACTIVE_GAMES_TABLE
 from ..models.game import Game
 from ..models.player import Player

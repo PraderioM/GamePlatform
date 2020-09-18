@@ -4,9 +4,9 @@ from typing import List
 from aiohttp import web
 import pulp
 
-from backend.games.sudoku.endpoints.utils.are_equal import are_equal
-from backend.games.sudoku.endpoints.utils.get_lp_problem import get_lp_problem
-from backend.games.sudoku.endpoints.utils.processing import post_process_result
+from games.sudoku.endpoints.utils.are_equal import are_equal
+from games.sudoku.endpoints.utils.get_lp_problem import get_lp_problem
+from games.sudoku.endpoints.utils.processing import post_process_result
 
 
 async def solve_sudoku(request: web.Request) -> web.Response:

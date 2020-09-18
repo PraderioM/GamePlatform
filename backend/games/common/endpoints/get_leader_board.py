@@ -3,7 +3,7 @@ import json
 from aiohttp import web
 import asyncpg
 
-from backend.games.common.models.leader_board_row import LeaderBoardRow
+from games.common.models.leader_board_row import LeaderBoardRow
 
 
 async def get_leader_board(pool: asyncpg.pool.Pool, leader_board_table: str,

@@ -1,6 +1,6 @@
 from typing import Optional, Dict
 
-from backend.games.common.models.player import Player as BasePlayer
+from games.common.models.player import Player as BasePlayer
 from .materials_deck import MaterialsDeck
 from .development_deck import DevelopmentDeck, DevelopmentType
 from .land import LandType

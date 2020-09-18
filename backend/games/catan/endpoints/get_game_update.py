@@ -4,7 +4,7 @@ from aiohttp import web
 import asyncpg
 
 from .utils import get_game_from_database, get_dummy_frontend_game
-from backend.games.common.endpoints.get_game_update import get_game_update as general_get_game_update
+from games.common.endpoints.get_game_update import get_game_update as general_get_game_update
 
 
 async def get_game_update(request: web.Request) -> web.Response:

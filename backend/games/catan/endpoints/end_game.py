@@ -1,7 +1,7 @@
 from aiohttp import web
 
 from .utils import get_game_from_database
-from backend.games.common.endpoints.end_game import end_game as general_end_game
+from games.common.endpoints.end_game import end_game as general_end_game
 from ..constants import LEADER_BOARD_TABLE
 
 

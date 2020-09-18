@@ -6,7 +6,7 @@ from datetime import datetime
 
 import asyncpg
 
-from backend.games.common.models.game import Game as BaseGame
+from games.common.models.game import Game as BaseGame
 from .development_deck import DevelopmentDeck, DevelopmentType
 from .land import Land, LandType
 from .materials_deck import MaterialsDeck

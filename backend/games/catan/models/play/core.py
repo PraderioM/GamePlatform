@@ -4,7 +4,7 @@ from typing import Dict, Type
 from aiohttp import web
 import asyncpg
 
-from backend.games.common.models.play import Play as BasePlay
+from games.common.models.play import Play as BasePlay
 from ..player import Player
 
 

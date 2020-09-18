@@ -5,7 +5,7 @@ from aiohttp import web
 import asyncpg
 
 from ..models.game import Game
-from backend.registration.identify import get_name_from_token
+from registration.identify import get_name_from_token
 
 
 async def end_game(pool: asyncpg.pool.Pool, game_id: str, token: str,

@@ -1,6 +1,6 @@
 from typing import List, Set
 
-from backend.games.catan.models.port import Port
+from games.catan.models.port import Port
 
 
 class Board:

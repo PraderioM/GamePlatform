@@ -2,7 +2,7 @@ from typing import Dict, Optional
 
 import asyncpg
 
-from backend.games.tic_tac_toe.models.game import Game
+from games.tic_tac_toe.models.game import Game
 from ..constants import ACTIVE_GAMES_TABLE
 
 

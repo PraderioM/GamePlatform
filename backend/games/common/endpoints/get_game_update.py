@@ -5,8 +5,8 @@ from typing import Awaitable, Callable, Dict, Optional
 from aiohttp import web
 import asyncpg
 
-from backend.games.common.models.game import Game
-from backend.registration.updating import get_last_received_update_from_token, update_last_received_update_by_token
+from games.common.models.game import Game
+from registration.updating import get_last_received_update_from_token, update_last_received_update_by_token
 
 
 def generate_get_last_updated_time(active_games_table: str) -> Callable[[asyncpg.Connection, str],
