@@ -12,7 +12,7 @@ import {MoveThiefPlay} from './plays/move.thief';
 import {ThrowDicePlay} from './plays/throw.dice';
 import {Steal} from './plays/steal';
 
-const availableList: boolean[] = [];
+const availableList: boolean[] = [true];
 
 @Injectable()
 export class StateService extends CommonStateService {
