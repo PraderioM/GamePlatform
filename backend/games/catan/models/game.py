@@ -1,4 +1,3 @@
-from copy import deepcopy
 import json
 from random import choice, shuffle
 from typing import Dict, List, Optional, Set, Union
@@ -57,7 +56,7 @@ class Game(BaseGame):
         self._thief_position = thief_position
         self.last_updated = datetime.now() if last_updated is None else last_updated
 
-    # region frontend conversion.1
+    # region frontend conversion.
     @classmethod
     def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'Game':
         raise NotImplementedError('from fronted is not implemented.')
@@ -87,6 +86,7 @@ class Game(BaseGame):
             'hasEnded': self.has_ended,
             'thiefPosition': self.thief_position,
         }
+    # endregion
 
     def to_display(self) -> Dict:
         return {
@@ -566,9 +566,9 @@ class Game(BaseGame):
     @property
     def board(self) -> Board:
         if self._extended:
-            return deepcopy(EXTENDED_3_4_4_BOARD)
+            return EXTENDED_3_4_4_BOARD
         else:
-            return deepcopy(CLASSIC_BOARD)
+            return CLASSIC_BOARD
 
     @property
     def discard_cards(self) -> bool:
