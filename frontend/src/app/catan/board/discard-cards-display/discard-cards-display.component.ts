@@ -5,7 +5,7 @@ import {assetsPath} from '../../services/constants';
 @Component({
   selector: 'app-discard-cards-display',
   templateUrl: './discard-cards-display.component.html',
-  styleUrls: ['./discard-cards-display.component.css']
+  styleUrls: ['./discard-cards-display.component.css', '../../../services/common.styles.css']
 })
 export class DiscardCardsDisplayComponent implements OnInit {
   @Input() materialsDeck: MaterialsDeck;
