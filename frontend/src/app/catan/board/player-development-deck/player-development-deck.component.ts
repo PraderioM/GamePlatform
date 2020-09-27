@@ -6,7 +6,7 @@ import {assetsPath} from '../../services/constants';
 @Component({
   selector: 'app-player-development-deck',
   templateUrl: './player-development-deck.component.html',
-  styleUrls: ['./player-development-deck.component.css']
+  styleUrls: ['./player-development-deck.component.css', '../../../services/common.styles.css']
 })
 export class PlayerDevelopmentDeckComponent implements OnInit {
   @Input() developmentDeck: DevelopmentDeck;

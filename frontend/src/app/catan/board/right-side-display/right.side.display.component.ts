@@ -5,7 +5,7 @@ import {assetsPath} from '../../services/constants';
 @Component({
   selector: 'app-right-side-display',
   templateUrl: './right.side.display.component.html',
-  styleUrls: ['./right.side.display.component.css']
+  styleUrls: ['./right.side.display.component.css', '../../../services/common.styles.css']
 })
 export class RightSideDisplayComponent implements OnInit {
   @Output() backToMenu = new EventEmitter<void>();

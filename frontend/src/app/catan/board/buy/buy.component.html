@@ -1,27 +1,27 @@
 <div class="container big-object">
   <label class="logo-label tooltip">
-    <span class="tooltiptext">1 wood, 1 brick</span>
+    <span class="tooltiptext tooltip-text-padding">1 wood, 1 brick</span>
   <img [src]="getRoadImgPath()"
        [ngClass]="getNgClass('road')"
        (click)="onRoadClick()"
        alt="1 wood, 1 brick">
   </label>
   <label class="logo-label tooltip">
-    <span class="tooltiptext">1 wood, 1 brick, 1 sheep, 1 wheat</span>
+    <span class="tooltiptext tooltip-text-padding">1 wood, 1 brick, 1 sheep, 1 wheat</span>
     <img [src]="getSettlementImgPath()"
          [ngClass]="getNgClass('settlement')"
          (click)="onSettlementClick()"
          alt="1 wood, 1 brick, 1 sheep, 1 wheat">
   </label>
   <label class="logo-label tooltip">
-    <span class="tooltiptext">2 wheat, 3 stone</span>
+    <span class="tooltiptext tooltip-text-padding">2 wheat, 3 stone</span>
     <img [src]="getCityImgPath()"
          [ngClass]="getNgClass('city')"
          (click)="onCityClick()"
          class="logo" alt="2 wheat, 3 stone">
   </label>
   <label class="logo-label tooltip">
-    <span class="tooltiptext">1 sheep, 1 wheat, 1 stone</span>
+    <span class="tooltiptext tooltip-text-padding">1 sheep, 1 wheat, 1 stone</span>
     <img [src]="getDevelopmentImgPath()"
          (click)="onDevelopmentClick()"
          class="logo"

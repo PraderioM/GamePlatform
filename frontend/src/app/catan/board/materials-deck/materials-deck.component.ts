@@ -5,7 +5,7 @@ import {assetsPath} from '../../services/constants';
 @Component({
   selector: 'app-materials-deck',
   templateUrl: './materials-deck.component.html',
-  styleUrls: ['./materials-deck.component.css']
+  styleUrls: ['./materials-deck.component.css', '../../../services/common.styles.css']
 })
 export class MaterialsDeckComponent implements OnInit {
   @Input() materialsDeck: MaterialsDeck;
