@@ -230,7 +230,10 @@ class PlayResources(DevelopmentPlay):
 
     @property
     def resource_dict(self) -> Dict[LandType, int]:
-        return {self._resource_1: 1, self._resource_2: 1}
+        resources_dict = {land_type: 0 for land_type in LandType if land_type != LandType.Desert}
+        resources_dict[self._resource_1] += 1
+        resources_dict[self._resource_2] += 1
+        return resources_dict
 
     async def update_database(self, db: asyncpg.connection, active_games_table: str, database_data: Dict):
         await db.execute(f"""
