@@ -41,7 +41,7 @@ EXTENDED_3_4_4_BOARD = Board(
     n_stone=5,
     n_desert=2,
     start_positions=start_position_generator(3, 4, 4),
-    number_list=[2, 5, 4, 6, 3, 9, 8, 11, 11, 10, 6, 3, 8, 4, 8, 10, 11, 12, 10, 5, 4, 9, 5, 9, 12, 3, 12, 6],
+    number_list=[2, 5, 4, 6, 3, 9, 8, 11, 11, 10, 6, 3, 8, 4, 8, 10, 11, 12, 10, 5, 4, 9, 5, 9, 12, 3, 2, 6],
     ports=[
         Port(port_type=PortType.General, intersections=({-22, -21, 0}, {-22, -1, 0})),
         Port(port_type=PortType.Wood, intersections=({-21, -20, 1}, {-20, 1, 2})),
