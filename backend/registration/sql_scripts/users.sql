@@ -8,7 +8,7 @@ create table users
 	last_received_update date default now() not null
 );
 
-comment on table users is 'this table cotains information relative to user connection such as username password and token';
+comment on table users is 'this table contains information relative to user connection such as username password and token';
 
 alter table users owner to admin;
 
