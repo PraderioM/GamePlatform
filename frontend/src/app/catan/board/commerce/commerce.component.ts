@@ -145,4 +145,14 @@ export class CommerceComponent implements OnInit {
     this.rejectOffer.emit();
   }
 
+  getOfferTargetNames(): string {
+    if (this.offer == null) {
+      return '';
+    }
+    const outNames: string[] = [];
+    for (const player of this.targetPlayers) {
+      outNames.push(player.name);
+    }
+    return outNames.join(', ');
+  }
 }

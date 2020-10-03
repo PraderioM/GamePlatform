@@ -116,3 +116,27 @@
     <button class="ver-list-item ver-spaced" (click)="onReject()">Reject</button>
   </div>
 </div>
+
+<div *ngIf="!isCurrentPlayer && offer != null && !isOfferTarget()" class="hor-container">
+  <div class="ver-container">
+    <span class="ver-list-item">{{offer.offerMaker.name}} gives to {{getOfferTargetNames()}}</span>
+    <span class="ver-list-item" *ngIf="offer.offeredDeck.nWood > 0"> Wood: {{offer.offeredDeck.nWood}}</span>
+    <span class="ver-list-item" *ngIf="offer.offeredDeck.nBrick > 0"> Brick: {{offer.offeredDeck.nBrick}}</span>
+    <span class="ver-list-item" *ngIf="offer.offeredDeck.nSheep > 0"> Sheep: {{offer.offeredDeck.nSheep}}</span>
+    <span class="ver-list-item" *ngIf="offer.offeredDeck.nWheat > 0"> Wheat: {{offer.offeredDeck.nWheat}}</span>
+    <span class="ver-list-item" *ngIf="offer.offeredDeck.nStone > 0"> Stone: {{offer.offeredDeck.nStone}}</span>
+  </div>
+
+  <div class="ver-container">
+    <span class="ver-list-item">in exchange for</span>
+    <span class="ver-list-item" *ngIf="offer.requestedDeck.nWood > 0"> Wood: {{offer.requestedDeck.nWood}}</span>
+    <span class="ver-list-item" *ngIf="offer.requestedDeck.nBrick > 0"> Brick: {{offer.requestedDeck.nBrick}}</span>
+    <span class="ver-list-item" *ngIf="offer.requestedDeck.nSheep > 0"> Sheep: {{offer.requestedDeck.nSheep}}</span>
+    <span class="ver-list-item" *ngIf="offer.requestedDeck.nWheat > 0"> Wheat: {{offer.requestedDeck.nWheat}}</span>
+    <span class="ver-list-item" *ngIf="offer.requestedDeck.nStone > 0"> Stone: {{offer.requestedDeck.nStone}}</span>
+  </div>
+
+  <span style="height: 100%">
+    You are not part of this offer. Please feel free to agitate your fist promising revenge for this discrimination.
+  </span>
+</div>
