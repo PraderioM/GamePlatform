@@ -1,1 +1,3 @@
-<img class="resolution-image" [src]="getImageUrl()" (click)="backToMenu.emit()" alt="resolution">
+<img class="resolution-image" [src]="getImageUrl()" alt="resolution">
+<button *ngIf="viewFinalGameState" (click)="backToGame.emit()">See Game</button>
+<button (click)="backToMenu.emit()">Exit Game</button>

@@ -1,5 +1,5 @@
 <p *ngIf="description == null">Game session has expired</p>
-<div *ngIf="description != null && isPlaying" class="ver-container">
+<div *ngIf="description != null && (isPlaying || watchingFinalGameState)" class="ver-container">
   <div class="first-row-container">
     <app-players-display [players]="description.players"
                          [knightPlayer]="description.knightPlayer"
@@ -84,8 +84,10 @@
   </div>
 </div>
 
-<app-game-resolution-display *ngIf="description != null && !isPlaying"
+<app-game-resolution-display *ngIf="description != null && !(isPlaying || watchingFinalGameState)"
                              [gameResolution]="gameResolution"
-                             (backToMenu)="onBackToMenu()">
+                             [viewFinalGameState]="true"
+                             (backToMenu)="onBackToMenu()"
+                             (backToGame)="onBackToGame()">
 
 </app-game-resolution-display>

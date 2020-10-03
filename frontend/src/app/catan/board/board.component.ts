@@ -24,6 +24,7 @@ export class BoardComponent implements OnInit {
   gameResolution: GameResolution;
   isPlaying = true;
   buildingElement?: string = null;
+  watchingFinalGameState = false;
 
   constructor(private stateService: StateService) { }
 
@@ -32,26 +33,32 @@ export class BoardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.updateGame();
+    this.updateGameLoop();
+  }
+
+  async updateGameLoop() {
+    await this.updateGame();
+
+    if (this.description.hasEnded) {
+      await this.endGame();
+      return;
+    } else {
+      setTimeout(this.updateGameLoop.bind(this), 500);
+    }
   }
 
   async updateGame() {
     this.description = new GameDescription(this.description.players, this.description.plays, this.description.currentPlayer,
-                                           this.description.turn, this.description.developmentDeck, this.description.materialsDeck,
-                                           this.description.landList, this.description.extended, this.description.description,
-                                           this.description.thiefPosition, this.description.toStealPlayers, this.description.knightPlayer,
-                                           this.description.longRoadPlayer, this.description.discardCards, this.description.thiefMoved,
-                                           this.description.toBuildRoads, this.description.lastDiceResult, this.description.hasEnded,
-                                           this.description.offer, this.description.id);
+        this.description.turn, this.description.developmentDeck, this.description.materialsDeck,
+        this.description.landList, this.description.extended, this.description.description,
+        this.description.thiefPosition, this.description.toStealPlayers, this.description.knightPlayer,
+        this.description.longRoadPlayer, this.description.discardCards, this.description.thiefMoved,
+        this.description.toBuildRoads, this.description.lastDiceResult, this.description.hasEnded,
+        this.description.offer, this.description.id);
     const description = await this.stateService.getGameUpdate(this.token, this.description.id);
     if (!(description === undefined || description == null) && description.id != null) {
       this.description = description;
-      if (description.hasEnded) {
-        await this.endGame();
-        return;
-      }
     }
-    setTimeout(this.updateGame.bind(this), 500);
   }
 
   async onClickLand(landNumber: number) {
@@ -181,6 +188,11 @@ export class BoardComponent implements OnInit {
 
   onBackToMenu() {
     this.backToMenu.emit();
+  }
+
+  async onBackToGame() {
+    this.watchingFinalGameState = true;
+    await this.updateGame();
   }
 
   isCurrentPlayer() {

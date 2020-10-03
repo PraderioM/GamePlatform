@@ -9,7 +9,9 @@ import { GameResolution } from '../../models';
 })
 export class GameResolutionDisplayComponent implements OnInit {
   @Output() backToMenu = new EventEmitter<void>();
+  @Output() backToGame = new EventEmitter<void>();
   @Input() gameResolution: GameResolution;
+  @Input() viewFinalGameState = false;
 
 
   constructor() { }
