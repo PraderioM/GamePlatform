@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {DevelopmentDeck, MaterialsDeck} from '../../services/models';
 import {assetsPath} from '../../services/constants';
 
@@ -7,7 +7,7 @@ import {assetsPath} from '../../services/constants';
   templateUrl: './right.side.display.component.html',
   styleUrls: ['./right.side.display.component.css', '../../../services/common.styles.css']
 })
-export class RightSideDisplayComponent implements OnInit {
+export class RightSideDisplayComponent implements OnInit, OnChanges {
   @Output() backToMenu = new EventEmitter<void>();
   @Input() gameId: string;
   @Input() materialsDeck: MaterialsDeck;
@@ -24,9 +24,42 @@ export class RightSideDisplayComponent implements OnInit {
 
   developmentImgPath = assetsPath.concat('/development_cards/deck.png');
 
+  hasChanged = {wood: false, brick: false, sheep: false, wheat: false, stone: false, development: false};
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.materialsDeck.firstChange && changes.developmentDeck.firstChange) {
+      return;
+    }
+
+    const currentMaterialsDeck: MaterialsDeck = changes.materialsDeck.currentValue;
+    const previousMaterialsDeck: MaterialsDeck = changes.materialsDeck.previousValue;
+    const currentDevelopmentDeck: DevelopmentDeck = changes.developmentDeck.currentValue;
+    const previousDevelopmentDeck: DevelopmentDeck = changes.developmentDeck.previousValue;
+
+    // If draw differently values that have changed.
+    if (previousMaterialsDeck != null) {
+      this.hasChanged.wood = currentMaterialsDeck.nWood !== previousMaterialsDeck.nWood;
+      this.hasChanged.brick = currentMaterialsDeck.nBrick !== previousMaterialsDeck.nBrick;
+      this.hasChanged.sheep = currentMaterialsDeck.nSheep !== previousMaterialsDeck.nSheep;
+      this.hasChanged.wheat = currentMaterialsDeck.nWheat !== previousMaterialsDeck.nWheat;
+      this.hasChanged.stone = currentMaterialsDeck.nStone !== previousMaterialsDeck.nStone;
+    }
+    if (previousDevelopmentDeck != null) {
+      this.hasChanged.development = currentDevelopmentDeck.getNDevelopments() !== previousDevelopmentDeck.getNDevelopments();
+    }
+  }
+
+  getNgClass(resource: string) {
+    return {
+      'card-label': true,
+      tooltip: true,
+      'changed-number': this.hasChanged[resource]
+    };
   }
 
   toggleShowInstructions() {

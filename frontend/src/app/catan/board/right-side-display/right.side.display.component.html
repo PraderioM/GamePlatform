@@ -7,32 +7,32 @@
 </p>
 <button (click)="backToMenu.emit()">Back to menu</button>
 <p class="container">
-  <label class="card-label tooltip">
+  <label [ngClass]="getNgClass('wood')">
     <span class="tooltiptext">wood</span>
     <img [src]="woodImgPath" class="card" alt="wood">
     {{materialsDeck.nWood}}
   </label>
-  <label class="card-label tooltip">
+  <label [ngClass]="getNgClass('brick')">
     <span class="tooltiptext">brick</span>
     <img [src]="brickImgPath" class="card" alt="brick">
     {{materialsDeck.nBrick}}
   </label>
-  <label class="card-label tooltip">
+  <label [ngClass]="getNgClass('sheep')">
     <span class="tooltiptext">sheep</span>
     <img [src]="sheepImgPath" class="card" alt="sheep">
     {{materialsDeck.nSheep}}
   </label>
-  <label class="card-label tooltip">
+  <label [ngClass]="getNgClass('wheat')">
     <span class="tooltiptext">wheat</span>
     <img [src]="wheatImgPath" class="card" alt="wheat">
     {{materialsDeck.nWheat}}
   </label>
-  <label class="card-label tooltip">
+  <label [ngClass]="getNgClass('stone')">
     <span class="tooltiptext">stone</span>
     <img [src]="stoneImgPath" class="card" alt="stone">
     {{materialsDeck.nStone}}
   </label>
-  <label class="card-label tooltip">
+  <label [ngClass]="getNgClass('development')">
     <span class="tooltiptext">development</span>
     <img [src]="developmentImgPath" class="card" alt="stone">
     {{developmentDeck.getNDevelopments()}}
