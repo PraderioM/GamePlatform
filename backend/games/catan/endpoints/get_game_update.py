@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from aiohttp import web
 import asyncpg
@@ -18,4 +18,4 @@ async def get_game_update(request: web.Request) -> web.Response:
 
 async def get_last_updated_time(db: asyncpg.Connection, game_id: str) -> datetime:
     game = await get_game_from_database(db=db, game_id=game_id)
-    return (game.last_updated - timedelta(minutes=60)).time()
+    return game.last_updated

@@ -27,4 +27,4 @@ async def enter_game(request: web.Request) -> web.Response:
 async def update_player_list(db: asyncpg.Connection, game: Game, player_list: List[Player], game_id: str):
     game = ACTIVE_GAMES_DICT.get(game_id, game)
     game.player_list = player_list
-    game.last_updated = datetime.now()
+    game.last_updated = await db.fetchval("SELECT NOW();")

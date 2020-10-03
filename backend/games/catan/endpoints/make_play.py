@@ -25,7 +25,11 @@ async def make_play(request: web.Request) -> web.Response:
         play_list.append(play)
         return play
 
-    async def update_database(db: asyncpg.connection, game: Game):
+    async def update_database(db: asyncpg.Connection, game: Game):
+        is_setup = game.is_setup_round
+        play = play_list[0]
+        if (play.can_update_game(game) and not is_setup) or (play.can_update_game_setup_round(game) and is_setup):
+            game.last_updated = await db.fetchval("SELECT NOW();")
         ACTIVE_GAMES_DICT[game.id] = game
 
     await LOCK.acquire()

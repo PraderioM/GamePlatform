@@ -51,8 +51,11 @@ async def create_game(request: web.Request) -> web.Response:
         # is_bot_list = [False] * pc + [True] * npc
         player_list = [Player(name=name, color=color) for name, color in zip(name_list, color_list)]
 
+        last_updated = await db.fetchval("SELECT NOW();")
+
         return Game(current_player_index=0, turn_index=0, play_list=[],
-                    player_list=player_list, id_=str(uuid4()), extended=extended), None
+                    player_list=player_list, id_=str(uuid4()), extended=extended,
+                    last_updated=last_updated), None
 
     async def add_new_game_to_database(new_game: Game, db: asyncpg.Connection):
         ACTIVE_GAMES_DICT[new_game.id] = new_game

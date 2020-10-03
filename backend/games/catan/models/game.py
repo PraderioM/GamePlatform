@@ -220,7 +220,6 @@ class Game(BaseGame):
             play.update_game(self)
             if is_setup:
                 play.setup_round_post_processing(self)
-            self.last_updated = datetime.now()
 
     def reset_offer(self):
         self.offer = None
