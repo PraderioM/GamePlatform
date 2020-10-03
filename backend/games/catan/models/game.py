@@ -63,10 +63,11 @@ class Game(BaseGame):
 
     def to_frontend(self, db: Optional[asyncpg.Connection] = None,
                     description: str = 'successfully obtained game.') -> Dict:
+        has_ended = self.has_ended
         return {
             'currentPlayer': self.current_player_index,
             'turn': self.turn_index,
-            'players': [player.to_frontend(points=self.get_player_score(player, compute_victory_points=False))
+            'players': [player.to_frontend(points=self.get_player_score(player, compute_victory_points=has_ended))
                         for player in self.player_list],
             'plays': [play.to_frontend() for play in self.play_list],
             'developmentDeck': self._development_deck.to_json(),
@@ -83,7 +84,7 @@ class Game(BaseGame):
             'toBuildRoads': self.to_build_roads,
             'lastDiceResult': self.last_dice_result,
             'description': description,
-            'hasEnded': self.has_ended,
+            'hasEnded': has_ended,
             'thiefPosition': self.thief_position,
         }
     # endregion
