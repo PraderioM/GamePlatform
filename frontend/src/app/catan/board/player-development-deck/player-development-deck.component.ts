@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {DevelopmentDeck} from '../../services/models';
 import {PlayKnight, PlayMonopoly, PlayResources, PlayRoads} from '../../services/plays/development';
 import {assetsPath} from '../../services/constants';
@@ -8,7 +8,7 @@ import {assetsPath} from '../../services/constants';
   templateUrl: './player-development-deck.component.html',
   styleUrls: ['./player-development-deck.component.css', '../../../services/common.styles.css']
 })
-export class PlayerDevelopmentDeckComponent implements OnInit {
+export class PlayerDevelopmentDeckComponent implements OnInit, OnChanges {
   @Input() developmentDeck: DevelopmentDeck;
 
   @Output() playKnight = new EventEmitter<PlayKnight>();
@@ -23,6 +23,8 @@ export class PlayerDevelopmentDeckComponent implements OnInit {
   roadsImgPath = this.developmentCardsPath.concat('/roads.png');
   pointImgPath = this.developmentCardsPath.concat('/point.png');
 
+  hasChanged = {knight: false, monopoly: false, resources: false, roads: false, point: false};
+
   playingKnight = false;
   playingMonopoly = false;
   playingResources = false;
@@ -31,6 +33,34 @@ export class PlayerDevelopmentDeckComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.developmentDeck.firstChange) {
+      return;
+    }
+
+    const currentDeck: DevelopmentDeck = changes.developmentDeck.currentValue;
+    const previousDeck: DevelopmentDeck = changes.developmentDeck.previousValue;
+
+    // If draw differently values that have changed.
+    if (previousDeck != null) {
+      this.hasChanged = {
+        knight: currentDeck.nKnight !== previousDeck.nKnight,
+        monopoly: currentDeck.nMonopoly !== previousDeck.nMonopoly,
+        resources: currentDeck.nResources !== previousDeck.nResources,
+        roads: currentDeck.nRoads !== previousDeck.nRoads,
+        point: currentDeck.nPoint !== previousDeck.nPoint
+      };
+    }
+  }
+
+  getNgClass(development: string) {
+    return {
+      'card-label': true,
+      tooltip: true,
+      'changed-number': this.hasChanged[development]
+    };
   }
 
   selectKnight() {

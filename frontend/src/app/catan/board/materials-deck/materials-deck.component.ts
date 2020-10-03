@@ -25,7 +25,7 @@ export class MaterialsDeckComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.description.firstChange) {
+    if (changes.materialsDeck.firstChange) {
       return;
     }
 

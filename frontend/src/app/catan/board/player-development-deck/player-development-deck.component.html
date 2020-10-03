@@ -1,26 +1,26 @@
 <div *ngIf="!(this.playingKnight || this.playingMonopoly || this.playingResources || this.playingRoads)"
      class="container">
-  <label *ngIf="developmentDeck.nKnight > 0" class="card-label tooltip">
+  <label *ngIf="developmentDeck.nKnight > 0" [ngClass]="getNgClass('knight')">
     <span class="tooltiptext">knight</span>
     <img [src]="knightImgPath" class="card" alt="knight" (click)="selectKnight()">
     {{developmentDeck.nKnight}}
   </label>
-  <label *ngIf="developmentDeck.nMonopoly > 0" class="card-label tooltip">
+  <label *ngIf="developmentDeck.nMonopoly > 0" [ngClass]="getNgClass('monopoly')">
     <span class="tooltiptext">monopoly</span>
     <img [src]="monopolyImgPath" class="card" alt="monopoly" (click)="selectMonopoly()">
     {{developmentDeck.nMonopoly}}
   </label>
-  <label *ngIf="developmentDeck.nResources > 0" class="card-label tooltip">
+  <label *ngIf="developmentDeck.nResources > 0" [ngClass]="getNgClass('resources')">
     <span class="tooltiptext">years of plenty</span>
     <img [src]="resourcesImgPath" class="card" alt="resources" (click)="selectResources()">
     {{developmentDeck.nResources}}
   </label>
-  <label *ngIf="developmentDeck.nRoads > 0" class="card-label tooltip">
+  <label *ngIf="developmentDeck.nRoads > 0" [ngClass]="getNgClass('roads')">
     <span class="tooltiptext">road building</span>
     <img [src]="roadsImgPath" class="card" alt="roads" (click)="selectRoads()">
     {{developmentDeck.nRoads}}
   </label>
-  <label *ngIf="developmentDeck.nPoint > 0" class="card-label tooltip">
+  <label *ngIf="developmentDeck.nPoint > 0" [ngClass]="getNgClass('point')">
     <span class="tooltiptext">victory point</span>
     <img [src]="pointImgPath" class="card" alt="point">
     {{developmentDeck.nPoint}}
