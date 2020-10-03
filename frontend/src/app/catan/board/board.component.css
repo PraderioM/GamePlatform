@@ -38,6 +38,14 @@
   width: 30pt;
 }
 
-.non-thrown-dice {
+.must-throw-dice {
   background-color: red;
+}
+
+.non-thrown-dice {
+  background-color: blue;
+}
+
+.thrown-dice {
+  background-color: green;
 }
