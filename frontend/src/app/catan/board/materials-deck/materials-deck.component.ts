@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {GameDescription, MaterialsDeck} from '../../services/models';
+import {MaterialsDeck} from '../../services/models';
 import {assetsPath} from '../../services/constants';
 
 @Component({
