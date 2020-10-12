@@ -1,0 +1,25 @@
+<ul style="text-align:center" class="hor-data-container" *ngIf="!gameFindingMode && !gameCreationMode">
+  <app-game-table (enterGame)="onEnterGame($event)"
+                  [token]="token">
+
+  </app-game-table>
+  <app-game-options (enterGameCreation)="onEnterGameCreation()"
+                    (enterGameFinding)="onEnterGameFinding()"
+                    [token]="token"
+                    (backToGameSelection)="onBackToGameSelection()">
+
+  </app-game-options>
+</ul>
+<app-existing-game-search *ngIf="gameFindingMode"
+                          (enterGame)="onEnterGame($event)"
+                          (back)="onEnterSelectionMode()"
+                          [token]="token"
+                          [stateService]="stateService">
+
+</app-existing-game-search>
+<app-new-game-description *ngIf="gameCreationMode"
+                          (enterGame)="onEnterGame($event)"
+                          (back)="onEnterSelectionMode()"
+                          [token]="token">
+
+</app-new-game-description>

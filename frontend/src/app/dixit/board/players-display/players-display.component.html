@@ -1,0 +1,12 @@
+<app-player-display *ngFor="let player of playerList; let i = index"
+                    [name]="player.name"
+                    [isCurrent]="player.name === currentPlayerName"
+                    [hasChosen]="player.chosenCardId != null"
+                    [hasPlayedCard]="player.playedCardId != null"
+                    [points]="player.points"
+                    [goalPoints]="goalPoints"
+                    [isDescriptionAvailable]="isDescriptionAvailable"
+                    [isChoosingPhase]="isChoosingPhase"
+                    [isResolutionPhase]="isResolutionPhase">
+
+</app-player-display>

@@ -1,0 +1,16 @@
+<p *ngIf="cardDescription != null">
+  story teller's description is <span class="description-text">{{cardDescription}}</span>
+</p>
+<app-card *ngFor="let playedCard of getPlayedCards()"
+          [selected]="selectedCard == playedCard.cardId"
+          [cardId]="playedCard.cardId"
+          [showCard]="allPlayed"
+          [showResults]="allChosen"
+          [isCorrectCard]="playedCard.playerName === storyTellerName"
+          [nPlayers]="nPlayers"
+          [playerName]="playedCard.playerName"
+          [chosenNames]="getChosenPLayers(playedCard.cardId)"
+          (selectCard)="onCardSelected(playedCard.cardId)">
+
+</app-card>
+<button *ngIf="selectedCard != null && !cardChosen" (click)="onChooseCard(selectedCard)">Confirm selection</button>

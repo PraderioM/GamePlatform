@@ -1,0 +1,25 @@
+<div *ngIf="!showAllCards">
+  <table *ngIf="isStoryTeller && !descriptionExists">
+    <tr>
+      <th>
+        <label for="cardDescription">Card description</label>
+      </th>
+      <th>
+        <input #cardDescription id="cardDescription" placeholder="describe your card here">
+      </th>
+      <th>
+        <button *ngIf="selectedCardId != null && cardDescription.value.length != 0"
+                (click)="onCardDescribe(cardDescription.value)">Play card</button>
+      </th>
+    </tr>
+  </table>
+  <img *ngFor="let cardID of deck"
+       [src]="getCardPath(cardID)"
+       [ngClass]="getClass(cardID)"
+       (click)="onCardSelect(cardID)"
+       alt="card">
+
+  <button *ngIf="selectedCardId != null && !cardPlayed && ! isStoryTeller" (click)="onCardPlay()">Play card</button>
+  <button (click)="toggleShowAllCards()">View all cards</button>
+</div>
+<app-cards-list *ngIf="showAllCards" (back)="toggleShowAllCards()"></app-cards-list>

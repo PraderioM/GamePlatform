@@ -1,0 +1,11 @@
+<p class="container">
+  <img *ngFor="let cardID of getCardIDs()"
+       [src]="getCardPath(cardID)"
+       class="image-size"
+       alt="card">
+</p>
+<p class="container">
+  <button (click)="showPrevious()"><</button>
+  <button (click)="back.emit()">back</button>
+  <button (click)="showNext()">></button>
+</p>

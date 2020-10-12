@@ -1,0 +1,20 @@
+<app-table [style]="height: 50%, width: 100%"
+           [inputPlayedCards]="playedCards"
+           [chosenCards]="chosenCards"
+           [nPlayers]="nPlayers"
+           [allChosen]="allChosen"
+           [cardDescription]="cardDescription"
+           [cardChosen]="cardChosen"
+           [storyTellerName]="storyTellerName"
+           (chooseCard)="chooseCard.emit($event)">
+
+</app-table>
+<app-deck [style]="height: 50%, width: 100%"
+          [deck]="deck"
+          [descriptionExists]="cardDescription != null"
+          [cardPlayed]="cardPlayed"
+          [isStoryTeller]="isStoryTeller"
+          (describeCard)="describeCard.emit($event)"
+          (playCard)="playCard.emit($event)">
+
+</app-deck>

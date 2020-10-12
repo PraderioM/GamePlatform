@@ -4,18 +4,20 @@ import {StateService} from '../services/state.service';
 import {TicTacToeModule} from '../tic-tac-toe/tic-tac-toe.module';
 import {SudokuModule} from '../sudoku/sudoku.module';
 import {CatanModule} from '../catan/catan.module';
+import {DixitModule} from '../dixit/dixit.module';
+import {RockPaperScissorsModule} from '../rock-paper-scissors/rock-paper-scissors.module';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  providers: [StateService, HttpClient, TicTacToeModule, SudokuModule, CatanModule]
+  providers: [StateService, HttpClient, TicTacToeModule, SudokuModule, CatanModule, DixitModule, RockPaperScissorsModule]
 })
 export class HomeComponent {
   @Output() loggedOut = new EventEmitter<void>();
   @Input() token: string;
   @Input() name: string;
-  gameNames: string[] = ['tic-tac-toe', 'SuDoKu', 'CATAN', 'rock-paper-scissors'];
+  gameNames: string[] = ['tic-tac-toe', 'SuDoKu', 'CATAN', 'DiXit', 'rock-paper-scissors'];
   gameSelections: boolean[];
 
   constructor(private stateService: StateService) {

@@ -4,6 +4,8 @@
 <app-sudoku (backToMenu)="deSelectGames()" *ngIf="isSelected('SuDoKu')"> </app-sudoku>
 <app-catan [token]="token" [name]="name" (backToMenu)="deSelectGames()" *ngIf="isSelected('CATAN')">
 </app-catan>
+<app-dixit [token]="token" [name]="name" (backToMenu)="deSelectGames()" *ngIf="isSelected('DiXit')">
+</app-dixit>
 <app-rock-paper-scissors [token]="token" [name]="name" (backToMenu)="deSelectGames()"
                          *ngIf="isSelected('rock-paper-scissors')">
 
