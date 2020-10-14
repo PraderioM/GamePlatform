@@ -1,6 +1,7 @@
 import abc
 import asyncpg
 import json
+from random import shuffle
 from typing import Dict, List, Optional
 
 from .game_component import GameComponent
@@ -90,7 +91,10 @@ class Game(GameComponent):
                 return
 
         if self.n_missing > 0:
-            for player in self.player_list:
+            player_list = self.player_list[:]
+            # Make player position random.
+            shuffle(player_list)
+            for player in player_list:
                 if player.name is None and not player.is_bot:
                     player.name = name
                     break

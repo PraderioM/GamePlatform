@@ -189,21 +189,6 @@ class Game(BaseGame):
     # endregion
 
     # region overwritten methods.
-    def add_new_player_name(self, name: str):
-        # Cannot add twice the same player.
-        for player in self.player_list:
-            if player.name == name:
-                return
-
-        if self.n_missing > 0:
-            player_list = self.player_list[:]
-            # Make player position random.
-            shuffle(player_list)
-            for player in player_list:
-                if player.name is None and not player.is_bot:
-                    player.name = name
-                    break
-
     def add_play(self, play: Optional[Play]):
         if play is None:
             return
