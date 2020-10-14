@@ -77,12 +77,11 @@ class Game(GameComponent):
     def update_player_index(self):
         self.current_player_index = (self.current_player_index + 1) % len(self.player_list)
 
-    def get_player_from_name(self, name: str) -> Optional[Player]:
-        out_player: Optional[Player] = None
+    def get_player_by_name(self, name: str) -> Optional[Player]:
         for player in self.player_list:
             if player.name == name:
-                out_player = player
-        return out_player
+                return player
+        return None
 
     def add_new_player_name(self, name: str):
         # Cannot add twice the same player.

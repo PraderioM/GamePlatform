@@ -451,12 +451,6 @@ class Game(BaseGame):
             self.current_player_index += 1
         self.current_player_index = self.current_player_index % len(self.player_list)
 
-    def get_player_by_name(self, name: str) -> Optional[Player]:
-        for player in self.player_list:
-            if player.name == name:
-                return player
-        return None
-
     # region distance methods.
     def get_segments(self) -> List[Set[int]]:
         found_segments: List[Set[int]] = []

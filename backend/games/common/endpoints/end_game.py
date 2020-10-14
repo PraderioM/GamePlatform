@@ -16,7 +16,7 @@ async def end_game(pool: asyncpg.pool.Pool, game_id: str, token: str,
         game = await get_game_from_database(db, game_id)
 
         name = await get_name_from_token(token=token, db=db)
-        player = game.get_player_from_name(name=name)
+        player = game.get_player_by_name(name=name)
 
         # Get game resolution
         game_resolution = game.to_game_resolution(player)

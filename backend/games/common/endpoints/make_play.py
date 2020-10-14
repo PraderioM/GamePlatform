@@ -32,7 +32,7 @@ async def make_play(pool: asyncpg.pool.Pool,
 
             # Get player requesting to make play.
             name = await get_name_from_token(token=token, db=db)
-            player = game.get_player_from_name(name=name)
+            player = game.get_player_by_name(name=name)
 
             if player is not None:
                 play = get_play(game, player)

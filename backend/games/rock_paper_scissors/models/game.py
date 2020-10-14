@@ -73,7 +73,7 @@ class Game:
         if player is None:
             return {'isObserver': True}
 
-        current_player = self.get_player_from_name(player.name)
+        current_player = self.get_player_by_name(player.name)
 
         sorted_scores = sorted(
             [
@@ -124,11 +124,11 @@ class Game:
         self.current_round += 1
 
     def resolution_points(self, player: Player) -> int:
-        player = self.get_player_from_name(player.name)
+        player = self.get_player_by_name(player.name)
         return player.last_played_round
 
     def add_play(self, play: Play):
-        player = self.get_player_from_name(play.player.name)
+        player = self.get_player_by_name(play.player.name)
 
         # Do not update if player is not playing.
         if player is None or not player.is_active or player.last_played_round == self.current_round:
@@ -161,7 +161,7 @@ class Game:
                     player.name = name
                     break
 
-    def get_player_from_name(self, name: str) -> Optional[Player]:
+    def get_player_by_name(self, name: str) -> Optional[Player]:
         for player in self.player_list:
             if player.name == name:
                 return player
