@@ -55,7 +55,7 @@ async def get_new_game(db: asyncpg.Connection, pc: int, npc: int, n_plays: int, 
         error_message = f'This is a game of at least two players but got total number of players of {npc + pc}.'
 
     if error_message is not None:
-        return None, {**dummy_game.to_frontend(), 'error_message': error_message}
+        return None, {**dummy_game.to_frontend(db=db), 'error_message': error_message}
 
     # If settings are correct we create a new game.
     name_list = [await get_name_from_token(token=token, db=db)] + [None] * (npc + pc - 1)
