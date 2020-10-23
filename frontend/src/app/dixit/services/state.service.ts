@@ -15,13 +15,14 @@ export class StateService extends CommonStateService {
     super(http, 'dixit');
   }
 
-  async createGame(token: string, npc: number, pc: number, totalPoints: number) {
+  async createGame(token: string, npc: number, pc: number, totalPoints: number, imageSet: string) {
     return await this.http
       .get<GameDescription>(this.backendURL + '/create-game',
         {params: new HttpParams().set('token', token)
             .set('npc', npc.toString()).set('pc', pc.toString())
             .set('total_points', totalPoints.toString())
-            .set('n_cards', nCards.toString())})
+            .set('image_set', imageSet)
+            .set('n_cards', nCards[imageSet].toString())})
       .toPromise();
   }
 

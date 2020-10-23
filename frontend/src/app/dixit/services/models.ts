@@ -26,6 +26,7 @@ export class GameDescription {
               public cardDescription?: string,
               public totalPoints: number = 30,
               public description?: string,
+              public imageSet: string = 'classic',
               public id?: string) {
   }
 
@@ -36,7 +37,7 @@ export class GameDescription {
 
 export class ActiveGame extends BaseActiveGame {
   constructor(public gameId: string, public nPlayers: number, public nBots: number,
-              public currentPlayers: number, public totalPoints: number) {
+              public currentPlayers: number, public totalPoints: number, public imageSet: string) {
     super(gameId, nPlayers, nBots, currentPlayers);
   }
 }

@@ -11,6 +11,7 @@ export class TableComponent implements OnInit, OnChanges {
   @Output() chooseCard = new EventEmitter<ChooseCard>();
 
   @Input() storyTellerName: string;
+  @Input() imageSet: string;
   @Input() inputPlayedCards: PlayedCard[];
   @Input() chosenCards: ChosenCard[];
   @Input() nPlayers: number;

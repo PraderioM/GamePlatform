@@ -16,6 +16,7 @@ export class DeckComponent implements OnInit {
   @Input() cardPlayed: boolean;
   @Input() deck: number[];
   @Input() isStoryTeller: boolean;
+  @Input() imageSet: string;
 
   showAllCards = false;
   selectedCardId?: number = null;
@@ -30,7 +31,7 @@ export class DeckComponent implements OnInit {
   }
 
   getCardPath(cardID: number): string {
-    return getCardPath(cardID);
+    return getCardPath(cardID, this.imageSet);
   }
 
   getClass(cardID: number) {

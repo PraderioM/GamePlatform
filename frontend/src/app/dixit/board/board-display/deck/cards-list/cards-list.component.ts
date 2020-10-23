@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {nCards} from '../../../../services/constants';
 import {getCardPath} from '../../../../services/utils';
 
@@ -9,6 +9,7 @@ import {getCardPath} from '../../../../services/utils';
 })
 export class CardsListComponent implements OnInit {
   @Output() back = new EventEmitter<void>();
+  @Input() imageSet: string;
 
   offset = 0;
   limit = 6;
@@ -23,17 +24,17 @@ export class CardsListComponent implements OnInit {
   }
 
   showNext() {
-    const maxVal = Math.floor((nCards - 1) / this.limit) * this.limit;
+    const maxVal = Math.floor((nCards[this.imageSet] - 1) / this.limit) * this.limit;
     this.offset = Math.min(maxVal, this.offset + this.limit);
   }
 
   getCardPath(cardID: any) {
-    return getCardPath(cardID);
+    return getCardPath(cardID, this.imageSet);
   }
 
   getCardIDs(): number[] {
     const cardIDs: number[] = [];
-    for (let i = this.limit; i < Math.min(this.limit + this.offset, nCards); i++) {
+    for (let i = this.limit; i < Math.min(this.limit + this.offset, nCards[this.imageSet]); i++) {
       cardIDs.push(i);
     }
     return cardIDs;

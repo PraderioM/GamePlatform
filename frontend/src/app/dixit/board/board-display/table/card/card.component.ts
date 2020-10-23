@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {cardBackPath} from '../../../../services/constants';
-import {getCardPath} from '../../../../services/utils';
+import {getCardPath, getCardBackPath} from '../../../../services/utils';
 
 @Component({
   selector: 'app-card',
@@ -18,6 +17,7 @@ export class CardComponent implements OnInit {
   @Input() nPlayers: number;
   @Input() playerName: string;
   @Input() chosenNames: string[];
+  @Input() imageSet: string;
 
   constructor() { }
 
@@ -26,9 +26,9 @@ export class CardComponent implements OnInit {
 
   getCardPath(): string {
     if (this.showCard) {
-      return getCardPath(this.cardId);
+      return getCardPath(this.cardId, this.imageSet);
     } else {
-      return cardBackPath;
+      return getCardBackPath(this.imageSet);
     }
   }
 

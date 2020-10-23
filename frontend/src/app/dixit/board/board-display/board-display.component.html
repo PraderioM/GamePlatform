@@ -6,12 +6,14 @@
            [cardDescription]="cardDescription"
            [cardChosen]="cardChosen"
            [storyTellerName]="storyTellerName"
+           [imageSet]="imageSet"
            (chooseCard)="chooseCard.emit($event)">
 
 </app-table>
 <app-deck [style]="height: 50%, width: 100%"
           [deck]="deck"
           [descriptionExists]="cardDescription != null"
+          [imageSet]="imageSet"
           [cardPlayed]="cardPlayed"
           [isStoryTeller]="isStoryTeller"
           (describeCard)="describeCard.emit($event)"

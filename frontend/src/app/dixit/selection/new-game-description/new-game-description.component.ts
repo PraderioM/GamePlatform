@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {GameDescription} from '../../services/models';
 import {StateService} from '../../services/state.service';
+import {nCards} from '../../services/constants';
 
 @Component({
   selector: 'app-new-game-description',
@@ -12,6 +13,7 @@ export class NewGameDescriptionComponent implements OnInit {
   @Output() back = new EventEmitter<void>();
   @Input() token: string;
 
+  imageSetList = getDictKeys(nCards);
   isNPCCorrect = true;
   isPCCorrect = true;
   isNPlaysCorrect = true;
@@ -29,7 +31,7 @@ export class NewGameDescriptionComponent implements OnInit {
     this.isTotalPointsCorrect = true;
   }
 
-  async tryCreateGame(npc: number, pc: number, totalPoints: number) {
+  async tryCreateGame(npc: number, pc: number, totalPoints: number, imageSet: string) {
     this.resetCorrectValues();
 
     // Check that inputs are correct.
@@ -72,7 +74,7 @@ export class NewGameDescriptionComponent implements OnInit {
       return;
     }
 
-    const gameDescription = await this.stateService.createGame(this.token, npc, pc, totalPoints);
+    const gameDescription = await this.stateService.createGame(this.token, npc, pc, totalPoints, imageSet);
     if (gameDescription.id != null) {
       this.enterGame.emit(gameDescription);
     } else {
@@ -101,4 +103,12 @@ export class NewGameDescriptionComponent implements OnInit {
     };
   }
 
+}
+
+function getDictKeys(inDict) {
+  const outList: string[] = [];
+  for (const key of inDict) {
+    outList.push(key);
+  }
+  return outList;
 }

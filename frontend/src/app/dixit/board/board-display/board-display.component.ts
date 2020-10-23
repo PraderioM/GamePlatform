@@ -23,6 +23,7 @@ export class BoardDisplayComponent implements OnInit {
   @Input() allChosen: boolean;
   @Input() deck: number[];
   @Input() cardPlayed: boolean;
+  @Input() imageSet: string;
   @Input() cardChosen: boolean;
 
   constructor() { }

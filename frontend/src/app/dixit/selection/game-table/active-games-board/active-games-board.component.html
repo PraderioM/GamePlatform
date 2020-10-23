@@ -6,6 +6,7 @@
     <th>n bots</th>
     <th>current players</th>
     <th>goal points</th>
+    <th>image set</th>
   </tr>
   <tr *ngFor="let activeGame of activeGames" (click)="tryEnterGame(activeGame)">
     <th>{{activeGame.gameId}}</th>
@@ -13,5 +14,6 @@
     <th>{{activeGame.nBots}}</th>
     <th>{{activeGame.currentPlayers}}</th>
     <th>{{activeGame.totalPoints}}</th>
+    <th>{{activeGame.imageSet}}</th>
   </tr>
 </table>

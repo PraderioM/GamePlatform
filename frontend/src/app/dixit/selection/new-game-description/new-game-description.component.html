@@ -25,8 +25,19 @@
   </tr>
   <tr>
     <th>
+      <label for="imageSet">Image set</label>
+    </th>
+    <th>
+      <select #imageSet id="imageSet">
+        <option *ngFor="let mode of imageSetList" [value]="mode">{{mode}}</option>
+      </select>
+    </th>
+  </tr>
+  <tr>
+    <th>
       <button
-        (click)="tryCreateGame(npc.valueAsNumber, pc.valueAsNumber, totalPoints.valueAsNumber)">
+        (click)="tryCreateGame(npc.valueAsNumber, pc.valueAsNumber, totalPoints.valueAsNumber,
+                               imageSetList[imageSet.selectedIndex])">
         Create game
       </button>
     </th>

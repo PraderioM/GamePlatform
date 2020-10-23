@@ -22,4 +22,4 @@
   <button *ngIf="selectedCardId != null && !cardPlayed && ! isStoryTeller" (click)="onCardPlay()">Play card</button>
   <button (click)="toggleShowAllCards()">View all cards</button>
 </div>
-<app-cards-list *ngIf="showAllCards" (back)="toggleShowAllCards()"></app-cards-list>
+<app-cards-list *ngIf="showAllCards" [imageSet]="imageSet" (back)="toggleShowAllCards()"></app-cards-list>
