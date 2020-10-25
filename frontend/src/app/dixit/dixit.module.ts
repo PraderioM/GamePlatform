@@ -14,17 +14,12 @@ import {BoardDisplayComponent} from './board/board-display/board-display.compone
 import {PlayersDisplayComponent} from './board/players-display/players-display.component';
 import {PlayerDisplayComponent} from './board/players-display/player-display/player-display.component';
 import {DeckComponent} from './board/board-display/deck/deck.component';
+import {CardsListComponent} from './board/board-display/deck/cards-list/cards-list.component';
 import {TableComponent} from './board/board-display/table/table.component';
 import {CardComponent} from './board/board-display/table/card/card.component';
-import {CardsListComponent} from './board/board-display/deck/cards-list/cards-list.component';
 
 
 const DECLARATIONS: any[] = [
-  DixitComponent,
-  SelectionComponent,
-  GameTableComponent,
-  ActiveGamesBoardComponent,
-  NewGameDescriptionComponent,
   BoardComponent,
   BoardDisplayComponent,
   DeckComponent,
@@ -32,7 +27,12 @@ const DECLARATIONS: any[] = [
   TableComponent,
   CardComponent,
   PlayersDisplayComponent,
-  PlayerDisplayComponent
+  PlayerDisplayComponent,
+  DixitComponent,
+  SelectionComponent,
+  GameTableComponent,
+  ActiveGamesBoardComponent,
+  NewGameDescriptionComponent
 ];
 
 const MODULES: any[] = [

@@ -1,3 +1,8 @@
 .description-text {
   font-style: italic;
 }
+
+:host {
+  width: 100%;
+  height: 50%;
+}

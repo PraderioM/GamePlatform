@@ -4,7 +4,7 @@ import {getCardPath, getCardBackPath} from '../../../../services/utils';
 @Component({
   selector: 'app-card',
   templateUrl: './card.component.html',
-  styleUrls: ['./card.component.css', '../board-display.component.css', '../../../../services/common.styles.css']
+  styleUrls: ['./card.component.css', '../../board-display.component.css', '../../../../../services/common.styles.css']
 })
 export class CardComponent implements OnInit {
   @Output() selectCard = new EventEmitter<void>();

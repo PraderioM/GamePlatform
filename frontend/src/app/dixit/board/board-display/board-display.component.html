@@ -1,5 +1,4 @@
-<app-table [style]="height: 50%, width: 100%"
-           [inputPlayedCards]="playedCards"
+<app-table [inputPlayedCards]="playedCards"
            [chosenCards]="chosenCards"
            [nPlayers]="nPlayers"
            [allChosen]="allChosen"
@@ -10,8 +9,7 @@
            (chooseCard)="chooseCard.emit($event)">
 
 </app-table>
-<app-deck [style]="height: 50%, width: 100%"
-          [deck]="deck"
+<app-deck [deck]="deck"
           [descriptionExists]="cardDescription != null"
           [imageSet]="imageSet"
           [cardPlayed]="cardPlayed"
