@@ -4,7 +4,7 @@ import { DixitComponent } from './dixit.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {CommonComponentsModule} from '../services/common-components/common-components.module';
 import {HttpClientModule} from '@angular/common/http';
-import {StateService} from '../services/state.service';
+import {StateService} from './services/state.service';
 import {SelectionComponent} from './selection/selection.component';
 import {GameTableComponent} from './selection/game-table/game-table.component';
 import {ActiveGamesBoardComponent} from './selection/game-table/active-games-board/active-games-board.component';
@@ -17,6 +17,7 @@ import {DeckComponent} from './board/board-display/deck/deck.component';
 import {CardsListComponent} from './board/board-display/deck/cards-list/cards-list.component';
 import {TableComponent} from './board/board-display/table/table.component';
 import {CardComponent} from './board/board-display/table/card/card.component';
+import {ReactiveFormsModule} from '@angular/forms';
 
 
 const DECLARATIONS: any[] = [
@@ -39,13 +40,16 @@ const MODULES: any[] = [
   CommonModule,
   NgbModule,
   CommonComponentsModule,
+  ReactiveFormsModule,
 ];
 
 @Injectable()
 @NgModule({
   declarations: DECLARATIONS,
+  exports: [
+    DixitComponent
+  ],
   imports: MODULES,
-  exports: [DixitComponent],
   providers: [ HttpClientModule, StateService ],
 })
 export class DixitModule { }
