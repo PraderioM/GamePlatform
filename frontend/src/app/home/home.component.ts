@@ -17,7 +17,7 @@ export class HomeComponent {
   @Output() loggedOut = new EventEmitter<void>();
   @Input() token: string;
   @Input() name: string;
-  gameNames: string[] = ['tic-tac-toe', 'SuDoKu', 'CATAN', 'DiXit', 'rock-paper-scissors'];
+  gameNames: string[] = ['tic-tac-toe', 'SuDoKu', 'CATAN', 'DiXiT', 'rock-paper-scissors'];
   gameSelections: boolean[];
 
   constructor(private stateService: StateService) {
