@@ -3,8 +3,8 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {ActiveGame, GameDescription} from './models';
 import {CommonStateService} from '../../services/common.state.service';
 import {DescribeCard} from './plays/describe.card';
-import {BasePlay} from '../../catan/services/plays/base.play';
-import {EndTurnPlay} from '../../catan/services/plays/end.turn';
+import {BasePlay} from './plays/base.play';
+import {EndTurn} from './plays/end.turn';
 import {PlayCard} from './plays/play.card';
 import {ChooseCard} from './plays/choose.card';
 import {nCards} from './constants';
@@ -16,7 +16,7 @@ export class StateService extends CommonStateService {
   }
 
   async createGame(token: string, npc: number, pc: number, totalPoints: number, imageSet: string) {
-    return await this.http
+    const result = await this.http
       .get<GameDescription>(this.backendURL + '/create-game',
         {params: new HttpParams().set('token', token)
             .set('npc', npc.toString()).set('pc', pc.toString())
@@ -24,20 +24,23 @@ export class StateService extends CommonStateService {
             .set('image_set', imageSet)
             .set('n_cards', nCards[imageSet].toString())})
       .toPromise();
+    return GameDescription.fromJSON(result);
   }
 
   async enterGame(token: string, gameId: string) {
-    return await this.http
+    const result = await this.http
       .get<GameDescription>(this.backendURL + '/enter-game',
         {params: new HttpParams().set('token', token).set('game_id', gameId)})
       .toPromise();
+    return GameDescription.fromJSON(result);
   }
 
   async getGameUpdate(token: string, gameId: string) {
-    return await this.http
+    const result = await this.http
       .get<GameDescription>(this.backendURL + '/get-game-update',
         {params: new HttpParams().set('token', token).set('game_id', gameId)})
       .toPromise();
+    return GameDescription.fromJSON(result);
   }
 
   async describeCard(token: string, play: DescribeCard, gameId: string) {
@@ -71,7 +74,7 @@ export class StateService extends CommonStateService {
       .toPromise();
   }
 
-  async endTurn(token: string, play: EndTurnPlay, gameId: string) {
+  async endTurn(token: string, play: EndTurn, gameId: string) {
     await this.http.post(this.backendURL + '/make-play',
       '',
       {

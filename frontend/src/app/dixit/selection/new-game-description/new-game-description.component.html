@@ -28,7 +28,7 @@
       <label for="imageSet">Image set</label>
     </th>
     <th>
-      <select #imageSet id="imageSet">
+      <select #imageSet id="imageSet" class="multiple-choice-input">
         <option *ngFor="let mode of imageSetList" [value]="mode">{{mode}}</option>
       </select>
     </th>

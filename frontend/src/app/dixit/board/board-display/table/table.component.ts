@@ -34,7 +34,13 @@ export class TableComponent implements OnInit, OnChanges {
       return;
     }
 
-    const nPlayedPrevious = changes.inputPlayedCards.previousValue.length;
+    let nPlayedPrevious: number;
+    const prevVal = changes.inputPlayedCards.previousValue;
+    if (prevVal === undefined || prevVal === null) {
+      nPlayedPrevious = 0;
+    } else {
+      nPlayedPrevious = prevVal.length;
+    }
     const nPlayedCurrent = changes.inputPlayedCards.currentValue.length;
 
     // shuffle played cards once when all players have played.

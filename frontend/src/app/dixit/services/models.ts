@@ -8,6 +8,11 @@ export class Player {
               public chosenCardId?: number,
               public playedCardId?: number) {
   }
+
+  public static fromJSON(jsonData: Player) {
+    return new Player(jsonData.deck, jsonData.isBot, jsonData.points,
+      jsonData.name, jsonData.chosenCardId, jsonData.playedCardId);
+  }
 }
 
 export class PlayedCard {
@@ -28,6 +33,21 @@ export class GameDescription {
               public description?: string,
               public imageSet: string = 'classic',
               public id?: string) {
+  }
+
+  public static fromJSON(jsonData?: GameDescription) {
+    // If there is no data return nothing.
+    if (jsonData === null) {
+      return null;
+    }
+
+    const playerList: Player[] = [];
+    for (const playerData of jsonData.playerList) {
+      playerList.push(Player.fromJSON(playerData));
+    }
+
+    return new GameDescription(playerList, jsonData.currentPlayer, jsonData.cardDescription,
+                               jsonData.totalPoints, jsonData.description, jsonData.imageSet, jsonData.id);
   }
 
   getCurrentPlayer() {

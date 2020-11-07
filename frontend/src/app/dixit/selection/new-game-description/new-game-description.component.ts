@@ -105,9 +105,10 @@ export class NewGameDescriptionComponent implements OnInit {
 
 }
 
-function getDictKeys(inDict) {
+function getDictKeys(inDict: object) {
   const outList: string[] = [];
-  for (const key of inDict) {
+
+  for (const key of Object.keys(inDict)) {
     outList.push(key);
   }
   return outList;
