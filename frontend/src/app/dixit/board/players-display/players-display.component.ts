@@ -19,4 +19,13 @@ export class PlayersDisplayComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  gameStarted(): boolean {
+    for (const player of this.playerList) {
+      if (player.name !== null) {
+        return false;
+      }
+    }
+    return true;
+  }
+
 }

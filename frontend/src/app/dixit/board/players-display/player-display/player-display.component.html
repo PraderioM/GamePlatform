@@ -1,4 +1,10 @@
-<div *ngIf="isCurrent && !isResolutionPhase">
+<div *ngIf="!gameStarted">
+  {{getBeforeStartName()}} ({{points}}/{{goalPoints}})
+  <span *ngIf="name === null">{{arrivingMessage}}</span>
+  <span *ngIf="name === null">{{arrivedMessage}}</span>
+</div>
+
+<div *ngIf="gameStarted && isCurrent && !isResolutionPhase">
   <b>
     {{name}} ({{points}}/{{goalPoints}})
   </b>
@@ -6,7 +12,7 @@
   <span *ngIf="isDescriptionAvailable">{{describedMessage}}</span>
 </div>
 
-<div *ngIf="!isCurrent && !isResolutionPhase">
+<div *ngIf="gameStarted && !isCurrent && !isResolutionPhase">
   {{name}} ({{points}}/{{goalPoints}})
   <span *ngIf="!isDescriptionAvailable">{{waitingForDescription}}</span>
   <span *ngIf="isDescriptionAvailable && !isChoosingPhase && !hasChosen">{{choosingCardMessage}}</span>
@@ -15,7 +21,7 @@
   <span *ngIf="isDescriptionAvailable && isChoosingPhase && hasPlayedCard">{{playedCardMessage}}</span>
 </div>
 
-<div *ngIf="isResolutionPhase">
+<div *ngIf="gameStarted && isResolutionPhase">
   {{name}} ({{points}}/{{goalPoints}})
   <span *ngIf="points >= previousPoints + 3">{{victoryExclamation}}</span>
   <span *ngIf="points < previousPoints + 3 && points > previousPoints">{{notLostExclamation}}</span>

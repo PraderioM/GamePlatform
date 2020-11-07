@@ -7,6 +7,7 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
 })
 export class PlayerDisplayComponent implements OnInit, OnChanges {
   @Input() name: string;
+  @Input() gameStarted: boolean;
   @Input() isCurrent: boolean;
   @Input() hasChosen: boolean;
   @Input() hasPlayedCard: boolean;
@@ -22,10 +23,12 @@ export class PlayerDisplayComponent implements OnInit, OnChanges {
   playedCardMessage = 'looks impatiently at you to make you nervous';
   choosingCardMessage = 'is thinking';
   chosenCardMessage = 'is praying for you to pick his card';
+  arrivingMessage = 'fell asleep and is running late';
+  arrivedMessage = 'watches the clock with annoyance';
   waitingForDescription = 'thinks you should have chosen your description earlier';
   previousPoints: number;
   victoryExclamation = 'initiating victory dance';
-  notLostExclamation = 'it\' something';
+  notLostExclamation = 'it\'s something';
   lostExclamation = 'the important thing is to participate';
   itIsImpossibleToBeThisBadExclamation = 'WTF?';
 
@@ -44,4 +47,11 @@ export class PlayerDisplayComponent implements OnInit, OnChanges {
     this.previousPoints = changes.points.previousValue;
   }
 
+  getBeforeStartName(): string {
+    if (this.name === null) {
+      return 'sleeping beauty';
+    } else {
+      return this.name;
+    }
+  }
 }
