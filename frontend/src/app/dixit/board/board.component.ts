@@ -23,7 +23,7 @@ export class BoardComponent implements OnInit {
   isPlaying = true;
   link = 'https://www.libellud.com/wp-content/uploads/2019/06/DIXIT_ODYSSEY_RULES_EN-1.pdf';
   updateInterval = 500;
-  changeTurnInterval = 5000;
+  turnCompleted = false;
 
   constructor(private stateService: StateService) { }
 
@@ -41,7 +41,7 @@ export class BoardComponent implements OnInit {
         return;
       } else if (this.allPlayersChosen()) {
         if (this.description.getCurrentPlayer().name === name) {
-          setTimeout(this.changeTurnAndUpdate.bind(this), this.changeTurnInterval);
+          this.turnCompleted = true;
           return;
         }
       }
@@ -62,6 +62,7 @@ export class BoardComponent implements OnInit {
   }
 
   async endTurn() {
+    this.turnCompleted = false;
     await this.stateService.endTurn(this.token, new EndTurn(), this.description.id);
   }
 
@@ -98,7 +99,7 @@ export class BoardComponent implements OnInit {
     return true;
   }
 
-  async changeTurnAndUpdate() {
+  async onTurnEnd() {
     await this.endTurn();
     this.updateGame();
   }

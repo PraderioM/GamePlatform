@@ -13,6 +13,7 @@ export class BoardDisplayComponent implements OnInit {
   @Output() describeCard = new EventEmitter<DescribeCard>();
   @Output() playCard = new EventEmitter<PlayCard>();
   @Output() chooseCard = new EventEmitter<ChooseCard>();
+  @Output() endTurn = new EventEmitter<void>();
 
   @Input() cardDescription?: string;
   @Input() storyTellerName: string;
@@ -25,6 +26,7 @@ export class BoardDisplayComponent implements OnInit {
   @Input() cardPlayed: boolean;
   @Input() imageSet: string;
   @Input() cardChosen: boolean;
+  @Input() turnCompleted: boolean;
 
   constructor() { }
 

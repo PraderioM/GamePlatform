@@ -9,6 +9,7 @@ import {PlayedCard, ChosenCard} from '../../../services/models';
 })
 export class TableComponent implements OnInit, OnChanges {
   @Output() chooseCard = new EventEmitter<ChooseCard>();
+  @Output() endTurn = new EventEmitter<void>();
 
   @Input() storyTellerName: string;
   @Input() imageSet: string;
@@ -16,6 +17,7 @@ export class TableComponent implements OnInit, OnChanges {
   @Input() chosenCards: ChosenCard[];
   @Input() nPlayers: number;
   @Input() allChosen: boolean;
+  @Input() turnCompleted: boolean;
   @Input() cardDescription?: string;
   @Input() cardChosen;
 

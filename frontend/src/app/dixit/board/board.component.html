@@ -11,6 +11,7 @@
   <app-board-display (describeCard)="describeCard($event)"
                      (playCard)="playCard($event)"
                      (chooseCard)="chooseCard($event)"
+                     (endTurn)="onTurnEnd()"
                      [cardDescription]="description.cardDescription"
                      [storyTellerName]="description.getCurrentPlayer().name"
                      [isStoryTeller]="description.getCurrentPlayer().name === name"
@@ -21,6 +22,7 @@
                      [nPlayers]="description.playerList.length"
                      [imageSet]="description.imageSet"
                      [allChosen]="allPlayersPlayed()"
+                     [turnCompleted]="turnCompleted"
                      [deck]="getDeck()">
 
   </app-board-display>

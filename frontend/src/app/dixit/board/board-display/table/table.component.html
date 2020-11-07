@@ -15,3 +15,4 @@
 
 </app-card>
 <button *ngIf="selectedCard != null && !cardChosen" (click)="onChooseCard(selectedCard)">Confirm selection</button>
+<button *ngIf="turnCompleted" (click)="endTurn.emit()">End turn</button>

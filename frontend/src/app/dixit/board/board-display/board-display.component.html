@@ -6,7 +6,10 @@
            [cardChosen]="cardChosen"
            [storyTellerName]="storyTellerName"
            [imageSet]="imageSet"
-           (chooseCard)="chooseCard.emit($event)">
+           [turnCompleted]="turnCompleted"
+           (chooseCard)="chooseCard.emit($event)"
+           (endTurn)="endTurn.emit()"
+           style="border: solid">
 
 </app-table>
 <app-deck [deck]="deck"
@@ -15,6 +18,7 @@
           [cardPlayed]="cardPlayed"
           [isStoryTeller]="isStoryTeller"
           (describeCard)="describeCard.emit($event)"
-          (playCard)="playCard.emit($event)">
+          (playCard)="playCard.emit($event)"
+          style="border: solid">
 
 </app-deck>
