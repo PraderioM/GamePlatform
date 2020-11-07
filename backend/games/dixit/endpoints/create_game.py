@@ -25,10 +25,9 @@ async def create_game(request: web.Request) -> web.Response:
                                      get_new_game=lambda db: get_new_game(db,
                                                                           pc=pc,
                                                                           npc=npc,
-                                                                          n_plays=n_plays,
                                                                           total_points=total_points,
-                                                                          victory_criterion=victory_criterion,
-                                                                          play_mode=play_mode,
+                                                                          image_set=image_set,
+                                                                          n_cards=n_cards,
                                                                           token=token),
                                      add_new_game_to_database=add_new_game_to_database)
 
