@@ -2,8 +2,8 @@ from typing import Dict, Optional
 
 import asyncpg
 
-from games.rock_paper_scissors.models.game import Game
-from games.rock_paper_scissors.models.player import Player
+from ..models.game import Game
+from ..models.player import Player
 from ..constants import ACTIVE_GAMES_TABLE
 
 

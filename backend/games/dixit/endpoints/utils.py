@@ -2,8 +2,8 @@ from typing import Dict, Optional
 
 import asyncpg
 
-from games.rock_paper_scissors.models.game import Game
-from games.rock_paper_scissors.models.player import Player
+from ..models.game import Game
+from ..models.player import Player
 from ..constants import ACTIVE_GAMES_TABLE
 
 
@@ -33,5 +33,5 @@ async def get_game_data(game_id: str, db: asyncpg.Connection) -> Optional[Dict]:
 
 
 def get_dummy_frontend_game(description: str) -> Dict:
-    dummy_game = Game(player_list=[Player(name='player1'), Player(name='player2')])
+    dummy_game = Game(current_player_index=0, player_list=[Player(name='player1'), Player(name='player2')])
     return {**dummy_game.to_frontend(None), 'description': description}
