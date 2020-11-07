@@ -14,7 +14,7 @@ class Game(BaseGame):
 
     def __init__(self, current_player_index: int,
                  player_list: List[Player],
-                 id_: Optional[str],
+                 id_: Optional[str] = None,
                  image_set: str = 'classic',
                  n_cards: int = 69,
                  total_points: int = 30,
@@ -30,6 +30,9 @@ class Game(BaseGame):
         self._total_points = total_points
         self.card_description = card_description
         self._played_cards = [] if played_cards is None else played_cards[:]
+
+    def get_player_score(self, player: Player) -> int:
+        return player.points
 
     # region frontend conversion.
     @classmethod
@@ -160,3 +163,11 @@ class Game(BaseGame):
         for player in self.player_list:
             card_list.extend(player.deck)
         return card_list
+
+    @property
+    def has_ended(self) -> bool:
+        for player in self.player_list:
+            if player.points >= self._total_points:
+                return True
+
+        return False
