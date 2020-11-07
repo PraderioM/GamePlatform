@@ -35,7 +35,7 @@ class Player(BasePlayer):
     def to_database(self) -> Dict:
         return {
             'name': self.name,
-            'deck': self._deck,
+            'deck': json.dumps(self._deck),
             'points': self.points,
             'chosen_card_id': self.chosen_card_id,
             'played_card_id': self.played_card_id,
