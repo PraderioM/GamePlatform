@@ -14,6 +14,7 @@ class PlayCard(Play):
     def __init__(self, player: Player, card_id: CardID):
         Play.__init__(self, player=player)
         self.card_id = card_id
+        self._card_removed = False
 
     @classmethod
     def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'PlayCard':
@@ -28,8 +29,9 @@ class PlayCard(Play):
 
     def update_game(self, game):
         player: Player = game.get_player_by_name(self.player.name)
-        player.remove_card_from_deck(self.card_id)
-        player.played_card_id = self.card_id
+        if self.card_id in player.deck:
+            player.remove_card_from_deck(self.card_id)
+            player.played_card_id = self.card_id
 
     async def update_database(self, db: asyncpg.connection, active_games_table: str, database_data: Dict):
         await db.execute(f"""
@@ -38,5 +40,5 @@ class PlayCard(Play):
                              last_updated = now()
                          WHERE id = $2
                          """,
-                         database_data['players'],
+                         database_data['player_list'],
                          database_data['id'])

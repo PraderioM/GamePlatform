@@ -30,7 +30,7 @@ class DescribeCard(Play):
         }
 
     def update_game(self, game):
-        game.description = self.description
+        game.card_description = self.description
         player: Player = game.get_player_by_name(self.player.name)
         player.remove_card_from_deck(self.card_id)
         player.played_card_id = self.card_id
@@ -43,6 +43,6 @@ class DescribeCard(Play):
                              last_updated = now()
                          WHERE id = $3
                          """,
-                         database_data['players'],
-                         database_data['description'],
+                         database_data['player_list'],
+                         database_data['card_description'],
                          database_data['id'])

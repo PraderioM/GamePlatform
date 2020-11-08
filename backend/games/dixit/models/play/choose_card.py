@@ -35,5 +35,5 @@ class ChooseCard(Play):
                              last_updated = now()
                          WHERE id = $2
                          """,
-                         database_data['players'],
+                         database_data['player_list'],
                          database_data['id'])

@@ -26,7 +26,7 @@ async def make_play(request: web.Request) -> web.Response:
 
     async def update_database(db: asyncpg.Connection, game: Game):
         play = play_list[0]
-        play.update_database(db=db, active_games_table=ACTIVE_GAMES_TABLE, database_data=game.to_database())
+        await play.update_database(db=db, active_games_table=ACTIVE_GAMES_TABLE, database_data=game.to_database())
 
     response = await general_make_play(pool=request.app['db'],
                                        token=request.rel_url.query['token'],

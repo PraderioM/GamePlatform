@@ -14,7 +14,6 @@ from ..constants import DECK_SIZE
 
 
 async def create_game(request: web.Request) -> web.Response:
-    print('Create game request received.')
     # Get params.
     npc = int(request.rel_url.query['npc'])
     pc = int(request.rel_url.query['pc'])
@@ -73,7 +72,6 @@ async def get_new_game(db: asyncpg.Connection, pc: int, npc: int,
         for name, is_bot, deck in zip(name_list, is_bot_list, deck_list)
     ]
 
-    print('Getting new game.')
     return Game(current_player_index=0,
                 player_list=player_list,
                 image_set=image_set,
@@ -84,7 +82,6 @@ async def get_new_game(db: asyncpg.Connection, pc: int, npc: int,
 
 async def add_new_game_to_database(new_game: Game, db: asyncpg.Connection):
     database_game = new_game.to_database()
-    print('adding game to database.')
     # Inset name in database.
     await db.execute("""
                      INSERT INTO dixit_active_games (id, player_list, n_cards, total_points, image_set, played_cards)

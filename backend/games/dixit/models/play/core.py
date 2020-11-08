@@ -20,7 +20,7 @@ class Play(BasePlay):
         raise NotImplementedError('`update_game` method should be implemented.')
 
     @abstractmethod
-    def update_database(self, db: asyncpg.connection, active_games_table: str, database_data: Dict):
+    async def update_database(self, db: asyncpg.connection, active_games_table: str, database_data: Dict):
         raise NotImplementedError('`update_database` method should be implemented.')
 
     @classmethod

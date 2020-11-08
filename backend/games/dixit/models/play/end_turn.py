@@ -35,7 +35,7 @@ class EndTurn(Play):
                              last_updated = now()
                          WHERE id = $4
                          """,
-                         database_data['players'],
+                         database_data['player_list'],
                          database_data['played_cards'],
                          database_data['current_player_index'],
                          database_data['id'])
