@@ -15,6 +15,7 @@
                      (endTurn)="onTurnEnd()"
                      [gameStarted]="gameStarted()"
                      [cardDescription]="description.cardDescription"
+                     [name]="name"
                      [storyTellerName]="description.getCurrentPlayer().name"
                      [isStoryTeller]="description.getCurrentPlayer().name === name"
                      [cardChosen]="hasChosenCard()"

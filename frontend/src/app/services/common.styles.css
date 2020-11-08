@@ -27,6 +27,7 @@
   border-style: solid;
   border-color: black;
 }
+
 .container {
   display: flex;
   flex-direction: row;

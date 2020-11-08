@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {GameDescription} from './services/models';
+import {GameDescription, Player} from './services/models';
 
 @Component({
   selector: 'app-dixit',

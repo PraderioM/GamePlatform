@@ -2,6 +2,7 @@
   <p *ngIf="cardDescription != null">
     story teller's description is `<span class="description-text">{{cardDescription}}`</span>
   </p>
+  <p class="container">
   <app-card *ngFor="let playedCard of getPlayedCards()"
             [selected]="selectedCard == playedCard.cardId"
             [cardId]="playedCard.cardId"
@@ -16,9 +17,12 @@
             (zoomCard)="showCard(playedCard.cardId)">
 
   </app-card>
+  </p>
+  <p class="container">
   <button *ngIf="selectedCard != null && !cardChosen && !isStoryTeller"
           (click)="onChooseCard(selectedCard)">Confirm selection</button>
   <button *ngIf="allChosen && isStoryTeller" (click)="endTurn.emit()">End turn</button>
+  </p>
 </div>
 <app-card-dialog *ngIf="showedCard!==null"
                  [cardID]="showedCard"

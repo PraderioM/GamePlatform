@@ -18,6 +18,7 @@ export class BoardDisplayComponent implements OnInit {
   @Input() cardDescription?: string;
   @Input() gameStarted: boolean;
   @Input() storyTellerName: string;
+  @Input() name: string;
   @Input() isStoryTeller: boolean;
   @Input() playedCards: PlayedCard[];
   @Input() chosenCards: ChosenCard[];

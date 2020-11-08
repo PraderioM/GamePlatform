@@ -31,17 +31,17 @@ export class BoardComponent implements OnInit {
   }
 
   async updateGame() {
-    const description = await this.stateService.getGameUpdate(this.token, this.description.id);
-
-    if (!(description === undefined || description == null) && description.id != null) {
-      this.description = description;
-
-      if (this.hasGameEnded()) {
-        await this.endGame();
-        return;
-      }
-    }
-    setTimeout(this.updateGame.bind(this), this.updateInterval);
+    // const description = await this.stateService.getGameUpdate(this.token, this.description.id);
+    //
+    // if (!(description === undefined || description == null) && description.id != null) {
+    //   this.description = description;
+    //
+    //   if (this.hasGameEnded()) {
+    //     await this.endGame();
+    //     return;
+    //   }
+    // }
+    // setTimeout(this.updateGame.bind(this), this.updateInterval);
   }
 
   async describeCard(play: DescribeCard) {
@@ -106,15 +106,6 @@ export class BoardComponent implements OnInit {
     await this.stateService.endTurn(this.token, new EndTurn(), this.description.id);
   }
 
-  private hasGameEnded() {
-    for (const player of this.description.playerList) {
-      if (player.points >= this.description.totalPoints) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   getAllPlayedCards(): PlayedCard[] {
     const playedCards: PlayedCard[] = [];
     for (const player of this.description.playerList) {
@@ -129,7 +120,7 @@ export class BoardComponent implements OnInit {
     const chosenCards: ChosenCard[] = [];
     for (const player of this.description.playerList) {
       if (player.chosenCardId != null) {
-        chosenCards.push(new ChosenCard(player.name, player.playedCardId));
+        chosenCards.push(new ChosenCard(player.name, player.chosenCardId));
       }
     }
     return chosenCards;

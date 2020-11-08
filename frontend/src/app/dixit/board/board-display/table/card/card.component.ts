@@ -50,7 +50,7 @@ export class CardComponent implements OnInit {
     const nChosen = this.chosenNames.length;
     let points;
     if (this.isCorrectCard) {
-      if (nChosen === 0 || nChosen === this.nPlayers) {
+      if (nChosen === 0 || nChosen === this.nPlayers - 1) {
         points = 0;
       } else {
         points = 3;

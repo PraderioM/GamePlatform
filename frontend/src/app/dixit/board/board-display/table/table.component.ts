@@ -5,13 +5,14 @@ import {PlayedCard, ChosenCard} from '../../../services/models';
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
-  styleUrls: ['./table.component.css']
+  styleUrls: ['./table.component.css', '../../../../services/common.styles.css']
 })
 export class TableComponent implements OnInit, OnChanges {
   @Output() chooseCard = new EventEmitter<ChooseCard>();
   @Output() endTurn = new EventEmitter<void>();
 
   @Input() storyTellerName: string;
+  @Input() name: string;
   @Input() isStoryTeller: boolean;
   @Input() imageSet: string;
   @Input() inputPlayedCards: PlayedCard[];
@@ -73,6 +74,10 @@ export class TableComponent implements OnInit, OnChanges {
       return;
     }
 
+    if (cardId === this.getPlayedCardID()) {
+      return;
+    }
+
     if (this.selectedCard === cardId) {
       this.selectedCard = null;
     } else {
@@ -82,6 +87,14 @@ export class TableComponent implements OnInit, OnChanges {
 
   onChooseCard(selectedCard: number) {
     this.chooseCard.emit(new ChooseCard(selectedCard));
+  }
+
+  getPlayedCardID(): number {
+    for (const playedCard of this.inputPlayedCards) {
+      if (playedCard.playerName === name) {
+        return playedCard.cardId;
+      }
+    }
   }
 
   getPlayedCards(): PlayedCard[] {
