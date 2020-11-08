@@ -12,4 +12,5 @@ async def enter_game(request: web.Request) -> web.Response:
                                     update_player_list=generate_update_player_list(ACTIVE_GAMES_TABLE),
                                     game_id=request.rel_url.query['game_id'],
                                     get_game_from_database=get_game_from_database,
-                                    get_dummy_frontend_game=get_dummy_frontend_game)
+                                    get_dummy_frontend_game=get_dummy_frontend_game,
+                                    shuffle_before_start=True)

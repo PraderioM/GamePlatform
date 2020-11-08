@@ -15,7 +15,7 @@ async def enter_game(token: str, pool: asyncpg.pool.Pool,
                      get_game_from_database: Callable[[asyncpg.Connection, str], Awaitable[Game]],
                      get_dummy_frontend_game: Callable[[str], Dict],
                      update_player_list: Callable[[asyncpg.Connection, Game, List[Player], str], Awaitable[None]],
-                     shuffle_before_start: bool = False) -> web.Response:
+                     shuffle_before_start: bool = True) -> web.Response:
     async with pool.acquire() as db:
         # Get username corresponding to token.
         player_name = await get_name_from_token(token=token, db=db)
