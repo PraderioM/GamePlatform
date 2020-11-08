@@ -1,3 +1,5 @@
+from math import floor
+from random import shuffle
 from typing import Dict, Optional, Tuple
 from uuid import uuid4
 
@@ -8,9 +10,11 @@ from registration.identify import get_name_from_token
 from games.common.endpoints.create_game import create_game as general_create_game
 from ..models.game import Game
 from ..models.player import Player
+from ..constants import DECK_SIZE
 
 
 async def create_game(request: web.Request) -> web.Response:
+    print('Create game request received.')
     # Get params.
     npc = int(request.rel_url.query['npc'])
     pc = int(request.rel_url.query['pc'])
@@ -52,14 +56,24 @@ async def get_new_game(db: asyncpg.Connection, pc: int, npc: int,
     elif total_points <= 0:
         error_message = f'Goal number of points must be strictly positive however got {total_points}.'
 
+    elif n_cards < DECK_SIZE * (npc + pc):
+        error_message = f'There can be at most {floor(n_cards / DECK_SIZE)} players with image set `{image_set}`'
+
     if error_message is not None:
         return None, {**dummy_game.to_frontend(), 'error_message': error_message}
 
     # If settings are correct we create a new game.
+    all_cards = [i for i in range(n_cards)]
+    shuffle(all_cards)
+    deck_list = [all_cards[i*DECK_SIZE: (i+1)*DECK_SIZE] for i in range(npc + pc)]
     is_bot_list = [False] * pc + [True] * npc
     name_list = [await get_name_from_token(token=token, db=db)] + [None] * (npc + pc - 1)
-    player_list = [Player(name=name, is_bot=is_bot) for name, is_bot in zip(name_list, is_bot_list)]
+    player_list = [
+        Player(name=name, is_bot=is_bot, deck=deck)
+        for name, is_bot, deck in zip(name_list, is_bot_list, deck_list)
+    ]
 
+    print('Getting new game.')
     return Game(current_player_index=0,
                 player_list=player_list,
                 image_set=image_set,
@@ -70,6 +84,7 @@ async def get_new_game(db: asyncpg.Connection, pc: int, npc: int,
 
 async def add_new_game_to_database(new_game: Game, db: asyncpg.Connection):
     database_game = new_game.to_database()
+    print('adding game to database.')
     # Inset name in database.
     await db.execute("""
                      INSERT INTO dixit_active_games (id, player_list, n_cards, total_points, image_set, played_cards)
