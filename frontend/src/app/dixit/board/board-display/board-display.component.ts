@@ -16,17 +16,18 @@ export class BoardDisplayComponent implements OnInit {
   @Output() endTurn = new EventEmitter<void>();
 
   @Input() cardDescription?: string;
+  @Input() gameStarted: boolean;
   @Input() storyTellerName: string;
   @Input() isStoryTeller: boolean;
   @Input() playedCards: PlayedCard[];
   @Input() chosenCards: ChosenCard[];
   @Input() nPlayers: number;
   @Input() allChosen: boolean;
+  @Input() allPlayed: boolean;
   @Input() deck: number[];
   @Input() cardPlayed: boolean;
   @Input() imageSet: string;
   @Input() cardChosen: boolean;
-  @Input() turnCompleted: boolean;
 
   constructor() { }
 

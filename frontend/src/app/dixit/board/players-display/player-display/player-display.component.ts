@@ -25,7 +25,7 @@ export class PlayerDisplayComponent implements OnInit, OnChanges {
   chosenCardMessage = 'is praying for you to pick his card';
   arrivingMessage = 'fell asleep and is running late';
   arrivedMessage = 'watches the clock with annoyance';
-  waitingForDescription = 'thinks you should have chosen your description earlier';
+  waitingForDescription = 'thinks story-teller should have chosen your description earlier';
   previousPoints: number;
   victoryExclamation = 'initiating victory dance';
   notLostExclamation = 'it\'s something';

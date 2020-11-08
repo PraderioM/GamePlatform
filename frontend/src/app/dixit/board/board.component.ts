@@ -10,7 +10,7 @@ import {EndTurn} from '../services/plays/end.turn';
 @Component({
   selector: 'app-board',
   templateUrl: './board.component.html',
-  styleUrls: ['./board.component.css']
+  styleUrls: ['./board.component.css', '../../services/common.styles.css']
 })
 export class BoardComponent implements OnInit {
   @Output() backToMenu = new EventEmitter<void>();
@@ -23,7 +23,6 @@ export class BoardComponent implements OnInit {
   isPlaying = true;
   link = 'https://www.libellud.com/wp-content/uploads/2019/06/DIXIT_ODYSSEY_RULES_EN-1.pdf';
   updateInterval = 500;
-  turnCompleted = false;
 
   constructor(private stateService: StateService) { }
 
@@ -36,14 +35,10 @@ export class BoardComponent implements OnInit {
 
     if (!(description === undefined || description == null) && description.id != null) {
       this.description = description;
+
       if (this.hasGameEnded()) {
         await this.endGame();
         return;
-      } else if (this.allPlayersChosen()) {
-        if (this.description.getCurrentPlayer().name === name) {
-          this.turnCompleted = true;
-          return;
-        }
       }
     }
     setTimeout(this.updateGame.bind(this), this.updateInterval);
@@ -61,11 +56,6 @@ export class BoardComponent implements OnInit {
     await this.stateService.chooseCard(this.token, play, this.description.id);
   }
 
-  async endTurn() {
-    this.turnCompleted = false;
-    await this.stateService.endTurn(this.token, new EndTurn(), this.description.id);
-  }
-
   async endGame() {
     clearInterval(this.interval);
     this.gameResolution = await this.stateService.endGame(this.token, this.description.id);
@@ -75,6 +65,19 @@ export class BoardComponent implements OnInit {
   onBackToMenu() {
     clearInterval(this.interval);
     this.backToMenu.emit();
+  }
+
+  gameStarted() {
+    if (this.description.playerList === undefined || this.description.playerList === null) {
+      return  false;
+    } else {
+      for (const player of this.description.playerList) {
+        if (player.name === null || player.name === undefined) {
+          return false;
+          }
+        }
+      }
+    return true;
   }
 
   allPlayersChosen(): boolean {
@@ -100,8 +103,7 @@ export class BoardComponent implements OnInit {
   }
 
   async onTurnEnd() {
-    await this.endTurn();
-    this.updateGame();
+    await this.stateService.endTurn(this.token, new EndTurn(), this.description.id);
   }
 
   private hasGameEnded() {
@@ -135,7 +137,7 @@ export class BoardComponent implements OnInit {
 
   getDeck(): number[] {
     for (const player of this.description.playerList) {
-      if (player.name === name) {
+      if (player.name === this.name) {
         return player.deck;
       }
     }

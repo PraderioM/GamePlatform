@@ -1,5 +1,5 @@
-<div *ngIf="!showAllCards">
-  <table *ngIf="isStoryTeller && !descriptionExists">
+<div *ngIf="showedCard===null && !showAllCards" class="deck-container">
+  <table *ngIf="isStoryTeller && gameStarted && !descriptionExists">
     <tr>
       <th>
         <label for="cardDescription">Card description</label>
@@ -8,18 +8,35 @@
         <input #cardDescription id="cardDescription" placeholder="describe your card here">
       </th>
       <th>
-        <button *ngIf="selectedCardId != null && cardDescription.value.length != 0"
+        <button *ngIf="selectedCardId != null"
                 (click)="onCardDescribe(cardDescription.value)">Play card</button>
       </th>
     </tr>
   </table>
+  <div class="container">
   <img *ngFor="let cardID of deck"
        [src]="getCardPath(cardID)"
        [ngClass]="getClass(cardID)"
        (click)="onCardSelect(cardID)"
+       (dblclick)="showCard(cardID)"
+       (close)="hideCard()"
        alt="card">
+  </div>
 
-  <button *ngIf="selectedCardId != null && !cardPlayed && ! isStoryTeller" (click)="onCardPlay()">Play card</button>
+  <button *ngIf="gameStarted && selectedCardId != null && !cardPlayed && ! isStoryTeller && descriptionExists"
+          (click)="onCardPlay()">Play card</button>
   <button (click)="toggleShowAllCards()">View all cards</button>
 </div>
-<app-cards-list *ngIf="showAllCards" [imageSet]="imageSet" (back)="toggleShowAllCards()"></app-cards-list>
+<app-cards-list *ngIf="showedCard===null && showAllCards"
+                [imageSet]="imageSet"
+                (back)="toggleShowAllCards()"
+                (showCard)="showCard($event)">
+
+</app-cards-list>
+<app-card-dialog *ngIf="showedCard!==null"
+                 [cardID]="showedCard"
+                 [imageSet]="imageSet"
+                 (close)="hideCard()"
+                 class="deck-container">
+
+</app-card-dialog>

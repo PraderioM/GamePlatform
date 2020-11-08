@@ -1,18 +1,29 @@
-<p *ngIf="cardDescription != null">
-  story teller's description is <span class="description-text">{{cardDescription}}</span>
-</p>
-<app-card *ngFor="let playedCard of getPlayedCards()"
-          [selected]="selectedCard == playedCard.cardId"
-          [cardId]="playedCard.cardId"
-          [showCard]="allPlayed"
-          [showResults]="allChosen"
-          [isCorrectCard]="playedCard.playerName === storyTellerName"
-          [nPlayers]="nPlayers"
-          [playerName]="playedCard.playerName"
-          [chosenNames]="getChosenPLayers(playedCard.cardId)"
-          [imageSet]="imageSet"
-          (selectCard)="onCardSelected(playedCard.cardId)">
+<div *ngIf="showedCard == null" class="table-container">
+  <p *ngIf="cardDescription != null">
+    story teller's description is `<span class="description-text">{{cardDescription}}`</span>
+  </p>
+  <app-card *ngFor="let playedCard of getPlayedCards()"
+            [selected]="selectedCard == playedCard.cardId"
+            [cardId]="playedCard.cardId"
+            [showCard]="allPlayed"
+            [showResults]="allChosen"
+            [isCorrectCard]="playedCard.playerName === storyTellerName"
+            [nPlayers]="nPlayers"
+            [playerName]="playedCard.playerName"
+            [chosenNames]="getChosenPLayers(playedCard.cardId)"
+            [imageSet]="imageSet"
+            (selectCard)="onCardSelected(playedCard.cardId)"
+            (zoomCard)="showCard(playedCard.cardId)">
 
-</app-card>
-<button *ngIf="selectedCard != null && !cardChosen" (click)="onChooseCard(selectedCard)">Confirm selection</button>
-<button *ngIf="turnCompleted" (click)="endTurn.emit()">End turn</button>
+  </app-card>
+  <button *ngIf="selectedCard != null && !cardChosen && !isStoryTeller"
+          (click)="onChooseCard(selectedCard)">Confirm selection</button>
+  <button *ngIf="allChosen && isStoryTeller" (click)="endTurn.emit()">End turn</button>
+</div>
+<app-card-dialog *ngIf="showedCard!==null"
+                 [cardID]="showedCard"
+                 [imageSet]="imageSet"
+                 (close)="hideCard()"
+                 class="deck-container">
+
+</app-card-dialog>

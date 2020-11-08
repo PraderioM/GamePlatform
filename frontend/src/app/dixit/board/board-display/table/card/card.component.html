@@ -1,6 +1,10 @@
 <label>
   <span *ngIf="showResults" [ngClass]="getNameClass()">{{getCardPlayingMessage()}}</span>
-  <img [src]="getCardPath()" (click)="selectCard.emit()" [ngClass]="getClass()" alt="card">
+  <img *ngIf="showCard" [src]="getCardPath()"
+       (click)="selectCard.emit()"
+       (dblclick)="zoomCard.emit()"
+       [ngClass]="getClass()" alt="card">
+  <img *ngIf="!showCard" [src]="getCardBackPath()" class="image-size" alt="card">
   <span *ngIf="showResults">
     <span  *ngFor="let name of chosenNames">{{getCardChoosingMessage(name)}}</span>
   </span>

@@ -6,3 +6,5 @@ export const nCards = {
   classic: 69,
   praderio: 2
 };
+
+export const deckSize = 6;

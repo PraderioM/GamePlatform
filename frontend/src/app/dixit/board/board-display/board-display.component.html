@@ -2,23 +2,23 @@
            [chosenCards]="chosenCards"
            [nPlayers]="nPlayers"
            [allChosen]="allChosen"
+           [allPlayed]="allPlayed"
            [cardDescription]="cardDescription"
            [cardChosen]="cardChosen"
+           [isStoryTeller]="isStoryTeller"
            [storyTellerName]="storyTellerName"
            [imageSet]="imageSet"
-           [turnCompleted]="turnCompleted"
            (chooseCard)="chooseCard.emit($event)"
-           (endTurn)="endTurn.emit()"
-           style="border: solid">
+           (endTurn)="endTurn.emit()">
 
 </app-table>
 <app-deck [deck]="deck"
+          [gameStarted]="gameStarted"
           [descriptionExists]="cardDescription != null"
           [imageSet]="imageSet"
           [cardPlayed]="cardPlayed"
           [isStoryTeller]="isStoryTeller"
           (describeCard)="describeCard.emit($event)"
-          (playCard)="playCard.emit($event)"
-          style="border: solid">
+          (playCard)="playCard.emit($event)">
 
 </app-deck>

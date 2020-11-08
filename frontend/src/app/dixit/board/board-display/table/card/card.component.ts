@@ -8,6 +8,7 @@ import {getCardPath, getCardBackPath} from '../../../../services/utils';
 })
 export class CardComponent implements OnInit {
   @Output() selectCard = new EventEmitter<void>();
+  @Output() zoomCard = new EventEmitter<void>();
 
   @Input() selected: boolean;
   @Input() cardId: number;
@@ -25,11 +26,11 @@ export class CardComponent implements OnInit {
   }
 
   getCardPath(): string {
-    if (this.showCard) {
-      return getCardPath(this.cardId, this.imageSet);
-    } else {
-      return getCardBackPath(this.imageSet);
-    }
+    return getCardPath(this.cardId, this.imageSet);
+  }
+
+  getCardBackPath() {
+    return getCardBackPath(this.imageSet);
   }
 
   getClass() {

@@ -1,7 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {GameDescription} from '../../services/models';
 import {StateService} from '../../services/state.service';
-import {nCards} from '../../services/constants';
+import {nCards, deckSize} from '../../services/constants';
+import {stringify} from 'querystring';
 
 @Component({
   selector: 'app-new-game-description',
@@ -72,6 +73,10 @@ export class NewGameDescriptionComponent implements OnInit {
       alert('Number of total points must be an integer.');
       this.isTotalPointsCorrect = false;
       return;
+    } else if (nCards[imageSet] < (npc + pc ) * deckSize) {
+      alert('There can be at most ' + stringify(Math.floor(nCards[imageSet] / deckSize)) + ' for playing with the image set ' + imageSet);
+      this.isPCCorrect = false;
+      this.isNPCCorrect = false;
     }
 
     const gameDescription = await this.stateService.createGame(this.token, npc, pc, totalPoints, imageSet);

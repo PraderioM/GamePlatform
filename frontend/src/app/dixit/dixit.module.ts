@@ -18,12 +18,14 @@ import {CardsListComponent} from './board/board-display/deck/cards-list/cards-li
 import {TableComponent} from './board/board-display/table/table.component';
 import {CardComponent} from './board/board-display/table/card/card.component';
 import {ReactiveFormsModule} from '@angular/forms';
+import {CardDialogComponent} from './board/board-display/deck/card-dialog/card-dialog.component';
 
 
 const DECLARATIONS: any[] = [
   BoardComponent,
   BoardDisplayComponent,
   DeckComponent,
+  CardDialogComponent,
   CardsListComponent,
   TableComponent,
   CardComponent,

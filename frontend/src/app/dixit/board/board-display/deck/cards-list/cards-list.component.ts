@@ -5,10 +5,13 @@ import {getCardPath} from '../../../../services/utils';
 @Component({
   selector: 'app-cards-list',
   templateUrl: './cards-list.component.html',
-  styleUrls: ['./cards-list.component.css', '../../board-display.component.css', '../../../../../services/common.styles.css']
+  styleUrls: ['./cards-list.component.css', '../deck.component.css',
+    '../../board-display.component.css', '../../../../../services/common.styles.css']
 })
 export class CardsListComponent implements OnInit {
   @Output() back = new EventEmitter<void>();
+  @Output() showCard = new EventEmitter<number>();
+
   @Input() imageSet: string;
 
   offset = 0;
@@ -34,7 +37,7 @@ export class CardsListComponent implements OnInit {
 
   getCardIDs(): number[] {
     const cardIDs: number[] = [];
-    for (let i = this.limit; i < Math.min(this.limit + this.offset, nCards[this.imageSet]); i++) {
+    for (let i = this.offset; i < Math.min(this.offset + this.limit, nCards[this.imageSet]); i++) {
       cardIDs.push(i);
     }
     return cardIDs;

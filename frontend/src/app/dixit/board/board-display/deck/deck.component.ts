@@ -12,6 +12,7 @@ export class DeckComponent implements OnInit {
   @Output() describeCard = new EventEmitter<DescribeCard>();
   @Output() playCard = new EventEmitter<PlayCard>();
 
+  @Input() gameStarted: boolean;
   @Input() descriptionExists: boolean;
   @Input() cardPlayed: boolean;
   @Input() deck: number[];
@@ -20,6 +21,7 @@ export class DeckComponent implements OnInit {
 
   showAllCards = false;
   selectedCardId?: number = null;
+  showedCard?: number = null;
 
   constructor() { }
 
@@ -42,7 +44,7 @@ export class DeckComponent implements OnInit {
   }
 
   onCardSelect(cardID: number) {
-    if ((this.isStoryTeller && this.descriptionExists) || (!this.isStoryTeller && this.cardPlayed)) {
+    if (!this.gameStarted || (this.isStoryTeller && this.descriptionExists) || (!this.isStoryTeller && this.cardPlayed)) {
       return;
     }
     if (this.selectedCardId === cardID) {
@@ -57,6 +59,18 @@ export class DeckComponent implements OnInit {
   }
 
   onCardDescribe(cardDescription: string) {
-    this.describeCard.emit(new DescribeCard(this.selectedCardId, cardDescription));
+    if (cardDescription.length === 0) {
+      alert('Description cannot be empty.');
+    } else {
+      this.describeCard.emit(new DescribeCard(this.selectedCardId, cardDescription));
+    }
+  }
+
+  showCard(cardID: number) {
+    this.showedCard = cardID;
+  }
+
+  hideCard() {
+    this.showedCard = null;
   }
 }

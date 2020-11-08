@@ -12,24 +12,23 @@ export class TableComponent implements OnInit, OnChanges {
   @Output() endTurn = new EventEmitter<void>();
 
   @Input() storyTellerName: string;
+  @Input() isStoryTeller: boolean;
   @Input() imageSet: string;
   @Input() inputPlayedCards: PlayedCard[];
   @Input() chosenCards: ChosenCard[];
   @Input() nPlayers: number;
   @Input() allChosen: boolean;
-  @Input() turnCompleted: boolean;
+  @Input() allPlayed: boolean;
   @Input() cardDescription?: string;
-  @Input() cardChosen;
+  @Input() cardChosen: boolean;
 
   selectedCard?: number;
+  showedCard?: number = null;
   shuffledPlayedCards: PlayedCard[];
-  allPlayed: boolean;
 
   constructor() { }
 
-  ngOnInit(): void {
-    this.allPlayed = this.inputPlayedCards.length === this.nPlayers;
-  }
+  ngOnInit(): void { }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.inputPlayedCards.currentValue.firstChange) {
@@ -66,9 +65,14 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   onCardSelected(cardId: number) {
+    if (this.isStoryTeller) {
+      return;
+    }
+
     if (this.cardChosen) {
       return;
     }
+
     if (this.selectedCard === cardId) {
       this.selectedCard = null;
     } else {
@@ -86,5 +90,13 @@ export class TableComponent implements OnInit, OnChanges {
     } else {
       return this.shuffledPlayedCards;
     }
+  }
+
+  showCard(cardID: number) {
+    this.showedCard = cardID;
+  }
+
+  hideCard() {
+    this.showedCard = null;
   }
 }

@@ -1,7 +1,7 @@
 <div *ngIf="!gameStarted">
-  {{getBeforeStartName()}} ({{points}}/{{goalPoints}})
+  {{getBeforeStartName()}}
   <span *ngIf="name === null">{{arrivingMessage}}</span>
-  <span *ngIf="name === null">{{arrivedMessage}}</span>
+  <span *ngIf="name !== null">{{arrivedMessage}}</span>
 </div>
 
 <div *ngIf="gameStarted && isCurrent && !isResolutionPhase">

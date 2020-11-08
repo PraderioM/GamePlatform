@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Player} from '../../services/models';
 
 @Component({
@@ -13,19 +13,11 @@ export class PlayersDisplayComponent implements OnInit {
   @Input() isChoosingPhase: boolean;
   @Input() isResolutionPhase: boolean;
   @Input() goalPoints: number;
+  @Input() gameStarted: boolean;
 
   constructor() { }
 
   ngOnInit(): void {
-  }
-
-  gameStarted(): boolean {
-    for (const player of this.playerList) {
-      if (player.name !== null) {
-        return false;
-      }
-    }
-    return true;
   }
 
 }
