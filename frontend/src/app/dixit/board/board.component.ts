@@ -31,17 +31,17 @@ export class BoardComponent implements OnInit {
   }
 
   async updateGame() {
-    // const description = await this.stateService.getGameUpdate(this.token, this.description.id);
-    //
-    // if (!(description === undefined || description == null) && description.id != null) {
-    //   this.description = description;
-    //
-    //   if (this.hasGameEnded()) {
-    //     await this.endGame();
-    //     return;
-    //   }
-    // }
-    // setTimeout(this.updateGame.bind(this), this.updateInterval);
+    const description = await this.stateService.getGameUpdate(this.token, this.description.id);
+
+    if (!(description === undefined || description == null) && description.id != null) {
+      this.description = description;
+
+      if (this.hasGameEnded()) {
+        await this.endGame();
+        return;
+      }
+    }
+    setTimeout(this.updateGame.bind(this), this.updateInterval);
   }
 
   async describeCard(play: DescribeCard) {
@@ -148,6 +148,15 @@ export class BoardComponent implements OnInit {
     for (const player of this.description.playerList) {
       if (player.name === this.name) {
         return player.playedCardId != null;
+      }
+    }
+    return false;
+  }
+
+  hasGameEnded() {
+    for (const player of this.description.playerList) {
+      if (player.points >= this.description.totalPoints) {
+        return true;
       }
     }
     return false;
