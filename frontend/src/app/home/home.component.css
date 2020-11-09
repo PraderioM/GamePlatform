@@ -6,3 +6,11 @@
   align-content: center;
   width: 80%
 }
+
+.vaso-container {
+  background-image:url(https://64.media.tumblr.com/666c54a8aed0b9cd91a96a726fd4e677/tumblr_py6q24R4p91sjpam3o1_400.gifv);
+  background-size: 100% 100%;
+  background-repeat:no-repeat;
+  color: white;
+  height: 97vh;
+}

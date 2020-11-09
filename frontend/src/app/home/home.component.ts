@@ -63,4 +63,10 @@ export class HomeComponent {
     }
     return false;
   }
+
+  getClass() {
+    return {
+      'vaso-container': this.name === 'Vaso',
+    };
+  }
 }
