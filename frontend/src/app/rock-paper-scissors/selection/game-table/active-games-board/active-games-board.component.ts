@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ActiveGame, GameDescription} from '../../../services/models';
 import {StateService} from '../../../services/state.service';
+import {selectionRefreshTime} from '../../../../services/constants';
 
 @Component({
   selector: 'app-active-games-board',
@@ -16,11 +17,12 @@ export class ActiveGamesBoardComponent implements OnInit {
   constructor(private stateService: StateService) { }
 
   ngOnInit() {
-    this.getActiveGames();
+    this.refreshActiveGames();
   }
 
-  async getActiveGames() {
+  async refreshActiveGames() {
     this.activeGames = await this.stateService.getActiveGames(this.token);
+    setTimeout(this.refreshActiveGames.bind(this), selectionRefreshTime);
   }
 
   async tryEnterGame(activeGame: ActiveGame) {

@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {LeaderBoardPosition} from '../../models';
+import {selectionRefreshTime} from '../../constants';
 
 @Component({
   selector: 'app-leaderboard',
@@ -15,11 +16,12 @@ export class LeaderboardComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.getLeaderBoardPosition();
+    this.refreshLeaderBoardPosition();
   }
 
-  async getLeaderBoardPosition() {
+  async refreshLeaderBoardPosition() {
     this.leaderBoardPositions = await this.stateService.getLeaderBoard(this.token);
+    setTimeout(this.refreshLeaderBoardPosition.bind(this), selectionRefreshTime);
   }
 
 }

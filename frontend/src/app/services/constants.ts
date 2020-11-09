@@ -11,3 +11,4 @@ export const observingScope = '/observing-images';
 export const observingImageArray = ['/img_1.png'];
 export const WTFScope = '/wtf-images';
 export const WTFImageArray = ['/wtf.png'];
+export const selectionRefreshTime = 5000;
