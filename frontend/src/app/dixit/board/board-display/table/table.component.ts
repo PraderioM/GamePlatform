@@ -91,7 +91,7 @@ export class TableComponent implements OnInit, OnChanges {
 
   getPlayedCardID(): number {
     for (const playedCard of this.inputPlayedCards) {
-      if (playedCard.playerName === name) {
+      if (playedCard.playerName === this.name) {
         return playedCard.cardId;
       }
     }
