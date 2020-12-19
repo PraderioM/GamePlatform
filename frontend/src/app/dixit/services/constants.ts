@@ -4,8 +4,8 @@ export const assetsPath = generalAssetsPath.concat('/dixit');
 export const cardsDirName = 'cards';
 export const nCards = {
   classic: 69,
-  praderio: 2,
-  marc: 25,
+  praderio: 3,
+  marc: 75,
 };
 
 export const deckSize = 6;
