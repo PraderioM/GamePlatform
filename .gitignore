@@ -1,0 +1,6 @@
+/db/
+/backend/venv/
+/run_backend.sh
+/run_frontend.sh
+/run_db.sh
+/frontend/src/app/dixit/services/cards.ts
