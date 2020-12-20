@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {nCards} from '../../../../services/constants';
 import {getCardPath} from '../../../../services/utils';
+import {nCards} from '../../../../services/cards';
 
 @Component({
   selector: 'app-cards-list',

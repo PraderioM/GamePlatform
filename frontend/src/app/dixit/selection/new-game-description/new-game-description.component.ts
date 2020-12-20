@@ -1,8 +1,9 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {GameDescription} from '../../services/models';
 import {StateService} from '../../services/state.service';
-import {nCards, deckSize} from '../../services/constants';
+import {deckSize} from '../../services/constants';
 import {stringify} from 'querystring';
+import {nCards} from '../../services/cards';
 
 @Component({
   selector: 'app-new-game-description',

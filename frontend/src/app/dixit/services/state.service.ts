@@ -7,7 +7,7 @@ import {BasePlay} from './plays/base.play';
 import {EndTurn} from './plays/end.turn';
 import {PlayCard} from './plays/play.card';
 import {ChooseCard} from './plays/choose.card';
-import {nCards} from './constants';
+import {nCards} from './cards';
 
 @Injectable()
 export class StateService extends CommonStateService {
