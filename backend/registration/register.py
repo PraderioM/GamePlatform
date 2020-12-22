@@ -1,18 +1,14 @@
 import json
-import re
 from uuid import uuid4
 
 from aiohttp import web
 import asyncpg
 
-MIN_PASSWORD_LEN = 5
-
 
 async def register(request):
     """Add User and Password"""
     name = request.rel_url.query['name']
-    password = request.rel_url.query['password']
-    confirmed_password = request.rel_url.query['confirmed_password']
+    confirmed_name = request.rel_url.query['confirmed_name']
 
     # Name must be specified.
     if name == '':
@@ -28,46 +24,17 @@ async def register(request):
             )
         )
 
-    # Password must have at least 5 characters.
-    if len(password) < MIN_PASSWORD_LEN:
+    # name and confirmed name must coincide.
+    if name != confirmed_name:
         return web.Response(
             status=200,
             # status=409,
             body=json.dumps(
                 {
                     'token': None,
-                    'incorrectPassword': True,
-                    'errorMessage': f'Password must have at least {MIN_PASSWORD_LEN} characters but got '
-                                    f'password with {len(password)} characters.',
-                }
-            )
-        )
-
-    # Password only alpha numeric.
-    if re.match('^[\w]+$', password) is None:
-        return web.Response(
-            status=200,
-            # status=403,
-            body=json.dumps(
-                {
-                    'token': None,
-                    'incorrectPassword': True,
-                    'errorMessage': 'Passwords can only contain alphanumeric values.'
-                }
-            )
-        )
-
-    # password and confirmed password must coincide.
-    if password != confirmed_password:
-        return web.Response(
-            status=200,
-            # status=409,
-            body=json.dumps(
-                {
-                    'token': None,
-                    'incorrectPassword': True,
-                    'incorrectPasswordConfirm': True,
-                    'errorMessage': 'Password confirmation does not coincide with password.',
+                    'incorrectName': True,
+                    'incorrectNameConfirm': True,
+                    'errorMessage': 'Username confirmation does not coincide with username.',
                 }
             )
         )
@@ -100,9 +67,9 @@ async def register(request):
             token = uuid4()
 
             # Insert the user and password  and token in the database.
-            await db.execute("""INSERT INTO users (name, password, token)
-                                VALUES ($1, $2, $3)
-                                """, name, password, token)
+            await db.execute("""INSERT INTO users (name, token)
+                                VALUES ($1, $2)
+                                """, name, token)
 
             return web.Response(
                 status=201,
