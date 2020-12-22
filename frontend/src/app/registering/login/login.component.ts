@@ -11,23 +11,21 @@ export class LoginComponent implements OnInit {
   @Output() login = new EventEmitter<LoginResponse>();
   @Output() goToRegister = new EventEmitter<void>();
   incorrectName = false;
-  incorrectPassword = false;
 
   constructor(private stateService: StateService) { }
 
   ngOnInit() {
   }
 
-  async tryLogIn(name: string, password: string) {
+  async tryLogIn(name: string) {
 
-    const response = await this.stateService.login(name, password);
+    const response = await this.stateService.login(name);
 
     if (response.token != null) {
       console.log('Successfully logged in.');
       this.login.emit(response);
     } else {
       this.incorrectName = response.incorrectName;
-      this.incorrectPassword = response.incorrectPassword;
       alert(response.errorMessage);
     }
   }

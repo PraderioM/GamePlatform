@@ -4,11 +4,7 @@
            class="small-input"
            [ngClass]="{'failed': incorrectName}"
            #labelerName>
-    <input type="password" placeholder="password"
-           class="small-input"
-           [ngClass]="{'failed': incorrectPassword}"
-           #inputPassword>
-    <button (click)="tryLogIn(labelerName.value, inputPassword.value)">
+    <button (click)="tryLogIn(labelerName.value)">
       log in
     </button>
     <button (click)="goToRegister.emit()">

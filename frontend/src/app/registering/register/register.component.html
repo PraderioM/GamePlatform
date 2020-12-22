@@ -1,18 +1,14 @@
 <ul style="text-align:center" class="data-container">
   <li style="text-align:center" class="data-container">
-    <input type="text" placeholder="name"
+    <input type="text" placeholder="username"
            class="small-input"
            [ngClass]="{'failed': nameFailed}"
            #inputName>
-    <input type="password" placeholder="password"
+    <input type="text" placeholder="confirm username"
            class="small-input"
-           [ngClass]="{'failed': passwordFailed}"
-           #inputPassword>
-    <input type="password" placeholder="confirm password"
-           class="small-input"
-           [ngClass]="{'failed': passwordConfirmFailed}"
-           #inputConfirmPassword>
-    <button (click)="tryRegister(inputName.value, inputPassword.value, inputConfirmPassword.value)">
+           [ngClass]="{'failed': nameConfirmFailed}"
+           #inputNameConfirm>
+    <button (click)="tryRegister(inputName.value, inputNameConfirm.value)">
       register
     </button>
     <button (click)="goToLogin.emit()">

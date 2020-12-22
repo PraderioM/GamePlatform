@@ -8,15 +8,13 @@ export class LoginResponse {
   public name?: string;
   public errorMessage: string;
   public incorrectName = false;
-  public incorrectPassword = false;
 }
 
 class RegisteringResponse {
   public token?: string;
   public errorMessage: string;
   public incorrectName = false;
-  public incorrectPassword = false;
-  public incorrectPasswordConfirm = false;
+  public incorrectNameConfirm = false;
 }
 
 
@@ -27,11 +25,11 @@ export class StateService {
     constructor(private http: HttpClient) {
     }
 
-    async login(name: string, password: string) {
+    async login(name: string) {
       console.log('Logging in as ' + name);
       const response = await this.http
         .get<LoginResponse>(backendURL + '/login',
-          {params: new HttpParams().set('name', name).set('password', password)})
+          {params: new HttpParams().set('name', name)})
         .toPromise();
 
       response.name = name;
@@ -53,11 +51,11 @@ export class StateService {
       console.log('Successfully logged out');
     }
 
-    async register(name: string, password: string, confirmedPassword: string) {
+    async register(name: string, confirmedName: string) {
       console.log('Registering');
       const response = await this.http
         .get<RegisteringResponse>(backendURL + '/register',
-          {params: new HttpParams().set('name', name).set('password', password).set('confirmed_password', confirmedPassword)})
+          {params: new HttpParams().set('name', name).set('confirmed_name', confirmedName)})
         .toPromise();
       console.log(response);
 

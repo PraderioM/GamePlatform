@@ -11,23 +11,21 @@ export class RegisterComponent implements OnInit {
   @Output() login = new EventEmitter<LoginResponse>();
   @Output() goToLogin = new EventEmitter<void>();
   nameFailed = false;
-  passwordFailed = false;
-  passwordConfirmFailed = false;
+  nameConfirmFailed = false;
 
   constructor(private stateService: StateService) { }
 
   ngOnInit() {
   }
 
-  async tryRegister(name: string, password: string, confirmPassword: string) {
-    const response = await this.stateService.register(name, password, confirmPassword);
+  async tryRegister(name: string, confirmName: string) {
+    const response = await this.stateService.register(name, confirmName);
     if (response.token != null) {
       this.login.emit(response);
       console.log('Successfully logged out');
     } else {
       this.nameFailed = response.incorrectName;
-      this.passwordFailed = response.incorrectPassword;
-      this.passwordConfirmFailed = response.incorrectPasswordConfirm;
+      this.nameConfirmFailed = response.incorrectNameConfirm;
       alert(response.errorMessage);
     }
   }
