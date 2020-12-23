@@ -15,6 +15,7 @@ import {SudokuModule} from './sudoku/sudoku.module';
 import {CatanModule} from './catan/catan.module';
 import {RockPaperScissorsModule} from './rock-paper-scissors/rock-paper-scissors.module';
 import {DixitModule} from './dixit/dixit.module';
+import {TheGameModule} from './the-game/the-game.module';
 
 const MODULES: any[] = [
   NgbModule,
@@ -25,6 +26,7 @@ const MODULES: any[] = [
   SudokuModule,
   RockPaperScissorsModule,
   DixitModule,
+  TheGameModule,
 ];
 
 

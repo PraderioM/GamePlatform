@@ -7,6 +7,8 @@
   </app-catan>
   <app-dixit [token]="token" [name]="name" (backToMenu)="deSelectGames()" *ngIf="isSelected('DiXiT')">
   </app-dixit>
+  <app-the-game [token]="token" [name]="name" (backToMenu)="deSelectGames()" *ngIf="isSelected('the GAME')">
+  </app-the-game>
   <app-rock-paper-scissors [token]="token" [name]="name" (backToMenu)="deSelectGames()"
                            *ngIf="isSelected('rock-paper-scissors')">
 
