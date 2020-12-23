@@ -1,0 +1,54 @@
+<table class="container">
+  <tr>
+    <th>
+      <label for="npc">Bots</label>
+    </th>
+    <th>
+      <input #npc id="npc" type="number" value="0" [ngClass]="getNPCClass()">
+    </th>
+  </tr>
+  <tr>
+    <th>
+      <label for="pc">Players</label>
+    </th>
+    <th>
+      <input #pc id="pc" type="number" value="3" [ngClass]="getPCClass()">
+    </th>
+  </tr>
+  <tr>
+    <th>
+      <label for="onFire">The game on fire</label>
+    </th>
+    <th>
+      <input #onFire id="onFire" type="checkbox">
+    </th>
+  </tr>
+  <tr>
+    <th>
+      <label for="deckSize">Deck size</label>
+    </th>
+    <th>
+      <input #deckSize id="deckSize" type="number" [ngClass]="getDeckSizeClass()">
+    </th>
+  </tr>
+  <tr>
+    <th>
+      <label for="minToPlay">Min cards to play</label>
+    </th>
+    <th>
+      <input #minToPlay id="minToPlay" type="number" [ngClass]="getMinToPLayClass()">
+    </th>
+  </tr>
+  <tr>
+    <th>
+      <button
+        (click)="tryCreateGame(npc.valueAsNumber, pc.valueAsNumber, onFire.checked,
+                               deckSize.valueAsNumber, minToPlay.valueAsNumber)">
+        Create game
+      </button>
+    </th>
+    <th>
+      <button (click)="back.emit()">Close</button>
+    </th>
+  </tr>
+</table>

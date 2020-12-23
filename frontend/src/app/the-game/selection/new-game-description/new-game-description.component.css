@@ -1,0 +1,11 @@
+.number-input {
+  width: 30pt;
+}
+
+.multiple-choice-input {
+  width: 60pt;
+}
+
+.error-input {
+  background-color: #ff0000;
+}
