@@ -1,4 +1,4 @@
-<ul style="text-align:center" class="hor-data-container" *ngIf="!gameFindingMode && !gameCreationMode">
+<ul style="text-align:center" class="selection-data-container" *ngIf="!gameFindingMode && !gameCreationMode">
   <app-game-table (enterGame)="onEnterGame($event)"
                   [token]="token">
 

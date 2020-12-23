@@ -5,7 +5,7 @@ import {StateService} from '../services/state.service';
 @Component({
   selector: 'app-selection',
   templateUrl: './selection.component.html',
-  styleUrls: ['./selection.component.css']
+  styleUrls: ['./selection.component.css', '../services/common.styles.css']
 })
 export class SelectionComponent implements OnInit {
   @Output() enterGame = new EventEmitter<GameDescription>();
