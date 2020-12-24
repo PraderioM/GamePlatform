@@ -32,9 +32,13 @@ class EndTurn(Play):
                          UPDATE {active_games_table}
                          SET player_list = $1,
                              remaining_cards = $2,
+                             turn = $3,
+                             current_player_index = $4,
                              last_updated = now()
-                         WHERE id = $3
+                         WHERE id = $5
                          """,
                          database_data['player_list'],
                          database_data['remaining_cards'],
+                         database_data['turn'],
+                         database_data['current_player_index'],
                          database_data['id'])

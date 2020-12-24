@@ -36,8 +36,17 @@ class Game(BaseGame):
         self._deck_size = deck_size
         self._min_to_play_cards = min_to_play_cards
 
+    # region scoring.
     def get_player_score(self, player: Player) -> int:
         return 1 if self.n_non_placed_cards == 0 else 0
+
+    def resolution_points(self, player: Player):
+        return self.get_player_score(player=player)
+
+    def is_winner_points(self, resolution_points: int) -> bool:
+        return resolution_points == 1
+
+    # endregion.
 
     # region frontend conversion.
     @classmethod

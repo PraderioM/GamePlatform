@@ -14,6 +14,7 @@ from games.sudoku.endpoints.collect_end_points import collect_end_points as sudo
 from games.catan.endpoints.collect_end_points import collect_end_points as catan_end_points
 from games.rock_paper_scissors.endpoints.collect_end_points import collect_end_points as r_p_s_end_points
 from games.dixit.endpoints.collect_end_points import collect_end_points as dixit_end_points
+from games.the_game.endpoints.collect_end_points import collect_end_points as the_game_end_points
 
 
 async def create_app():  # Start the app
@@ -51,6 +52,7 @@ async def create_app():  # Start the app
     catan_end_points(app=app_)
     r_p_s_end_points(app=app_)
     dixit_end_points(app=app_)
+    the_game_end_points(app=app_)
 
     # Configure CORS on all routes (deactivate it).
     for route in list(app_.router.routes()):
