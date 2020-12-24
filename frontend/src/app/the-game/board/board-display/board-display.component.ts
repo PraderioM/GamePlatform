@@ -4,7 +4,7 @@ import {BlockPile} from '../../services/plays/block.pile';
 import {SlowDownPile} from '../../services/plays/slow.down.pile';
 import {ChooseStartingPlayer} from '../../services/plays/choose.starting.player';
 import {Pile, PileReserve} from '../../services/models';
-import {onFireCardList} from '../../services/constants';
+import {onFireCardList, onFireLife} from '../../services/constants';
 
 @Component({
   selector: 'app-board-display',
@@ -155,7 +155,7 @@ export class BoardDisplayComponent implements OnInit {
         const lastPileCard = pile.getLastCard();
         const lastPlayedTurn = pile.getLastAddedTurn();
         for (const onFireCard of onFireCardList) {
-          if (onFireCard === lastPileCard && this.turn - lastPlayedTurn >= 1) {
+          if (onFireCard === lastPileCard && this.turn - lastPlayedTurn >= onFireLife) {
             return false;
           }
         }

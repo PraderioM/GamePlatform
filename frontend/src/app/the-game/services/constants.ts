@@ -11,3 +11,4 @@ export const defaultDeckSize = {
 };
 export const defaultMinToPlayCards = 2;
 export const onFireCardList = [22, 33, 44, 55, 66, 77];
+export const onFireLife = 1;

@@ -5,3 +5,4 @@ LEADER_BOARD_TABLE = 'the_game_leader_board'
 
 MAX_CARDS = 100
 ON_FIRE_CARDS = [22, 33, 44, 55, 66, 77]
+ON_FIRE_LIFE = 1
