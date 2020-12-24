@@ -1,0 +1,7 @@
+<app-player-display *ngFor="let player of playerList; let i = index"
+                    [name]="player.getName()"
+                    [nCards]="player.getNCards()"
+                    [isCurrent]="currentPlayerName != null && player.name === currentPlayerName"
+                    [gameStarted]="gameStarted">
+
+</app-player-display>

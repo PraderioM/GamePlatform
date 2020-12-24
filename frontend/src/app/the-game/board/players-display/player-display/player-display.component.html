@@ -1,0 +1,9 @@
+<div *ngIf="isCurrent">
+  <b>
+    {{name}} ({{nCards}})
+  </b>
+</div>
+
+<div *ngIf="!isCurrent">
+  {{name}} ({{nCards}})
+</div>

@@ -6,11 +6,30 @@ export class Player {
               public isBot: boolean,
               public blockedPileLists: number[],
               public slowedDownPileLists: number[],
+              public originalDeckLength: number,
               public name?: string) {
   }
 
   public static fromJSON(jsonData: Player) {
-    return new Player(jsonData.deck, jsonData.isBot, jsonData.blockedPileLists, jsonData.slowedDownPileLists, jsonData.name);
+    return new Player(jsonData.deck, jsonData.isBot, jsonData.blockedPileLists, jsonData.slowedDownPileLists,
+      jsonData.originalDeckLength, jsonData.name);
+  }
+
+  getNCards() {
+    return this.deck.length;
+  }
+
+  getName() {
+    if (this.name == null) {
+      return 'sleeping beauty';
+    } else {
+      return this.name;
+    }
+  }
+}
+
+export class PileReserve {
+  constructor(public name: string, public pileId: number) {
   }
 }
 
@@ -43,6 +62,7 @@ export class GameDescription {
               public onFire: boolean = false,
               public deckSize?: number,
               public minToPlayCards?: number,
+              public hasEnded: boolean = false,
               public description?: string,
               public id?: string) {
   }
@@ -72,6 +92,8 @@ export class GameDescription {
       jsonData.onFire,
       jsonData.deckSize,
       jsonData.minToPlayCards,
+      jsonData.hasEnded,
+      jsonData.description,
       jsonData.id);
   }
 
