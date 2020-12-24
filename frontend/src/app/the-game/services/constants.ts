@@ -1,7 +1,6 @@
 import {assetsPath as generalAssetsPath} from '../../services/constants';
 
 export const assetsPath = generalAssetsPath.concat('/the-game');
-export const fireImgPath = assetsPath.concat('/fire.png');
 export const maxCard = 100;
 export const defaultDeckSize = {
   1: 8,
