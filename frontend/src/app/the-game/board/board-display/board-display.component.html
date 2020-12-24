@@ -1,0 +1,23 @@
+<app-table [piles]="piles"
+           [blockedPiles]="blockedPiles"
+           [slowedDownPiles]="slowedDownPiles"
+           [gameStarted]="gameStarted"
+           [isCurrentPlayer]="isCurrentPlayer"
+           [onFire]="onFire"
+           [canPlayCard]="canPlayCard()"
+           [canReservePile]="canReservePile()"
+           [canEndTurn]="canEndTurn()"
+           [nRemainingCards]="nRemainingCards"
+           (startGame)="onStartGame()"
+           (playCard)="onCardPlay($event)"
+           (blockPile)="onBlockPile($event)"
+           (slowDownPile)="onSlowDownPile($event)"
+           (endTurn)="onEndTurn()">
+
+</app-table>
+<app-deck [deck]="deck"
+          [onFire]="onFire"
+          [selectedCard]="selectedCard"
+          (selectCard)="onCardSelect($event)">
+
+</app-deck>

@@ -1,0 +1,38 @@
+<p *ngIf="description == null">Game session has expired</p>
+<div *ngIf="description != null && isPlaying" class="container">
+  <app-players-display [playerList]="description.playerList"
+                       [currentPlayerName]="getCurrentPlayerName()"
+                       [gameStarted]="gameStarted()">
+
+  </app-players-display>
+  <app-board-display (playCard)="playCard($event)"
+                     (blockPile)="blockPile($event)"
+                     (slowDownPile)="slowDownPile($event)"
+                     (chooseStartingPlayer)="chooseStartingPlayer($event)"
+                     (endTurn)="onTurnEnd()"
+                     [gameStarted]="gameStarted()"
+                     [piles]="getPiles()"
+                     [blockedPiles]="getBlockedPiles()"
+                     [slowedDownPiles]="getSlowedDownPiles()"
+                     [deck]="getDeck()"
+                     [onFire]="description.onFire"
+                     [minToPlayCards]="description.minToPlayCards"
+                     [isCurrentPlayer]="name == getCurrentPlayerName()"
+                     [nRemainingCards]="getNRemainingCards()"
+                     [nInitialCards]="getCurrentPlayerInitialCards()"
+                     [turn]="description.turn"
+                     [name]="name">
+
+  </app-board-display>
+  <app-options-display (backToMenu)="onBackToMenu()"
+                       [gameId]="description.id"
+                       [instructions]="''"
+                       [link]="link">
+
+  </app-options-display>
+</div>
+<app-game-resolution-display *ngIf="description != null && !isPlaying"
+                             [gameResolution]="gameResolution"
+                             (backToMenu)="onBackToMenu()">
+
+</app-game-resolution-display>

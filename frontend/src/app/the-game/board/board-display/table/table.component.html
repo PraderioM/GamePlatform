@@ -1,0 +1,22 @@
+<div class="table-container">
+  <p>{{nRemainingCards}} cards left on deck.</p>
+  <p class="container">
+    <app-pile *ngFor="let pile of piles"
+              [ascending]="pile.ascending"
+              [topCard]="pile.getLastCard()"
+              [gameStarted]="gameStarted"
+              [onFire]="onFire"
+              [canPlayCard]="canPlayCard"
+              [canReservePile]="canReservePile"
+              (playCard)="playCard.emit(pile.id)"
+              (blockPile)="blockPile.emit(pile.id)"
+              (slowDownPile)="slowDownPile.emit(pile.id)">
+    </app-pile>
+  </p>
+  <p *ngIf="!gameStarted">
+    <button (click)="startGame.emit()">Play first</button>
+  </p>
+  <p *ngIf="!canEndTurn">
+    <button (click)="endTurn.emit()">End turn</button>
+  </p>
+</div>

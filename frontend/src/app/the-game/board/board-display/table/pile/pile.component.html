@@ -1,0 +1,21 @@
+<label>
+  <p>
+    <span>{{getDirection()}}</span>
+  </p>
+  <p>
+    <app-card [cardNumber]="topCard"
+              [selected]="false"
+              [onFire]="onFire">
+
+    </app-card>
+  </p>
+  <p *ngIf="canPlayCard">
+    <button (click)="playCard.emit()">Play card</button>
+  </p>
+  <p *ngIf="canReservePile">
+    <button (click)="blockPile.emit()">Block pile</button>
+  </p>
+  <p *ngIf="canReservePile">
+    <button (click)="slowDownPile.emit()">Slow down pile</button>
+  </p>
+</label>

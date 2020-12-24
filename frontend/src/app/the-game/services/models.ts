@@ -34,11 +34,11 @@ export class PileReserve {
 }
 
 export class Pile {
-  constructor(public ascending: boolean, public id: number, private lastCard?: number) {
+  constructor(public ascending: boolean, public id: number, private lastCard?: number, private lastAddedTurn?: number) {
   }
 
   public static fromJSON(jsonData: Pile) {
-    return new Pile(jsonData.ascending, jsonData.id, jsonData.lastCard);
+    return new Pile(jsonData.ascending, jsonData.id, jsonData.lastCard, jsonData.lastAddedTurn);
   }
 
   getLastCard() {
@@ -52,6 +52,14 @@ export class Pile {
       return this.lastCard;
     }
   }
+
+  getLastAddedTurn() {
+    if (this.lastAddedTurn == null) {
+      return -1;
+    } else {
+      return this.lastAddedTurn;
+    }
+  }
 }
 
 export class GameDescription {
@@ -60,6 +68,7 @@ export class GameDescription {
               public remainingCards: number[],
               public currentPlayer?: number,
               public onFire: boolean = false,
+              public turn: number = 0,
               public deckSize?: number,
               public minToPlayCards?: number,
               public hasEnded: boolean = false,
@@ -90,6 +99,7 @@ export class GameDescription {
       jsonData.remainingCards,
       jsonData.currentPlayer,
       jsonData.onFire,
+      jsonData.turn,
       jsonData.deckSize,
       jsonData.minToPlayCards,
       jsonData.hasEnded,
