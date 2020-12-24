@@ -1,0 +1,2 @@
+Card = int
+PileId = int
