@@ -1,4 +1,14 @@
 <label>
+  <p *ngIf="blockingPlayerNameList.length > 0">
+    <span>
+      Blocked by {{getBlockingNameString()}}
+    </span>
+  </p>
+  <p *ngIf="slowingDownPlayerNameList.length > 0">
+    <span>
+      Slowed down by {{getSlowingDownNameString()}}
+    </span>
+  </p>
   <p>
     <span>{{getDirection()}}</span>
   </p>
@@ -12,10 +22,10 @@
   <p *ngIf="canPlayCard">
     <button (click)="playCard.emit()">Play card</button>
   </p>
-  <p *ngIf="canReservePile">
+  <p *ngIf="canBlockPile">
     <button (click)="blockPile.emit()">Block pile</button>
   </p>
-  <p *ngIf="canReservePile">
+  <p *ngIf="canSlowDownPile">
     <button (click)="slowDownPile.emit()">Slow down pile</button>
   </p>
 </label>

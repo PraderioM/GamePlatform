@@ -7,7 +7,10 @@
               [gameStarted]="gameStarted"
               [onFire]="onFire"
               [canPlayCard]="canPlayCard"
-              [canReservePile]="canReservePile"
+              [canBlockPile]="canBlockPile(pile.id)"
+              [canSlowDownPile]="canSlowDownPile(pile.id)"
+              [blockingPlayerNameList]="getBlockingPLayerNames(pile.id)"
+              [slowingDownPlayerNameList]="getSlowingDownPLayerNames(pile.id)"
               (playCard)="playCard.emit(pile.id)"
               (blockPile)="blockPile.emit(pile.id)"
               (slowDownPile)="slowDownPile.emit(pile.id)">

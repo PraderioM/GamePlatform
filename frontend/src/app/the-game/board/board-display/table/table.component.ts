@@ -13,6 +13,7 @@ export class TableComponent implements OnInit {
   @Output() slowDownPile = new EventEmitter<number>();
   @Output() endTurn = new EventEmitter<void>();
 
+  @Input() name: string;
   @Input() piles: Pile[];
   @Input() blockedPiles: PileReserve[];
   @Input() slowedDownPiles: PileReserve[];
@@ -29,4 +30,51 @@ export class TableComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  canBlockPile(pileID: number) {
+    if (!this.canReservePile) {
+      return false;
+    }
+
+    const blockingPlayerList = this.getBlockingPLayerNames(pileID);
+    for (const playerName of blockingPlayerList) {
+      if (playerName === this.name) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  canSlowDownPile(pileID: number) {
+    if (!this.canReservePile) {
+      return false;
+    }
+
+    const slowingDownPlayerList = this.getSlowingDownPLayerNames(pileID);
+    for (const playerName of slowingDownPlayerList) {
+      if (playerName === this.name) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  getBlockingPLayerNames(pileId: number) {
+    const nameList: string[] = [];
+    for (const blockedPile of this.blockedPiles) {
+      if (blockedPile.pileId === pileId) {
+        nameList.push(blockedPile.name);
+      }
+    }
+    return nameList;
+  }
+
+  getSlowingDownPLayerNames(pileId: number) {
+    const nameList: string[] = [];
+    for (const slowedDownPile of this.slowedDownPiles) {
+      if (slowedDownPile.pileId === pileId) {
+        nameList.push(slowedDownPile.name);
+      }
+    }
+    return nameList;
+  }
 }

@@ -15,7 +15,10 @@ export class PileComponent implements OnInit {
   @Input() onFire: boolean;
   @Input() gameStarted: boolean;
   @Input() canPlayCard: boolean;
-  @Input() canReservePile: boolean;
+  @Input() canBlockPile: boolean;
+  @Input() canSlowDownPile: boolean;
+  @Input() blockingPlayerNameList: string[];
+  @Input() slowingDownPlayerNameList: string[];
 
   constructor() { }
 
@@ -28,5 +31,27 @@ export class PileComponent implements OnInit {
     } else {
       return 'descending';
     }
+  }
+
+  getBlockingNameString() {
+    return this.getNameString(this.blockingPlayerNameList);
+  }
+
+  getSlowingDownNameString() {
+    return this.getNameString(this.slowingDownPlayerNameList);
+  }
+
+  getNameString(nameList: string[]) {
+    if (nameList.length === 0) {
+      return '';
+    }
+
+    let joinedString = nameList[0];
+
+    for (let i = 1; i < nameList.length; i++) {
+      joinedString = joinedString + ', ' + nameList[i];
+    }
+
+    return joinedString;
   }
 }
