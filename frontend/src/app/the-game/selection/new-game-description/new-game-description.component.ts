@@ -33,6 +33,14 @@ export class NewGameDescriptionComponent implements OnInit {
   async tryCreateGame(npc: number, pc: number, onFire: boolean, deckSize: number, minToPlay: number) {
     this.resetCorrectValues();
 
+    // Pre process deck size and min to play.
+    if (isNaN(deckSize)) {
+      deckSize = defaultDeckSize[pc + npc];
+    }
+    if (isNaN(minToPlay)) {
+      minToPlay = defaultMinToPlayCards;
+    }
+
     // Check that inputs are correct.
     if (isNaN(npc)) {
       alert('Number of non player characters must be a valid integer.');
@@ -68,17 +76,14 @@ export class NewGameDescriptionComponent implements OnInit {
       this.isPCCorrect = false;
       this.isNPCCorrect = false;
       return;
-    } else if (isNaN(deckSize)) {
-      deckSize = defaultDeckSize[pc + npc];
-    } else if (!Number.isInteger(deckSize)) {
+    }  else if (!Number.isInteger(deckSize)) {
       alert('Deck size must be an integer.');
       this.isDeckSizeCorrect = false;
       return;
     } else if (deckSize < 1) {
       alert('Deck size must be at least 1.');
       this.isDeckSizeCorrect = false;
-    } else if (isNaN(minToPlay)) {
-      minToPlay = defaultMinToPlayCards;
+      return;
     } else if (!Number.isInteger(minToPlay)) {
       alert('Number of minimum cards to play must be an integer.');
       this.isMinToPlayCorrect = false;
@@ -87,6 +92,7 @@ export class NewGameDescriptionComponent implements OnInit {
       alert('Players cannot play more than all cards in deck at any moment');
       this.isMinToPlayCorrect = false;
       this.isDeckSizeCorrect = false;
+      return;
     }
 
     const gameDescription = await this.stateService.createGame(this.token, npc, pc, onFire, deckSize, minToPlay);

@@ -12,7 +12,7 @@ import {BlockPile} from './plays/block.pile';
 @Injectable()
 export class StateService extends CommonStateService {
   constructor(http: HttpClient) {
-    super(http, 'dixit');
+    super(http, 'the-game');
   }
 
   async createGame(token: string, npc: number, pc: number, onFire: boolean, deckSize?: number, minToPlayCards?: number) {

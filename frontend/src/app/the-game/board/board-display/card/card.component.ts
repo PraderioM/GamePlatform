@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {fireImgPath, onFireCardList} from '../../../services/constants';
+import {onFireCardList} from '../../../services/constants';
 
 @Component({
   selector: 'app-card',
@@ -12,8 +12,6 @@ export class CardComponent implements OnInit {
   @Input() cardNumber: number;
   @Input() selected: boolean;
   @Input() onFire: boolean;
-
-  fireImgPath = fireImgPath;
 
   constructor() { }
 
