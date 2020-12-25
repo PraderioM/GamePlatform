@@ -64,12 +64,12 @@ async def get_new_game(db: asyncpg.Connection,
         error_message = f'Deck size must lower than {int(MAX_CARDS / (npc + pc))} for games of '
         error_message += f'{npc + pc} player however got a deck size of {deck_size}.'
 
-    elif min_to_play_cards > 0:
+    elif min_to_play_cards > deck_size:
         error_message = f'Min to play cards must be greater than the deck size however got a deck size of {deck_size}'
         error_message += f'and min to play cards of {min_to_play_cards}.'
 
     if error_message is not None:
-        return None, {**dummy_game.to_frontend(), 'error_message': error_message}
+        return None, {**dummy_game.to_frontend(), 'description': error_message}
 
     # If settings are correct we create a new game.
     remaining_cards = [i for i in range(2, MAX_CARDS)]

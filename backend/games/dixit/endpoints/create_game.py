@@ -59,7 +59,7 @@ async def get_new_game(db: asyncpg.Connection, pc: int, npc: int,
         error_message = f'There can be at most {floor(n_cards / DECK_SIZE)} players with image set `{image_set}`'
 
     if error_message is not None:
-        return None, {**dummy_game.to_frontend(), 'error_message': error_message}
+        return None, {**dummy_game.to_frontend(), 'description': error_message}
 
     # If settings are correct we create a new game.
     all_cards = [i for i in range(n_cards)]
