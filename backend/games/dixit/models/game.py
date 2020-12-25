@@ -118,7 +118,7 @@ class Game(BaseGame):
             # Add 3 points to story teller and to any player that has made the correct card choice.
             story_teller.points += 3
             for player in correct_choice_players:
-                player.points += 2
+                player.points += 3
 
         # Get points for incorrectly given card choices.
         for player in self.player_list:
