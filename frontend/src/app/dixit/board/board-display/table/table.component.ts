@@ -106,7 +106,9 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   showCard(cardID: number) {
-    this.showedCard = cardID;
+    if (this.allPlayed) {
+      this.showedCard = cardID;
+    }
   }
 
   hideCard() {

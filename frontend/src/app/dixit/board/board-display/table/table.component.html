@@ -19,7 +19,7 @@
   </app-card>
   </p>
   <p class="container">
-  <button *ngIf="selectedCard != null && !cardChosen && !isStoryTeller"
+  <button *ngIf="selectedCard != null && !cardChosen && !isStoryTeller && allPlayed"
           (click)="onChooseCard(selectedCard)">Confirm selection</button>
   <button *ngIf="allChosen && isStoryTeller" (click)="endTurn.emit()">End turn</button>
   </p>
