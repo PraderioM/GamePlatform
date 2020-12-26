@@ -13,7 +13,7 @@ export class StateService extends CommonStateService {
                      victoryCriterion: string, playMode: string) {
       const totalPointsStr = isNaN(totalPoints) ? '0' : totalPoints.toString();
 
-      return await this.http
+      const game = await this.http
         .get<GameDescription>(this.backendURL + '/create-game',
           {params: new HttpParams().set('token', token)
               .set('npc', npc.toString()).set('pc', pc.toString())
@@ -22,20 +22,31 @@ export class StateService extends CommonStateService {
               .set('play_mode', playMode)
               .set('total_points', totalPointsStr)})
         .toPromise();
+      this.nActions = game.nActions;
+      return game;
     }
 
     async enterGame(token: string, gameId: string) {
-      return await this.http
+      const game = await this.http
         .get<GameDescription>(this.backendURL + '/enter-game',
           {params: new HttpParams().set('token', token).set('game_id', gameId)})
         .toPromise();
+      this.nActions = game.nActions;
+      return game;
     }
 
     async getGameUpdate(token: string, gameId: string) {
-      return await this.http
+      const game = await this.http
         .get<GameDescription>(this.backendURL + '/get-game-update',
-          {params: new HttpParams().set('token', token).set('game_id', gameId)})
+          {
+            params: new HttpParams()
+              .set('token', token)
+              .set('game_id', gameId)
+              .set('n_actions', this.nActions.toString())
+          })
         .toPromise();
+      this.nActions = game.nActions;
+      return game;
     }
 
     async makePlay(token: string, play: Play, gameId: string) {

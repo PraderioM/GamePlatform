@@ -26,7 +26,8 @@ export class GameDescription {
               public totalPoints?: number,
               public currentRound: number = 0,
               public description?: string,
-              public id?: string) {
+              public id?: string,
+              public nActions: number = -1) {
   }
 }
 

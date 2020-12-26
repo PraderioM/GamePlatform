@@ -15,7 +15,8 @@ class Game:
                  play_mode: PlayMode = PlayMode.CLASSIC,
                  total_points: Optional[int] = None,
                  current_round: int = 0,
-                 id_: Optional[str] = None):
+                 id_: Optional[str] = None,
+                 n_actions: int = 1):
         assert n_plays % 2 == 1, 'Number of plays must be odd.'
         assert n_plays >= 3, f'Number of plays must be at least 3 but got {n_plays}'
         assert len(player_list) >= 2, f'Number of players must be at least 2 but got {len(player_list)}'
@@ -33,6 +34,7 @@ class Game:
         self.play_mode = play_mode
         self._total_points = total_points
         self._victory_criterion = victory_criterion
+        self._n_actions = n_actions
 
     @classmethod
     def from_database(cls, json_data: Dict) -> 'Game':
@@ -44,6 +46,7 @@ class Game:
             total_points=json_data['total_points'],
             current_round=json_data['current_round'],
             id_=json_data['id'],
+            n_actions=json_data['n_actions'],
         )
 
     def to_database(self) -> Dict:
@@ -55,6 +58,7 @@ class Game:
             'total_points': self.total_points,
             'current_round': self.current_round,
             'id': self.id,
+            'n_actions': self._n_actions,
         }
 
     def to_frontend(self, db: asyncpg.Connection):
@@ -67,6 +71,7 @@ class Game:
             'totalPoints': self.total_points,
             'currentRound': self.current_round,
             'id': str(self.id),
+            'n_actions': self._n_actions,
         }
 
     def to_game_resolution(self, player: Player) -> Dict:
@@ -132,6 +137,7 @@ class Game:
 
         # Do not update if player is not playing.
         if player is None or not player.is_active or player.last_played_round == self.current_round:
+            self.update_n_actions()
             return
 
         # Update player data if player exists.
@@ -145,9 +151,11 @@ class Game:
             if player.is_bot:
                 continue
             elif player.last_played_round < self.current_round:
+                self.update_n_actions()
                 return
 
         self.play_round()
+        self.update_n_actions()
 
     def add_new_player_name(self, name: str):
         # Cannot add twice the same player.
@@ -229,6 +237,9 @@ class Game:
     def are_players_ready(self):
         return len([player for player in self.active_players if player.last_played_round == self.current_round]) == 0
 
+    def update_n_actions(self):
+        self._n_actions += 1
+
     @property
     def victory_criterion(self) -> VictoryCriterion:
         return self._victory_criterion
@@ -268,6 +279,10 @@ class Game:
     @property
     def has_ended(self) -> bool:
         return self.n_active_players == 1
+
+    @property
+    def n_actions(self):
+        return self._n_actions
 
     @property
     def total_points(self) -> Optional[int]:

@@ -84,7 +84,7 @@ class BuildPlay(Play):
                          SET player_list = $1,
                              play_list = $2,
                              materials_deck = $3,
-                             last_updated = now()
+                             n_actions = n_actions + 1
                          WHERE id = $4
                          """,
                          database_data['players'],
@@ -208,7 +208,7 @@ class BuildRoad(BuildPlay):
                              materials_deck = $5,
                              long_road_player = $6,
                              to_build_roads = $7,
-                             last_updated = now()
+                             n_actions = n_actions + 1
                          WHERE id = $8
                          """,
                          database_data['current_player_index'],

@@ -5,11 +5,9 @@ from aiohttp import web
 import asyncpg
 
 from games.common.models.game import Game
-from registration.updating import update_last_received_update_by_token
 
 
 async def create_game(pool: asyncpg.pool.Pool,
-                      token: str,
                       get_new_game: Callable[[asyncpg.Connection], Awaitable[Tuple[Game, Optional[Dict]]]],
                       add_new_game_to_database: Callable[[Game, asyncpg.Connection], Awaitable[None]]) -> web.Response:
     async with pool.acquire() as db:
@@ -24,9 +22,6 @@ async def create_game(pool: asyncpg.pool.Pool,
         # Add the created new game to database.
         await add_new_game_to_database(new_game, db)
         frontend_new_game = new_game.to_frontend(db=db)
-
-        # Before returning the updated game let us update the last updated time of the player.
-        await update_last_received_update_by_token(token=token, db=db)
 
         return web.Response(
             status=200,

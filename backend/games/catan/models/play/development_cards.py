@@ -60,7 +60,7 @@ class BuyDevelopment(Play):
                          SET player_list = $1,
                              development_deck = $2,
                              materials_deck = $3,
-                             last_updated = now()
+                             n_actions = n_actions + 1
                          WHERE id = $4
                          """,
                          database_data['players'],
@@ -125,8 +125,8 @@ class PlayKnight(DevelopmentPlay):
                          SET player_list = $1,
                              knight_player = $2,
                              thief_moved = $3,
-                             last_updated = now()
-                         WHERE id = $4
+                             n_actions = n_actions + 1
+                         WHERE id = $5
                          """,
                          database_data['players'],
                          database_data['knight_player'],
@@ -159,7 +159,7 @@ class PlayRoads(DevelopmentPlay):
                          UPDATE {active_games_table}
                          SET player_list = $1,
                              to_build_roads = $2,
-                             last_updated = now()
+                             n_actions = n_actions + 1
                          WHERE id = $3
                          """,
                          database_data['players'],
@@ -240,7 +240,7 @@ class PlayResources(DevelopmentPlay):
                          UPDATE {active_games_table}
                          SET player_list = $1,
                              materials_deck = $2,
-                             last_updated = now()
+                             n_actions = n_actions + 1
                          WHERE id = $3
                          """,
                          database_data['players'],
@@ -297,7 +297,7 @@ class PlayMonopoly(DevelopmentPlay):
         await db.execute(f"""
                          UPDATE {active_games_table}
                          SET player_list = $1,
-                             last_updated = now()
+                             n_actions = n_actions + 1
                          WHERE id = $2
                          """,
                          database_data['players'],

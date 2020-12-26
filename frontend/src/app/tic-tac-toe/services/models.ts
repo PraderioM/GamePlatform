@@ -17,8 +17,8 @@ export class Player extends BasePlayer {
 export class GameDescription extends BaseGameDescription {
   constructor(public rows: number, public cols: number, public players: Player[],
               public currentPlayer: number, public description: string,
-              public id?: string, public plays: Play[] = []) {
-    super(players, currentPlayer, description, id, plays);
+              public id?: string, public nActions: number = -1, public plays: Play[] = []) {
+    super(players, currentPlayer, description, id, nActions, plays);
   }
 }
 

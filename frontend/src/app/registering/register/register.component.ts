@@ -21,7 +21,10 @@ export class RegisterComponent implements OnInit {
   async tryRegister(name: string, confirmName: string) {
     const response = await this.stateService.register(name, confirmName);
     if (response.token != null) {
-      this.login.emit(response);
+      const loginResponse = new LoginResponse();
+      loginResponse.name = name;
+      loginResponse.token = response.token;
+      this.login.emit(loginResponse);
       console.log('Successfully logged out');
     } else {
       this.nameFailed = response.incorrectName;

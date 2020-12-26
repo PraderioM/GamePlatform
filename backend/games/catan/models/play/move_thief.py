@@ -54,7 +54,7 @@ class MoveThief(Play):
                          SET thief_moved = $1,
                              thief_position = $2,
                              to_steal_players = $3,
-                             last_updated = now()
+                             n_actions = n_actions + 1
                          WHERE id = $4
                          """,
                          database_data['thief_moved'],

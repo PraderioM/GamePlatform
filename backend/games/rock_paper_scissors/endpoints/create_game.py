@@ -24,7 +24,6 @@ async def create_game(request: web.Request) -> web.Response:
     token = request.rel_url.query['token']
 
     return await general_create_game(pool=request.app['db'],
-                                     token=token,
                                      get_new_game=lambda db: get_new_game(db,
                                                                           pc=pc,
                                                                           npc=npc,

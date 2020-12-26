@@ -11,25 +11,29 @@ from ...common.models.game import Game as BaseGame
 class Game(BaseGame):
     def __init__(self, rows: int, cols: int, current_player_index: int, gravity: bool,
                  play_list: List[Play], player_list: List[Player],
-                 id_: Optional[str]):
+                 id_: Optional[str],
+                 n_actions: int = 1):
         self.rows = rows
         self.cols = cols
         self.gravity = gravity
-        BaseGame.__init__(self, current_player_index=current_player_index, play_list=play_list, player_list=player_list,
-                          id_=id_)
+        BaseGame.__init__(self, current_player_index=current_player_index,
+                          play_list=play_list,
+                          player_list=player_list,
+                          id_=id_, n_actions=n_actions)
 
     @classmethod
     def from_database(cls, json_data: Dict[str, Union[int, str, bool, Dict]]) -> 'Game':
-        rows = json_data['rows']
-        cols = json_data['cols']
-        gravity = json_data['gravity']
-        id_ = json_data['id']
-        current_player_index = json_data['current_player_index']
         players_list = [Player.from_database(json_data=json_data) for json_data in json.loads(json_data['players'])]
         play_list = [Play.from_database(json_data=json_data,
                                         all_players=players_list) for json_data in json.loads(json_data['plays'])]
-        return Game(rows=rows, cols=cols, current_player_index=current_player_index, gravity=gravity,
-                    play_list=play_list, player_list=players_list, id_=id_)
+        return Game(rows=json_data['rows'],
+                    cols=json_data['cols'],
+                    current_player_index=json_data['current_player_index'],
+                    gravity=json_data['gravity'],
+                    play_list=play_list,
+                    player_list=players_list,
+                    id_=json_data['id'],
+                    n_actions=json_data['n_actions'])
 
     @classmethod
     def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'Game':
@@ -55,6 +59,7 @@ class Game(BaseGame):
             'plays': [play.to_frontend() for play in self.play_list],
             'id': None if self.id is None else str(self.id),
             'description': description,
+            'n_actions': self.n_actions,
         }
 
     def to_display(self) -> Dict[str, Union[str, int, bool]]:

@@ -55,7 +55,7 @@ class MakeOffer(Play):
         await db.execute(f"""
                          UPDATE {active_games_table}
                          SET offer = $1,
-                             last_updated = now()
+                             n_actions = n_actions + 1
                          WHERE id = $2
                          """,
                          database_data['offer'],
@@ -83,7 +83,7 @@ class WithdrawOffer(Play):
         await db.execute(f"""
                          UPDATE {active_games_table}
                          SET offer = $1,
-                             last_updated = now()
+                             n_actions = n_actions + 1
                          WHERE id = $2
                          """,
                          database_data['offer'],
@@ -154,7 +154,7 @@ class AcceptOffer(Play):
                          UPDATE {active_games_table}
                          SET player_list = $1,
                              offer = $2,
-                             last_updated = now()
+                             n_actions = n_actions + 1
                          WHERE id = $3
                          """,
                          database_data['players'],
@@ -208,7 +208,7 @@ class RejectOffer(Play):
         await db.execute(f"""
                          UPDATE {active_games_table}
                          SET offer = $1,
-                             last_updated = now()
+                             n_actions = n_actions + 1
                          WHERE id = $2
                          """,
                          database_data['offer'],
@@ -321,7 +321,7 @@ class CommerceWithBank(Play):
                          SET player_list = $1,
                              offer = $2,
                              materials_deck = $3,
-                             last_updated = now()
+                             n_actions = n_actions + 1
                          WHERE id = $4
                          """,
                          database_data['players'],

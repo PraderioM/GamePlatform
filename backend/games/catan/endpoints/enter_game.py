@@ -1,5 +1,4 @@
 from typing import List
-from datetime import datetime
 
 from aiohttp import web
 import asyncpg
@@ -27,4 +26,4 @@ async def enter_game(request: web.Request) -> web.Response:
 async def update_player_list(db: asyncpg.Connection, game: Game, player_list: List[Player], game_id: str):
     game = ACTIVE_GAMES_DICT.get(game_id, game)
     game.player_list = player_list
-    game.last_updated = await db.fetchval("SELECT NOW();")
+    game.update_n_actions()

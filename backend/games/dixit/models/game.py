@@ -19,12 +19,14 @@ class Game(BaseGame):
                  n_cards: int = 69,
                  total_points: int = 30,
                  card_description: Optional[str] = None,
-                 played_cards: Optional[List[CardID]] = None):
+                 played_cards: Optional[List[CardID]] = None,
+                 n_actions: int = 1):
         BaseGame.__init__(self,
                           current_player_index=current_player_index,
                           player_list=player_list,
                           play_list=[],
-                          id_=id_)
+                          id_=id_,
+                          n_actions=n_actions)
         self._n_cards = n_cards
         self._image_set = image_set
         self._total_points = total_points
@@ -79,7 +81,8 @@ class Game(BaseGame):
             total_points=json_data['total_points'],
             image_set=json_data['image_set'],
             card_description=json_data['card_description'],
-            played_cards=json.loads(json_data['played_cards'])
+            played_cards=json.loads(json_data['played_cards']),
+            n_actions=json_data['n_actions']
         )
 
     def to_database(self) -> Dict[str, Union[str, int, bool, Dict]]:
@@ -92,6 +95,7 @@ class Game(BaseGame):
             'image_set': self._image_set,
             'card_description': self.card_description,
             'played_cards': json.dumps(self._played_cards),
+            'n_actions': self.n_actions,
         }
 
     # endregion
@@ -102,6 +106,7 @@ class Game(BaseGame):
             return
 
         play.update_game(self)
+        self.update_n_actions()
 
     def resolve_turn(self):
         # Assign points for getting correct story teller card.

@@ -25,6 +25,7 @@ export class StateService extends CommonStateService {
               .set('gravity', gravityStr)})
         .toPromise();
       console.log('done.');
+      this.nActions = response.nActions;
       return response;
     }
 
@@ -35,14 +36,22 @@ export class StateService extends CommonStateService {
           {params: new HttpParams().set('token', token).set('game_id', gameId)})
         .toPromise();
       console.log('done.');
+      this.nActions = response.nActions;
       return response;
     }
 
     async getGameUpdate(token: string, gameId: string) {
-      return await this.http
+      const response = await this.http
         .get<GameDescription>(this.backendURL + '/get-game-update',
-          {params: new HttpParams().set('token', token).set('game_id', gameId)})
+          {
+            params: new HttpParams()
+              .set('token', token)
+              .set('game_id', gameId)
+              .set('n_actions', this.nActions.toString())
+          })
         .toPromise();
+      this.nActions = response.nActions;
+      return response;
     }
 
     async makePlay(token: string, play: Play, gameId: string) {

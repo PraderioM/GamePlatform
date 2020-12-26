@@ -23,12 +23,13 @@ class Game(BaseGame):
                  on_fire: bool = False,
                  turn: int = 0,
                  deck_size: int = 6,
-                 min_to_play_cards: int = 2):
+                 min_to_play_cards: int = 2,
+                 n_actions: int = 1):
         BaseGame.__init__(self,
                           current_player_index=current_player_index,
                           player_list=player_list,
                           play_list=[],
-                          id_=id_)
+                          id_=id_, n_actions=n_actions)
         self._pile_list = pile_list[:]
         self._remaining_cards = [i for i in range(2, MAX_CARDS)] if remaining_cards is None else remaining_cards[:]
         self._on_fire = on_fire
@@ -45,6 +46,17 @@ class Game(BaseGame):
 
     def is_winner_points(self, resolution_points: int) -> bool:
         return resolution_points == 1
+
+    def to_game_resolution(self, player: Optional[Player]) -> Dict[str, bool]:
+        if player is None:
+            return {'isObserver': True}
+
+        score = self.get_player_score(self.current_player)
+
+        if score == 1:
+            return {'isVictorious': True}
+        else:
+            return {'isLoser': True}
 
     # endregion.
 
@@ -67,6 +79,7 @@ class Game(BaseGame):
             'hasEnded': self.has_ended,
             'description': description,
             'id': None if self.id is None else str(self.id),
+            'n_actions': self.n_actions,
         }
 
     # endregion
@@ -100,7 +113,8 @@ class Game(BaseGame):
             on_fire=json_data['on_fire'],
             turn=json_data['turn'],
             deck_size=json_data['deck_size'],
-            min_to_play_cards=json_data['min_to_play_cards']
+            min_to_play_cards=json_data['min_to_play_cards'],
+            n_actions=json_data['n_actions'],
         )
 
     def to_database(self) -> Dict[str, Union[str, int, bool, Dict]]:
@@ -114,6 +128,7 @@ class Game(BaseGame):
             'turn': self.turn,
             'deck_size': self._deck_size,
             'min_to_play_cards': self._min_to_play_cards,
+            'n_actions': self.n_actions,
         }
 
     # endregion
@@ -124,6 +139,7 @@ class Game(BaseGame):
             return
 
         play.update_game(self)
+        self.update_n_actions()
 
     def set_current_player(self, player: Player):
         player_index = 0

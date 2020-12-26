@@ -3,9 +3,7 @@ create table users
 	name text not null
 		constraint users_pk
 			primary key,
-	password text not null,
-	token uuid,
-	last_received_update date default now() not null
+	token uuid
 );
 
 comment on table users is 'this table contains information relative to user connection such as username password and token';

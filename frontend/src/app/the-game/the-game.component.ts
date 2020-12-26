@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {GameDescription} from '../dixit/services/models';
+import {GameDescription, Pile} from './services/models';
+import {Player} from './services/models';
 
 @Component({
   selector: 'app-the-game',
@@ -11,8 +12,13 @@ export class TheGameComponent implements OnInit {
   @Input() token: string;
   @Input() name: string;
 
-  selectionMode = true;
-  description?: GameDescription;
+  // todo uncomment.
+  // selectionMode = true;
+  // description?: GameDescription;
+  selectionMode = false;
+  description = new GameDescription([new Player([2, 3, 5, 6, 7, 23, 78, 45], false, [], [], 6)],
+    [new Pile(true, 0, 22), new Pile(true, 1), new Pile(false, 2), new Pile(false, 3)],
+    [4, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22], null, true, 0, 8, 2);
 
   constructor() { }
 

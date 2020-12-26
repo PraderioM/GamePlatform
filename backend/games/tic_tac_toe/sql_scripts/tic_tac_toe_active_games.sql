@@ -2,7 +2,7 @@ create table if not exists tic_tac_toe_active_games
 (
 	id uuid default uuid_generate_v4() not null,
 	creation_date time default now() not null,
-	last_updated time default now() not null,
+	n_actions int default 1,
 	rows integer not null,
 	cols integer not null,
 	current_player_index integer default 0 not null,

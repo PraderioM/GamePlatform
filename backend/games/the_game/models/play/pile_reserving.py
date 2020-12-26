@@ -28,7 +28,7 @@ class PileReserving(Play):
         await db.execute(f"""
                          UPDATE {active_games_table}
                          SET player_list = $1,
-                             last_updated = now()
+                             n_actions = n_actions + 1
                          WHERE id = $2
                          """,
                          database_data['player_list'],

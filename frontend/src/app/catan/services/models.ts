@@ -70,8 +70,9 @@ export class GameDescription extends BaseGameDescription {
               public lastDiceResult: number = 7,
               public hasEnded: boolean = false,
               public offer?: Offer,
-              public id?: string) {
-    super(players, currentPlayer, description, id, plays);
+              public id?: string,
+              public nActions: number = -1) {
+    super(players, currentPlayer, description, id, nActions, plays);
   }
 
   public static fromJSON(jsonData: any) {
@@ -134,7 +135,8 @@ export class GameDescription extends BaseGameDescription {
                                developmentDeck, materialsDeck, landList, jsonData.extended, jsonData.description,
                                jsonData.thiefPosition, toStealPlayers, knightPlayer, longRoadPlayer,
                                jsonData.discardCards, jsonData.thiefMoved,
-                               jsonData.toBuildRoads, jsonData.lastDiceResult, jsonData.hasEnded, offer, jsonData.id);
+                               jsonData.toBuildRoads, jsonData.lastDiceResult, jsonData.hasEnded, offer, jsonData.id,
+                               jsonData.nActions);
   }
 
   public getCurrentPlayer() {

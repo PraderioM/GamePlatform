@@ -27,7 +27,8 @@ async def get_game_data(game_id: str, db: asyncpg.Connection) -> Optional[Dict]:
                                     on_fire AS on_fire,
                                     turn AS turn,
                                     deck_size AS deck_size,
-                                    min_to_play_cards AS min_to_play_cards
+                                    min_to_play_cards AS min_to_play_cards,
+                                    n_actions AS n_actions
                              FROM {ACTIVE_GAMES_TABLE}
                              WHERE id = $1
                              """, game_id)

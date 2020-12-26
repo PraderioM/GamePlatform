@@ -2,7 +2,7 @@ create table rock_paper_scissors_active_games
 (
 	id uuid default uuid_generate_v4() not null,
 	creation_date time default now() not null,
-	last_updated time default now() not null,
+	n_actions int default 1,
 	player_list json,
 	current_round integer default 0 not null,
 	victory_criterion text default 'by_play'::text not null,

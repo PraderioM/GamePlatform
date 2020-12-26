@@ -39,7 +39,9 @@ export class StateService extends CommonStateService {
             })
           .toPromise();
         locked = false;
-        return GameDescription.fromJSON(response);
+        const game = GameDescription.fromJSON(response);
+        this.nActions = game.nActions;
+        return game;
       }
     }
 
@@ -52,19 +54,28 @@ export class StateService extends CommonStateService {
       if (response === undefined || response == null) {
         return null;
       } else {
-        return GameDescription.fromJSON(response);
+        const game = GameDescription.fromJSON(response);
+        this.nActions = game.nActions;
+        return game;
       }
     }
 
     async getGameUpdate(token: string, gameId: string) {
       const response = await this.http
         .get<GameDescription>(this.backendURL + '/get-game-update',
-          {params: new HttpParams().set('token', token).set('game_id', gameId)})
+          {
+            params: new HttpParams()
+              .set('token', token)
+              .set('game_id', gameId)
+              .set('n_actions', this.nActions.toString())
+          })
         .toPromise();
       if (response === undefined || response == null) {
         return null;
       } else {
-        return GameDescription.fromJSON(response);
+        const game = GameDescription.fromJSON(response);
+        this.nActions = game.nActions;
+        return game;
       }
     }
 

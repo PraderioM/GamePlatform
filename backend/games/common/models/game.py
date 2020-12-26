@@ -12,11 +12,13 @@ from .player import Player
 class Game(GameComponent):
     def __init__(self, current_player_index: int,
                  play_list: List[Play], player_list: List[Player],
-                 id_: Optional[str]):
+                 id_: Optional[str],
+                 n_actions: int):
         self.current_player_index = current_player_index
         self.play_list = play_list[:]
         self.player_list = player_list[:]
         self.id = id_
+        self._n_actions = n_actions
 
     def to_database(self) -> Dict:
         return {
@@ -24,6 +26,7 @@ class Game(GameComponent):
             'plays': json.dumps([play.to_database() for play in self.play_list]),
             'players': json.dumps([player.to_database() for player in self.player_list]),
             'id': self.id,
+            'n_actions': self._n_actions,
         }
 
     @abc.abstractmethod
@@ -120,6 +123,10 @@ class Game(GameComponent):
     @property
     def n_missing(self) -> int:
         return self.n_players - self.n_current
+
+    @property
+    def n_actions(self):
+        return self._n_actions
 
     @property
     @abc.abstractmethod

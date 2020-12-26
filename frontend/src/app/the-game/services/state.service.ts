@@ -38,7 +38,9 @@ export class StateService extends CommonStateService {
             .set('deck_size', deckSizeStr)
             .set('min_to_play_cards', minToPlayCardsStr)})
       .toPromise();
-    return GameDescription.fromJSON(result);
+    const game = GameDescription.fromJSON(result);
+    this.nActions = game.nActions;
+    return game;
   }
 
   async enterGame(token: string, gameId: string) {
@@ -46,15 +48,24 @@ export class StateService extends CommonStateService {
       .get<GameDescription>(this.backendURL + '/enter-game',
         {params: new HttpParams().set('token', token).set('game_id', gameId)})
       .toPromise();
-    return GameDescription.fromJSON(result);
+    const game = GameDescription.fromJSON(result);
+    this.nActions = game.nActions;
+    return game;
   }
 
   async getGameUpdate(token: string, gameId: string) {
     const result = await this.http
       .get<GameDescription>(this.backendURL + '/get-game-update',
-        {params: new HttpParams().set('token', token).set('game_id', gameId)})
+        {
+          params: new HttpParams()
+            .set('token', token)
+            .set('game_id', gameId)
+            .set('n_actions', this.nActions.toString())
+        })
       .toPromise();
-    return GameDescription.fromJSON(result);
+    const game = GameDescription.fromJSON(result);
+    this.nActions = game.nActions;
+    return game;
   }
 
   async chooseStartingPlayer(token: string, play: ChooseStartingPlayer, gameId: string) {

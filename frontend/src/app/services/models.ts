@@ -9,7 +9,9 @@ export class Player {
 export class GameDescription {
   constructor(public players: Player[],
               public currentPlayer: number, public description: string,
-              public id?: string, public plays: Play[] = []) { }
+              public id?: string,
+              public nActions: number = -1,
+              public plays: Play[] = []) { }
 }
 
 export class ActiveGame {

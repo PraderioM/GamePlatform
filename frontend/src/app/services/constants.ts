@@ -1,4 +1,6 @@
-export const backendURL = 'http://gameplatform.tetesake.site:37017';
+// todo uncomment.
+// export const backendURL = 'http://gameplatform.tetesake.site:37017';
+export const backendURL = 'http://192.168.1.74:2121';
 
 export const assetsPath = '/assets';
 export const lossScope = '/loss-images';

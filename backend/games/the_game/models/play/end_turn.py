@@ -34,7 +34,7 @@ class EndTurn(Play):
                              remaining_cards = $2,
                              turn = $3,
                              current_player_index = $4,
-                             last_updated = now()
+                             n_actions = n_actions + 1
                          WHERE id = $5
                          """,
                          database_data['player_list'],

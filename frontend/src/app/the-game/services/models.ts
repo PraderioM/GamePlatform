@@ -73,7 +73,8 @@ export class GameDescription {
               public minToPlayCards?: number,
               public hasEnded: boolean = false,
               public description?: string,
-              public id?: string) {
+              public id?: string,
+              public nActions: number = -1) {
   }
 
   public static fromJSON(jsonData?: GameDescription) {
@@ -104,7 +105,8 @@ export class GameDescription {
       jsonData.minToPlayCards,
       jsonData.hasEnded,
       jsonData.description,
-      jsonData.id);
+      jsonData.id,
+      jsonData.nActions);
   }
 
   getCurrentPlayer() {

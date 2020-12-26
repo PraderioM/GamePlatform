@@ -24,7 +24,6 @@ async def create_game(request: web.Request) -> web.Response:
     token = request.rel_url.query['token']
 
     return await general_create_game(pool=request.app['db'],
-                                     token=token,
                                      get_new_game=lambda db: get_new_game(db,
                                                                           pc=pc,
                                                                           npc=npc,
@@ -100,7 +99,7 @@ async def add_new_game_to_database(new_game: Game, db: asyncpg.Connection):
     # Inset name in database.
     await db.execute(f"""
                      INSERT INTO {ACTIVE_GAMES_TABLE} (id, player_list, pile_list,
-                                                        remaining_cards, on_fire, deck_size, min_to_play_cards)
+                                                       remaining_cards, on_fire, deck_size, min_to_play_cards)
                      VALUES ($1, $2, $3, $4, $5, $6, $7)
                      """, new_game.id,
                      database_game['player_list'],

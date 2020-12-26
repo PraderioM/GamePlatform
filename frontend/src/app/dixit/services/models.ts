@@ -32,7 +32,8 @@ export class GameDescription {
               public totalPoints: number = 30,
               public description?: string,
               public imageSet: string = 'classic',
-              public id?: string) {
+              public id?: string,
+              public nActions: number = -1) {
   }
 
   public static fromJSON(jsonData?: GameDescription) {
@@ -47,7 +48,8 @@ export class GameDescription {
     }
 
     return new GameDescription(playerList, jsonData.currentPlayer, jsonData.cardDescription,
-                               jsonData.totalPoints, jsonData.description, jsonData.imageSet, jsonData.id);
+                               jsonData.totalPoints, jsonData.description, jsonData.imageSet,
+                               jsonData.id, jsonData.nActions);
   }
 
   getCurrentPlayer() {

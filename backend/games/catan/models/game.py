@@ -37,9 +37,9 @@ class Game(BaseGame):
                  extended: bool = False,
                  last_dice_result: int = 7,
                  thief_position: Optional[int] = None,
-                 last_updated: Optional[datetime] = None):
+                 n_actions: int = 1):
         BaseGame.__init__(self, current_player_index=current_player_index, player_list=player_list,
-                          play_list=play_list, id_=id_)
+                          play_list=play_list, id_=id_, n_actions=n_actions)
         self.turn_index = turn_index
         self._discard_cards = discard_cards
         self.last_dice_result = last_dice_result
@@ -54,7 +54,7 @@ class Game(BaseGame):
         self._knight_player = knight_player
         self._long_road_player = long_road_player
         self._thief_position = thief_position
-        self.last_updated = datetime.now() if last_updated is None else last_updated
+        self._creation_date = datetime.now()
 
     # region frontend conversion.
     @classmethod
@@ -86,6 +86,7 @@ class Game(BaseGame):
             'description': description,
             'hasEnded': has_ended,
             'thiefPosition': self.thief_position,
+            'n_actions': self.n_actions,
         }
     # endregion
 
@@ -160,6 +161,7 @@ class Game(BaseGame):
             to_build_roads=json_data.get('to_build_roads', 0),
             last_dice_result=json_data.get('last_dice_result', 7),
             thief_position=json_data.get('thief_position', None),
+            n_actions=json_data['n_actions'],
         )
 
     def to_database(self) -> Dict[str, Union[str, int, bool, Dict]]:
@@ -243,7 +245,7 @@ class Game(BaseGame):
 
     def take_materials_from_settlement(self, position: Set[int], player_name: str, n_materials: int = 1):
         # Get player.
-        player = self.get_player_by_name(player_name)
+        player: Player = self.get_player_by_name(player_name)
 
         # Iterate over all lands neighbour to the intersection.
         for index in position:
@@ -601,6 +603,10 @@ class Game(BaseGame):
     @property
     def extended(self) -> bool:
         return self._extended
+
+    @property
+    def creation_date(self) -> datetime:
+        return self._creation_date
 
     # endregion
 

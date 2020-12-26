@@ -29,7 +29,8 @@ export class BoardComponent implements OnInit {
   constructor(private stateService: StateService) { }
 
   ngOnInit() {
-    this.updateGame();
+    // Todo uncomment.
+    // this.updateGame();
   }
 
   async updateGame() {

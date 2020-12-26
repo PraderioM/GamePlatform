@@ -6,7 +6,7 @@ import {backendURL} from './constants';
 export class CommonStateService {
   backendURL: string;
 
-  constructor(protected http: HttpClient, private scope: string) {
+  constructor(protected http: HttpClient, private scope: string, protected nActions: number = -1) {
     this.backendURL = backendURL + '/' + scope;
   }
 

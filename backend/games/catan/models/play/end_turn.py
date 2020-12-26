@@ -33,7 +33,7 @@ class EndTurn(Play):
                          SET current_player_index = $1,
                              player_list = $2,
                              turn_index = $3,
-                             last_updated = now()
+                             n_actions = n_actions + 1
                          WHERE id = $4
                          """,
                          database_data['current_player_index'],

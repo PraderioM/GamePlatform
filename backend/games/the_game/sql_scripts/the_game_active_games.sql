@@ -2,7 +2,7 @@ create table the_game_active_games
 (
 	id uuid default uuid_generate_v4() not null,
 	creation_date time default now() not null,
-	last_updated time default now() not null,
+	n_actions int default 1,
 	current_player_index integer,
 	player_list json,
 	pile_list json,
