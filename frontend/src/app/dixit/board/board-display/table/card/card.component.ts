@@ -62,7 +62,16 @@ export class CardComponent implements OnInit {
   }
 
   getCardChoosingMessage(name: string): string {
-    const points = this.isCorrectCard ? 3 : 0;
+    let points: number;
+    if (this.isCorrectCard) {
+      if (this.chosenNames.length === this.nPlayers - 1) {
+        points = 2;
+      } else {
+        points = 3;
+      }
+    } else {
+      points = 0;
+    }
     return name + ' +' + points.toString();
   }
 }
