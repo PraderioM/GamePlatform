@@ -1,6 +1,7 @@
 /* Tooltip container */
 .tooltip {
   position: relative;
+  background: white;
 }
 
 /* Tooltip text */

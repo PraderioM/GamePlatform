@@ -28,10 +28,10 @@ export class RightSideDisplayComponent implements OnInit, OnChanges {
 
   constructor() { }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes.materialsDeck.firstChange && changes.developmentDeck.firstChange) {
       return;
     }
@@ -54,7 +54,7 @@ export class RightSideDisplayComponent implements OnInit, OnChanges {
     }
   }
 
-  getNgClass(resource: string) {
+  getNgClass(resource: string): object {
     return {
       'card-label': true,
       tooltip: true,
@@ -62,11 +62,11 @@ export class RightSideDisplayComponent implements OnInit, OnChanges {
     };
   }
 
-  toggleShowInstructions() {
+  toggleShowInstructions(): void {
     this.showInstructions = !this.showInstructions;
   }
 
-  getInstructionsHeader() {
+  getInstructionsHeader(): string {
     if (this.showInstructions) {
       return 'Hide instructions';
     } else {

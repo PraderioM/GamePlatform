@@ -23,17 +23,17 @@ export class NewGameDescriptionComponent implements OnInit {
 
   constructor(private stateService: StateService) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 
-  resetCorrectValues() {
+  resetCorrectValues(): void {
     this.isNPCCorrect = true;
     this.isPCCorrect = true;
     this.isNPlaysCorrect = true;
     this.isTotalPointsCorrect = true;
   }
 
-  async tryCreateGame(npc: number, pc: number, totalPoints: number, imageSet: string) {
+  async tryCreateGame(npc: number, pc: number, totalPoints: number, imageSet: string): Promise<void> {
     this.resetCorrectValues();
 
     // Check that inputs are correct.
@@ -88,21 +88,21 @@ export class NewGameDescriptionComponent implements OnInit {
     }
   }
 
-  getNPCClass() {
+  getNPCClass(): object {
     return {
       'number-input': true,
       'error-input': !this.isNPCCorrect
     };
   }
 
-  getPCClass() {
+  getPCClass(): object {
     return {
       'number-input': true,
       'error-input': !this.isPCCorrect
     };
   }
 
-  getTotalPointsClass() {
+  getTotalPointsClass(): object {
     return {
       'number-input': true,
       'error-input': !this.isTotalPointsCorrect
@@ -111,7 +111,7 @@ export class NewGameDescriptionComponent implements OnInit {
 
 }
 
-function getDictKeys(inDict: object) {
+function getDictKeys(inDict: object): string[] {
   const outList: string[] = [];
 
   for (const key of Object.keys(inDict)) {

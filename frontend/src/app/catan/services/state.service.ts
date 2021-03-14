@@ -20,7 +20,7 @@ export class StateService extends CommonStateService {
     super(http, 'catan');
   }
 
-    async createGame(token: string, npc: number, pc: number, expansion: boolean) {
+    async createGame(token: string, npc: number, pc: number, expansion: boolean): Promise<GameDescription> {
       if (!locked) {
         locked = true;
         let expansionStr: string;
@@ -45,7 +45,7 @@ export class StateService extends CommonStateService {
       }
     }
 
-    async enterGame(token: string, gameId: string) {
+    async enterGame(token: string, gameId: string): Promise<GameDescription> {
       console.log('entering game.');
       const response = await this.http
         .get<GameDescription>(this.backendURL + '/enter-game',
@@ -60,7 +60,7 @@ export class StateService extends CommonStateService {
       }
     }
 
-    async getGameUpdate(token: string, gameId: string) {
+    async getGameUpdate(token: string, gameId: string): Promise<GameDescription> {
       const response = await this.http
         .get<GameDescription>(this.backendURL + '/get-game-update',
           {
@@ -79,7 +79,7 @@ export class StateService extends CommonStateService {
       }
     }
 
-    async makeBuildPlay(token: string, play: BuildPlay, gameId: string) {
+    async makeBuildPlay(token: string, play: BuildPlay, gameId: string): Promise<void> {
       if (!locked) {
         locked = true;
         console.log('building ', play.playName);
@@ -95,7 +95,7 @@ export class StateService extends CommonStateService {
       }
     }
 
-    async stealPlayer(token: string, play: Steal, gameId: string) {
+    async stealPlayer(token: string, play: Steal, gameId: string): Promise<void> {
       if (!locked) {
         locked = true;
         console.log('stealing from ', play.player.name);
@@ -111,7 +111,7 @@ export class StateService extends CommonStateService {
       }
     }
 
-    async makeOffer(token: string, play: CommercePlay, gameId: string) {
+    async makeOffer(token: string, play: CommercePlay, gameId: string): Promise<void> {
       if (!locked) {
         locked = true;
         console.log('making offer.');
@@ -127,7 +127,7 @@ export class StateService extends CommonStateService {
       }
     }
 
-    async acceptOffer(token: string, play: AcceptOffer, gameId: string) {
+    async acceptOffer(token: string, play: AcceptOffer, gameId: string): Promise<void> {
       if (!locked) {
         locked = true;
         console.log('accepting offer.');
@@ -143,7 +143,7 @@ export class StateService extends CommonStateService {
       }
     }
 
-    async rejectOffer(token: string, play: RejectOffer, gameId: string) {
+    async rejectOffer(token: string, play: RejectOffer, gameId: string): Promise<void> {
       if (!locked) {
         locked = true;
         console.log('rejecting offer.');
@@ -159,7 +159,7 @@ export class StateService extends CommonStateService {
       }
     }
 
-    async withdrawOffer(token: string, play: WithdrawOffer, gameId: string) {
+    async withdrawOffer(token: string, play: WithdrawOffer, gameId: string): Promise<void> {
       if (!locked) {
         locked = true;
         console.log('withdrawing offer.');
@@ -175,7 +175,7 @@ export class StateService extends CommonStateService {
       }
     }
 
-  async buyDevelopment(token: string, play: BuyDevelopment, gameId: string) {
+  async buyDevelopment(token: string, play: BuyDevelopment, gameId: string): Promise<void> {
     if (!locked) {
       locked = true;
       console.log('buying development.');
@@ -191,7 +191,7 @@ export class StateService extends CommonStateService {
     }
   }
 
-  async playKnight(token: string, play: PlayKnight, gameId: string) {
+  async playKnight(token: string, play: PlayKnight, gameId: string): Promise<void> {
     if (!locked) {
       locked = true;
 
@@ -208,7 +208,7 @@ export class StateService extends CommonStateService {
     }
   }
 
-  async playRoads(token: string, play: PlayRoads, gameId: string) {
+  async playRoads(token: string, play: PlayRoads, gameId: string): Promise<void> {
     if (!locked) {
       locked = true;
 
@@ -225,7 +225,7 @@ export class StateService extends CommonStateService {
     }
   }
 
-  async playResources(token: string, play: PlayResources, gameId: string) {
+  async playResources(token: string, play: PlayResources, gameId: string): Promise<void> {
     if (!locked) {
       locked = true;
       console.log('getting  ', play.resource1, ' and ', play.resource2);
@@ -241,7 +241,7 @@ export class StateService extends CommonStateService {
     }
   }
 
-  async playMonopoly(token: string, play: PlayMonopoly, gameId: string) {
+  async playMonopoly(token: string, play: PlayMonopoly, gameId: string): Promise<void> {
     if (!locked) {
       locked = true;
       console.log('Monopolizing  ', play.material);
@@ -257,7 +257,7 @@ export class StateService extends CommonStateService {
     }
   }
 
-  async discardPlay(token: string, play: DiscardPlay, gameId: string) {
+  async discardPlay(token: string, play: DiscardPlay, gameId: string): Promise<void> {
     if (!locked) {
       locked = true;
       console.log('Discarding cards.');
@@ -273,7 +273,7 @@ export class StateService extends CommonStateService {
     }
   }
 
-  async endTurn(token: string, play: EndTurnPlay, gameId: string) {
+  async endTurn(token: string, play: EndTurnPlay, gameId: string): Promise<void> {
     if (!locked) {
       locked = true;
       console.log('Ending turn.');
@@ -289,7 +289,7 @@ export class StateService extends CommonStateService {
     }
   }
 
-  async moveThief(token: string, play: MoveThiefPlay, gameId: string) {
+  async moveThief(token: string, play: MoveThiefPlay, gameId: string): Promise<void> {
     if (!locked) {
       locked = true;
       console.log('Moving thief to position ', play.position);
@@ -305,7 +305,7 @@ export class StateService extends CommonStateService {
     }
   }
 
-  async throwDice(token: string, play: ThrowDicePlay, gameId: string) {
+  async throwDice(token: string, play: ThrowDicePlay, gameId: string): Promise<void> {
     if (!locked) {
       locked = true;
       console.log('Throwing dice.');
@@ -321,7 +321,7 @@ export class StateService extends CommonStateService {
     }
   }
 
-    async getActiveGames(token: string) {
+    async getActiveGames(token: string): Promise<ActiveGame[]> {
       if (!locked) {
         locked = true;
         const response = await this.http
@@ -337,7 +337,7 @@ export class StateService extends CommonStateService {
       }
     }
 
-  initPlayParams(token: string, play: BasePlay, gameId: string) {
+  initPlayParams(token: string, play: BasePlay, gameId: string): HttpParams {
       let params = new HttpParams();
       params = params.set('token', token);
       params = params.set('game_id', gameId);

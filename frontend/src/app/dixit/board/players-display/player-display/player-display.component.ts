@@ -18,7 +18,7 @@ export class PlayerDisplayComponent implements OnInit, OnChanges {
   @Input() isResolutionPhase: boolean;
 
   describingMessage = 'is thinking';
-  describedMessage = this.isChoosingPhase ? 'is waiting' : '';
+  describedMessage = '';
   playingCardMessage = 'is thinking';
   playedCardMessage = 'looks impatiently at you to make you nervous';
   choosingCardMessage = 'is thinking';
@@ -39,7 +39,7 @@ export class PlayerDisplayComponent implements OnInit, OnChanges {
     this.previousPoints = this.points;
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes.points.firstChange) {
       return;
     }

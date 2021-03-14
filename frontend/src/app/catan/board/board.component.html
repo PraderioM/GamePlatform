@@ -5,6 +5,7 @@
                          [knightPlayer]="description.knightPlayer"
                          [longRoadPlayer]="description.longRoadPlayer"
                          [currentPlayer]="description.currentPlayer"
+                         [nActions]="description.nActions"
                          style="width: 10%">
 
     </app-players-display>
@@ -35,7 +36,9 @@
   <div *ngIf="!(description.discardCards && description.getPlayerMaterialsByName(name).nMaterials > 7)
               && !(description.toStealPlayers.length !== 0 && isCurrentPlayer())"
        class="second-row-container">
-    <app-materials-deck [materialsDeck]="description.getPlayerMaterialsByName(name)" style="height: 100%">
+    <app-materials-deck [materialsDeck]="description.getPlayerMaterialsByName(name)"
+                        [nActions]="description.nActions"
+                        style="height: 100%">
 
     </app-materials-deck>
     <app-commerce [materialsDeck]="description.getPlayerMaterialsByName(name)"

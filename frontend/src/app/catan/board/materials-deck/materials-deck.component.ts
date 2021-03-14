@@ -9,6 +9,7 @@ import {assetsPath} from '../../services/constants';
 })
 export class MaterialsDeckComponent implements OnInit, OnChanges {
   @Input() materialsDeck: MaterialsDeck;
+  @Input() nActions = -1;
 
   materialCardsPath = assetsPath.concat('/material_cards');
   woodImgPath = this.materialCardsPath.concat('/wood.png');
@@ -17,7 +18,7 @@ export class MaterialsDeckComponent implements OnInit, OnChanges {
   wheatImgPath = this.materialCardsPath.concat('/wheat.png');
   stoneImgPath = this.materialCardsPath.concat('/stone.png');
 
-  hasChanged = {wood: false, brick: false, sheep: false, wheat: false, stone: false};
+  lastUpdatedAction = {wood: -2, brick: -2, sheep: -2, wheat: -2, stone: -2};
 
   constructor() { }
 
@@ -34,12 +35,12 @@ export class MaterialsDeckComponent implements OnInit, OnChanges {
 
     // If draw differently values that have changed.
     if (previousDeck != null) {
-      this.hasChanged = {
-        wood: currentDeck.nWood !== previousDeck.nWood,
-        brick: currentDeck.nBrick !== previousDeck.nBrick,
-        sheep: currentDeck.nSheep !== previousDeck.nSheep,
-        wheat: currentDeck.nWheat !== previousDeck.nWheat,
-        stone: currentDeck.nStone !== previousDeck.nStone
+      this.lastUpdatedAction = {
+        wood: (currentDeck.nWood !== previousDeck.nWood) ? this.nActions : this.lastUpdatedAction.wood,
+        brick: (currentDeck.nBrick !== previousDeck.nBrick) ? this.nActions : this.lastUpdatedAction.brick,
+        sheep: (currentDeck.nSheep !== previousDeck.nSheep) ? this.nActions : this.lastUpdatedAction.sheep,
+        wheat: (currentDeck.nWheat !== previousDeck.nWheat) ? this.nActions : this.lastUpdatedAction.wheat,
+        stone: (currentDeck.nStone !== previousDeck.nStone) ? this.nActions : this.lastUpdatedAction.stone,
       };
     }
   }
@@ -48,7 +49,7 @@ export class MaterialsDeckComponent implements OnInit, OnChanges {
     return {
       'card-label': true,
       tooltip: true,
-      'changed-number': this.hasChanged[material]
+      'changed-number': this.lastUpdatedAction[material] === this.nActions
     };
   }
 

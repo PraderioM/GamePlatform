@@ -12,6 +12,7 @@ export class PlayersDisplayComponent implements OnInit {
   @Input() knightPlayer?: Player;
   @Input() longRoadPlayer?: Player;
   @Input() currentPlayer: number;
+  @Input() nActions: number;
 
   instructionsPath = assetsPath.concat('/special_cards/instructions.png');
 

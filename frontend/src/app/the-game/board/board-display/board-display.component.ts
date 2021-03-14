@@ -38,7 +38,7 @@ export class BoardDisplayComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onCardSelect(selectedCard: number) {
+  onCardSelect(selectedCard: number): void {
     // If it is not the player's turn we do nothing.
     if (!this.isCurrentPlayer) {
       return;
@@ -52,11 +52,11 @@ export class BoardDisplayComponent implements OnInit {
     }
   }
 
-  onStartGame() {
-    this.chooseStartingPlayer.emit(new ChooseStartingPlayer(name));
+  onStartGame(): void {
+    this.chooseStartingPlayer.emit(new ChooseStartingPlayer(this.name));
   }
 
-  onCardPlay(pileId: number) {
+  onCardPlay(pileId: number): void {
 
     // If there is no selected card we can do nothing.
     if (this.selectedCard == null) {
@@ -76,7 +76,7 @@ export class BoardDisplayComponent implements OnInit {
     }
   }
 
-  onBlockPile(pileId: number) {
+  onBlockPile(pileId: number): void {
     // Current player cannot block pile.
     if (this.isCurrentPlayer) {
       return;
@@ -85,7 +85,7 @@ export class BoardDisplayComponent implements OnInit {
     this.blockPile.emit(new BlockPile(pileId));
   }
 
-  onSlowDownPile(pileId: number) {
+  onSlowDownPile(pileId: number): void {
     // Current player cannot slow down pile.
     if (this.isCurrentPlayer) {
       return;
@@ -94,7 +94,7 @@ export class BoardDisplayComponent implements OnInit {
     this.blockPile.emit(new BlockPile(pileId));
   }
 
-  getPileById(pileId: number) {
+  getPileById(pileId: number): Pile {
     for (const pile of this.piles) {
       if (pile.id === pileId) {
         return pile;
@@ -103,12 +103,12 @@ export class BoardDisplayComponent implements OnInit {
     return null;
   }
 
-  onEndTurn() {
+  onEndTurn(): void {
     this.endTurn.emit();
     this.selectedCard = null;
   }
 
-  canReservePile() {
+  canReservePile(): boolean {
     // Cannot reserve pile if game hasn't started.
     if (!this.gameStarted) {
       return false;
@@ -118,7 +118,7 @@ export class BoardDisplayComponent implements OnInit {
     return !this.isCurrentPlayer;
   }
 
-  canPlayCard() {
+  canPlayCard(): boolean {
     // Cannot play card if game hasn't started.
     if (!this.gameStarted) {
       return false;
@@ -133,7 +133,7 @@ export class BoardDisplayComponent implements OnInit {
     return this.selectedCard != null;
   }
 
-  canEndTurn() {
+  canEndTurn(): boolean {
     // Cannot end turn if game hasn't started.
     if (!this.gameStarted) {
       return false;

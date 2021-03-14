@@ -54,7 +54,7 @@ export class BoardComponent implements OnInit {
         this.description.thiefPosition, this.description.toStealPlayers, this.description.knightPlayer,
         this.description.longRoadPlayer, this.description.discardCards, this.description.thiefMoved,
         this.description.toBuildRoads, this.description.lastDiceResult, this.description.hasEnded,
-        this.description.offer, this.description.id);
+        this.description.offer, this.description.id, this.description.nActions);
     const description = await this.stateService.getGameUpdate(this.token, this.description.id);
     if (!(description === undefined || description == null) && description.id != null) {
       this.description = description;

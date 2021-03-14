@@ -12,39 +12,37 @@ export class PlayerDisplayComponent implements OnInit, OnChanges {
   @Input() hasArmy: boolean;
   @Input() hasCommercialRoute: boolean;
   @Input() selected = false;
+  @Input() nActions: number;
 
   armyURL = assetsPath.concat('/special_cards/army.png');
   routeURL = assetsPath.concat('/special_cards/commercial_route.png');
   boldText: string;
   plainText: string;
 
-  previousValues = {points: 0, resources: 0, developments: 0, knights: 0};
+  valueDifferences = {points: 0, resources: 0, developments: 0, knights: 0};
+  lastUpdatedValues = {points: -2, resources: -2, developments: -2, knights: -2};
 
   constructor() { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     const playerName = this.player.name == null ? '' : this.player.name;
 
     // Get string.
     // points.
-    const points = this.player.points;
-    let showText = playerName + ' p:' + points;
-    showText = showText + this.getChangeString(points, this.previousValues.points);
+    let showText = playerName + ' p:' + this.player.points;
+    showText = showText + this.getChangeString(this.valueDifferences.points, this.lastUpdatedValues.points);
 
     // resources.
-    const resources = this.player.materialsDeck.getNMaterials();
-    showText = showText + ' r:' + resources;
-    showText = showText + this.getChangeString(resources, this.previousValues.resources);
+    showText = showText + ' r:' + this.player.materialsDeck.getNMaterials();
+    showText = showText + this.getChangeString(this.valueDifferences.resources, this.lastUpdatedValues.resources);
 
     // Development.
-    const developments = this.player.developmentDeck.getNDevelopments();
-    showText = showText + ' d:' + developments;
-    showText = showText + this.getChangeString(developments, this.previousValues.developments);
+    showText = showText + ' d:' + this.player.developmentDeck.getNDevelopments();
+    showText = showText + this.getChangeString(this.valueDifferences.developments, this.lastUpdatedValues.developments);
 
     // Knights.
-    const knights = this.player.nPlayedKnights;
-    showText = showText + ' k:' + knights;
-    showText = showText + this.getChangeString(knights, this.previousValues.knights);
+    showText = showText + ' k:' + this.player.nPlayedKnights;
+    showText = showText + this.getChangeString(this.valueDifferences.knights, this.lastUpdatedValues.knights);
 
 
     // Place it in bold or normal text depending on turn.
@@ -57,30 +55,51 @@ export class PlayerDisplayComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes.player.firstChange) {
       return;
     }
 
-    const previousPlayer: Player = changes.developmentDeck.previousValue;
+    const previousPlayer: Player = changes.player.previousValue;
+    const currentPlayer: Player = changes.player.currentValue;
 
     // If draw differently values that have changed.
     if (previousPlayer != null) {
-      this.previousValues.points = previousPlayer.points;
-      this.previousValues.resources = previousPlayer.materialsDeck.getNMaterials();
-      this.previousValues.developments = previousPlayer.developmentDeck.getNDevelopments();
-      this.previousValues.knights = previousPlayer.nPlayedKnights;
+      if (this.nActions > this.lastUpdatedValues.points && previousPlayer.points !== currentPlayer.points) {
+        this.valueDifferences.points = currentPlayer.points -  previousPlayer.points;
+        this.lastUpdatedValues.points = this.nActions;
+      }
+
+      const previousResources = previousPlayer.materialsDeck.getNMaterials();
+      const currentResources = currentPlayer.materialsDeck.getNMaterials();
+      if (this.nActions > this.lastUpdatedValues.resources && previousResources !== currentResources) {
+        this.valueDifferences.resources = currentResources -  previousResources;
+        this.lastUpdatedValues.resources = this.nActions;
+      }
+
+      const previousDevelopments = previousPlayer.developmentDeck.getNDevelopments();
+      const currentDevelopments = currentPlayer.developmentDeck.getNDevelopments();
+      if (this.nActions > this.lastUpdatedValues.developments && previousDevelopments !== currentDevelopments) {
+        this.valueDifferences.developments = currentDevelopments -  previousDevelopments;
+        this.lastUpdatedValues.developments = this.nActions;
+      }
+
+
+      if (this.nActions > this.lastUpdatedValues.knights && previousPlayer.nPlayedKnights !== currentPlayer.nPlayedKnights) {
+        this.valueDifferences.knights = currentPlayer.nPlayedKnights -  previousPlayer.nPlayedKnights;
+        this.lastUpdatedValues.knights = this.nActions;
+      }
     }
   }
 
-  getChangeString(newVal: number, oldVal: number): string {
-  if (newVal > oldVal) {
-    return '(+' + (newVal - oldVal) + ')';
-} else if (newVal < oldVal) {
-    return '(-' + (oldVal - newVal) + ')';
-  } else {
-    return '';
-  }
+  getChangeString(valDiff: number, lastUpdatedAction: number): string {
+    if (lastUpdatedAction === this.nActions || valDiff === 0) {
+      return '';
+    } else if (valDiff > 0) {
+      return '(+' + valDiff + ')';
+    } else {
+      return '(-' + (-valDiff) + ')';
+    }
 }
 
 }

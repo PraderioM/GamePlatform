@@ -36,7 +36,7 @@ export class CommerceComponent implements OnInit {
     return possiblePLayers;
   }
 
-  isOfferTarget() {
+  isOfferTarget(): boolean {
     if (this.offer == null) {
       return false;
     }
@@ -49,7 +49,7 @@ export class CommerceComponent implements OnInit {
     return false;
   }
 
-  canAcceptOffer() {
+  canAcceptOffer(): boolean {
     if (this.offer == null) {
       return false;
     }
@@ -68,7 +68,7 @@ export class CommerceComponent implements OnInit {
   }
 
   onMakeOffer(giveWood: number, giveBrick: number, giveSheep: number, giveWheat: number, giveStone: number,
-              getWood: number, getBrick: number, getSheep: number, getWheat: number, getStone: number) {
+              getWood: number, getBrick: number, getSheep: number, getWheat: number, getStone: number): void {
     const offer = this.getOffer(this.targetPlayers,
       giveWood, giveBrick, giveSheep, giveWheat, giveStone,
       getWood, getBrick, getSheep, getWheat, getStone);
@@ -76,14 +76,14 @@ export class CommerceComponent implements OnInit {
   }
 
   onCommerceWithBank(giveWood: number, giveBrick: number, giveSheep: number, giveWheat: number, giveStone: number,
-                     getWood: number, getBrick: number, getSheep: number, getWheat: number, getStone: number) {
+                     getWood: number, getBrick: number, getSheep: number, getWheat: number, getStone: number): void {
     const offer = this.getOffer([],
       giveWood, giveBrick, giveSheep, giveWheat, giveStone,
       getWood, getBrick, getSheep, getWheat, getStone);
     this.commerceWithBank.emit(offer);
   }
 
-  toggleTargetPlayer(playerName: string) {
+  toggleTargetPlayer(playerName: string): void {
     // Remove target player.
     if (this.isTargetPlayer(playerName)) {
       const newTargetPlayers: Player[] = [];
@@ -98,7 +98,7 @@ export class CommerceComponent implements OnInit {
     }
   }
 
-  isTargetPlayer(playerName: string) {
+  isTargetPlayer(playerName: string): boolean {
     for (const player of this.targetPlayers) {
       if (player.name === playerName) {
         return true;
@@ -109,7 +109,7 @@ export class CommerceComponent implements OnInit {
 
   getOffer(targetPlayers: Player[],
            giveWood: number, giveBrick: number, giveSheep: number, giveWheat: number, giveStone: number,
-           getWood: number, getBrick: number, getSheep: number, getWheat: number, getStone: number) {
+           getWood: number, getBrick: number, getSheep: number, getWheat: number, getStone: number): Offer {
     const offeredDeck = new MaterialsDeck(this.preProcessNumber(giveWood),
       this.preProcessNumber(giveBrick),
       this.preProcessNumber(giveSheep),
@@ -120,7 +120,7 @@ export class CommerceComponent implements OnInit {
       this.preProcessNumber(getSheep),
       this.preProcessNumber(getWheat),
       this.preProcessNumber(getStone));
-    return new Offer(new Player(false, 'black', 0, name), targetPlayers, offeredDeck, requestedDeck);
+    return new Offer(new Player(false, 'black', 0, this.name), targetPlayers, offeredDeck, requestedDeck);
   }
 
   preProcessNumber(val: number): number {
@@ -131,17 +131,17 @@ export class CommerceComponent implements OnInit {
     }
   }
 
-  onWithdrawOffer() {
+  onWithdrawOffer(): void {
     this.withdrawOffer.emit();
   }
 
-  onAccept() {
+  onAccept(): void {
     if (this.canAcceptOffer()) {
       this.acceptOffer.emit();
     }
   }
 
-  onReject() {
+  onReject(): void {
     this.rejectOffer.emit();
   }
 

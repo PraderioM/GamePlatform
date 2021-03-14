@@ -228,6 +228,8 @@ export class BoardDisplayComponent implements OnInit, OnChanges {
       this.drawPorts(this.context, this.canvas.height, this.canvas.width);
     }
     this.drawLands(gameDescription.landList, this.context, this.canvas.height, this.canvas.width);
+
+    // This will probably not be drawn due to late image loading.
     this.drawThief(gameDescription.thiefPosition, gameDescription.landList, this.context, this.canvas.height, this.canvas.width);
 
     // This will probably not be drawn due to late image loading.
