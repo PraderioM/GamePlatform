@@ -59,7 +59,7 @@ class Game(BaseGame):
             'plays': [play.to_frontend() for play in self.play_list],
             'id': None if self.id is None else str(self.id),
             'description': description,
-            'n_actions': self.n_actions,
+            'nActions': self.n_actions,
         }
 
     def to_display(self) -> Dict[str, Union[str, int, bool]]:

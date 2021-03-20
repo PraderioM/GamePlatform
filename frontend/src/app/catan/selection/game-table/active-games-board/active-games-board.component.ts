@@ -6,13 +6,14 @@ import {selectionRefreshTime} from '../../../../services/constants';
 @Component({
   selector: 'app-active-games-board',
   templateUrl: './active-games-board.component.html',
-  styleUrls: ['./active-games-board.component.css']
+  styleUrls: ['./active-games-board.component.css', '../../../../services/common.styles.css']
 })
 export class ActiveGamesBoardComponent implements OnInit {
   @Input() token: string;
   @Output() enterGame = new EventEmitter<GameDescription>();
 
   activeGames: ActiveGame[];
+  gameEntered = false;
 
   constructor(private stateService: StateService) { }
 
@@ -22,13 +23,16 @@ export class ActiveGamesBoardComponent implements OnInit {
 
   async refreshActiveGames() {
     this.activeGames = await this.stateService.getActiveGames(this.token);
-    setTimeout(this.refreshActiveGames.bind(this), selectionRefreshTime);
+    if (!this.gameEntered) {
+      setTimeout(this.refreshActiveGames.bind(this), selectionRefreshTime);
+    }
   }
 
   async tryEnterGame(activeGame: ActiveGame) {
     const gameDescription = await this.stateService.enterGame(this.token, activeGame.gameId);
     if (gameDescription.id != null) {
       this.enterGame.emit(gameDescription);
+      this.gameEntered = true;
     } else {
       alert(gameDescription.description);
     }

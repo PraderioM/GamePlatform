@@ -22,7 +22,8 @@ async def get_active_games(request: web.Request) -> web.Response:
                                              total_points AS total_points,
                                              image_set AS image_set,
                                              card_description AS card_description,
-                                             played_cards AS played_cards
+                                             played_cards AS played_cards,
+                                             n_actions AS n_actions
                                       FROM {ACTIVE_GAMES_TABLE}
                                       ORDER BY creation_date DESC
                                       LIMIT $1 OFFSET $2

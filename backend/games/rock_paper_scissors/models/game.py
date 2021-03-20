@@ -71,7 +71,7 @@ class Game:
             'totalPoints': self.total_points,
             'currentRound': self.current_round,
             'id': str(self.id),
-            'n_actions': self._n_actions,
+            'nActions': self._n_actions,
         }
 
     def to_game_resolution(self, player: Player) -> Dict:

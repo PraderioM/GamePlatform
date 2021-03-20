@@ -45,8 +45,12 @@ export class StateService extends CommonStateService {
               .set('n_actions', this.nActions.toString())
           })
         .toPromise();
-      this.nActions = game.nActions;
-      return game;
+
+      if (game === undefined || game === null) {
+        return null;
+      } else {
+        return game;
+      }
     }
 
     async makePlay(token: string, play: Play, gameId: string) {

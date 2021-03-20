@@ -21,7 +21,8 @@ async def get_active_games(request: web.Request) -> web.Response:
                                              current_player_index AS current_player_index,
                                              player_list AS players, 
                                              play_list AS plays,
-                                             gravity AS gravity
+                                             gravity AS gravity,
+                                             n_actions AS n_actions
                                       FROM {ACTIVE_GAMES_TABLE}
                                       ORDER BY creation_date DESC
                                       LIMIT $1 OFFSET $2

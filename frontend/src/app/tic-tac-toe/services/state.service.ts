@@ -25,8 +25,9 @@ export class StateService extends CommonStateService {
               .set('gravity', gravityStr)})
         .toPromise();
       console.log('done.');
-      this.nActions = response.nActions;
-      return response;
+      const game = GameDescription.fromJSON(response);
+      this.nActions = game.nActions;
+      return game;
     }
 
     async enterGame(token: string, gameId: string) {
@@ -36,8 +37,9 @@ export class StateService extends CommonStateService {
           {params: new HttpParams().set('token', token).set('game_id', gameId)})
         .toPromise();
       console.log('done.');
-      this.nActions = response.nActions;
-      return response;
+      const game = GameDescription.fromJSON(response);
+      this.nActions = game.nActions;
+      return game;
     }
 
     async getGameUpdate(token: string, gameId: string) {
@@ -50,8 +52,15 @@ export class StateService extends CommonStateService {
               .set('n_actions', this.nActions.toString())
           })
         .toPromise();
-      this.nActions = response.nActions;
-      return response;
+
+      if (response === undefined || response === null) {
+        return null;
+      } else {
+        const game = GameDescription.fromJSON(response);
+        this.nActions = game.nActions;
+        console.log('updating');
+        return game;
+      }
     }
 
     async makePlay(token: string, play: Play, gameId: string) {

@@ -5,12 +5,20 @@ export class Play extends BasePlay {
   constructor(public row: number, public col: number, public symbol: string) {
     super();
   }
+
+  public static fromJSON(jsonData: any) {
+    return new Play(jsonData.row, jsonData.col, jsonData.symbol);
+  }
 }
 
 export class Player extends BasePlayer {
   constructor(public isBot: boolean, public symbol: string, public points: number,
               public name?: string) {
     super(isBot, points, name);
+  }
+
+  public static fromJSON(jsonData: any) {
+    return new Player(jsonData.isBot, jsonData.symbol, jsonData.points, jsonData.name);
   }
 }
 
@@ -19,6 +27,21 @@ export class GameDescription extends BaseGameDescription {
               public currentPlayer: number, public description: string,
               public id?: string, public nActions: number = -1, public plays: Play[] = []) {
     super(players, currentPlayer, description, id, nActions, plays);
+  }
+
+  public static fromJSON(jsonData: any) {
+    const players: Player[] = [];
+    for (const playerData of jsonData.players) {
+      players.push(Player.fromJSON(playerData));
+    }
+
+    const plays: Play[] = [];
+    for (const playData of jsonData.plays) {
+      plays.push(Play.fromJSON(playData));
+    }
+
+    return new GameDescription(jsonData.rows, jsonData.cols, players, jsonData.currentPlayer,
+      jsonData.description, jsonData.id, jsonData.nActions, plays);
   }
 }
 

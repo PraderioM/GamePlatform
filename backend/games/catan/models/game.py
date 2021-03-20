@@ -86,7 +86,7 @@ class Game(BaseGame):
             'description': description,
             'hasEnded': has_ended,
             'thiefPosition': self.thief_position,
-            'n_actions': self.n_actions,
+            'nActions': self.n_actions,
         }
     # endregion
 

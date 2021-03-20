@@ -9,7 +9,7 @@
     <th>victory criterion</th>
     <th>Play mode</th>
   </tr>
-  <tr *ngFor="let activeGame of activeGames" (click)="tryEnterGame(activeGame)">
+  <tr *ngFor="let activeGame of activeGames" (click)="tryEnterGame(activeGame)" class="active-games-row">
     <th>{{activeGame.gameId}}</th>
     <th>{{activeGame.nPlayers}}</th>
     <th>{{activeGame.nBots}}</th>

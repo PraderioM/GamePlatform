@@ -87,6 +87,7 @@ export class TableComponent implements OnInit, OnChanges {
 
   onChooseCard(selectedCard: number) {
     this.chooseCard.emit(new ChooseCard(selectedCard));
+    this.selectedCard = null;
   }
 
   getPlayedCardID(): number {

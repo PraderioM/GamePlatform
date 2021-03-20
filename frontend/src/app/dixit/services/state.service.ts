@@ -40,7 +40,7 @@ export class StateService extends CommonStateService {
   }
 
   async getGameUpdate(token: string, gameId: string) {
-    const result = await this.http
+    const response = await this.http
       .get<GameDescription>(this.backendURL + '/get-game-update',
         {
           params: new HttpParams()
@@ -49,9 +49,14 @@ export class StateService extends CommonStateService {
             .set('n_actions', this.nActions.toString())
         })
       .toPromise();
-    const game = GameDescription.fromJSON(result);
-    this.nActions = game.nActions;
-    return game;
+
+    if (response === undefined || response === null) {
+      return null;
+    } else {
+      const game = GameDescription.fromJSON(response);
+      this.nActions = game.nActions;
+      return game;
+    }
   }
 
   async describeCard(token: string, play: DescribeCard, gameId: string) {

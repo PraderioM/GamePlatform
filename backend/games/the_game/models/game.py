@@ -79,7 +79,7 @@ class Game(BaseGame):
             'hasEnded': self.has_ended,
             'description': description,
             'id': None if self.id is None else str(self.id),
-            'n_actions': self.n_actions,
+            'nActions': self.n_actions,
         }
 
     # endregion
