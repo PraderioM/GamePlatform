@@ -1,1 +1,1 @@
-<div [ngClass]="getNgClass()">{{cardNumber}}</div>
+<span [ngClass]="getNgClass()" (click)="selectCard.emit()">{{cardNumber}}</span>

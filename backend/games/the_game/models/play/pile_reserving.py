@@ -15,10 +15,6 @@ class PileReserving(Play):
         self.pile_id = pile_id
 
     @classmethod
-    def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'BlockPile':
-        return BlockPile(player=json_data['player'], pile_id=json_data['pileId'])
-
-    @classmethod
     def pre_process_web_request(cls, request: web.Request) -> Dict:
         return {
             'pileId': int(request.rel_url.query['pile_id']),
@@ -38,6 +34,10 @@ class PileReserving(Play):
 @register_play(play_name='block_pile')
 class BlockPile(PileReserving):
 
+    @classmethod
+    def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'BlockPile':
+        return BlockPile(player=json_data['player'], pile_id=json_data['pileId'])
+
     def update_game(self, game):
         player: Player = game.get_player_by_name(self.player.name)
         player.add_blocked_pile(self.pile_id)
@@ -45,6 +45,10 @@ class BlockPile(PileReserving):
 
 @register_play(play_name='slow_down_pile')
 class SlowDownPile(PileReserving):
+
+    @classmethod
+    def from_frontend(cls, json_data: Dict, *args, **kwargs) -> 'SlowDownPile':
+        return SlowDownPile(player=json_data['player'], pile_id=json_data['pileId'])
 
     def update_game(self, game):
         player: Player = game.get_player_by_name(self.player.name)

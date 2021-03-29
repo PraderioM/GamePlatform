@@ -4,7 +4,7 @@ import {Pile, PileReserve} from '../../../services/models';
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
-  styleUrls: ['./table.component.css']
+  styleUrls: ['./table.component.css', '../../../../services/common.styles.css']
 })
 export class TableComponent implements OnInit {
   @Output() startGame = new EventEmitter<void>();
@@ -24,6 +24,7 @@ export class TableComponent implements OnInit {
   @Input() canReservePile: boolean;
   @Input() canEndTurn: boolean;
   @Input() nRemainingCards: number;
+  @Input() selectedCard?: number;
 
   constructor() { }
 

@@ -1,17 +1,18 @@
 import {ActiveGame as BaseActiveGame} from '../../services/models';
 import {defaultDeckSize, defaultMinToPlayCards, maxCard} from './constants';
+import {BasePlay} from './plays/base.play';
 
 export class Player {
   constructor(public deck: number[],
               public isBot: boolean,
-              public blockedPileLists: number[],
-              public slowedDownPileLists: number[],
+              public blockedPileList: number[],
+              public slowedDownPileList: number[],
               public originalDeckLength: number,
               public name?: string) {
   }
 
   public static fromJSON(jsonData: Player) {
-    return new Player(jsonData.deck, jsonData.isBot, jsonData.blockedPileLists, jsonData.slowedDownPileLists,
+    return new Player(jsonData.deck, jsonData.isBot, jsonData.blockedPileList, jsonData.slowedDownPileList,
       jsonData.originalDeckLength, jsonData.name);
   }
 

@@ -7,7 +7,6 @@ import {EndTurn} from '../services/plays/end.turn';
 import {BlockPile} from '../services/plays/block.pile';
 import {SlowDownPile} from '../services/plays/slow.down.pile';
 import {ChooseStartingPlayer} from '../services/plays/choose.starting.player';
-import {deckSize} from '../../dixit/services/constants';
 
 @Component({
   selector: 'app-board',
@@ -29,8 +28,7 @@ export class BoardComponent implements OnInit {
   constructor(private stateService: StateService) { }
 
   ngOnInit() {
-    // Todo uncomment.
-    // this.updateGame();
+    this.updateGame();
   }
 
   async updateGame() {
@@ -39,7 +37,7 @@ export class BoardComponent implements OnInit {
     if (!(description === undefined || description == null) && description.id != null) {
       this.description = description;
 
-      if (this.hasGameEnded()) {
+      if (description.hasEnded) {
         await this.endGame();
         return;
       }
@@ -91,21 +89,10 @@ export class BoardComponent implements OnInit {
     return [];
   }
 
-  hasGameEnded() {
-    if (this.description.remainingCards == null) {
-      return false;
-    }
-    let remainingCards = this.description.remainingCards.length;
-    for (const player of this.description.playerList) {
-      remainingCards += player.deck.length;
-    }
-    return remainingCards === 0;
-  }
-
   getBlockedPiles() {
     const blockedPiles: PileReserve[] = [];
     for (const player of this.description.playerList) {
-      for (const pileId of player.blockedPileLists) {
+      for (const pileId of player.blockedPileList) {
         blockedPiles.push(new PileReserve(player.name, pileId));
       }
     }
@@ -115,7 +102,7 @@ export class BoardComponent implements OnInit {
   getSlowedDownPiles() {
     const slowedDownPiles: PileReserve[] = [];
     for (const player of this.description.playerList) {
-      for (const pileId of player.slowedDownPileLists) {
+      for (const pileId of player.slowedDownPileList) {
         slowedDownPiles.push(new PileReserve(player.name, pileId));
       }
     }
@@ -143,6 +130,12 @@ export class BoardComponent implements OnInit {
       return this.description.deckSize;
     } else {
       return this.description.getCurrentPlayer().originalDeckLength;
+    }
+  }
+
+  getBackgroundColor() {
+    if (this.name === 'Rosaria') {
+      return 'white';
     }
   }
 }

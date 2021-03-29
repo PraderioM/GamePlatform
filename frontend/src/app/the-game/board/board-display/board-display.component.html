@@ -9,6 +9,7 @@
            [canReservePile]="canReservePile()"
            [canEndTurn]="canEndTurn()"
            [nRemainingCards]="nRemainingCards"
+           [selectedCard]="selectedCard"
            (startGame)="onStartGame()"
            (playCard)="onCardPlay($event)"
            (blockPile)="onBlockPile($event)"
@@ -19,6 +20,7 @@
 <app-deck [deck]="deck"
           [onFire]="onFire"
           [selectedCard]="selectedCard"
+          [isCurrentPlayer]="isCurrentPlayer"
           (selectCard)="onCardSelect($event)">
 
 </app-deck>

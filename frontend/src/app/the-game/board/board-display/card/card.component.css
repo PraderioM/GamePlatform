@@ -4,7 +4,7 @@
 }
 
 .on-fire {
-  background-image: url("https://www.pngfind.com/pngs/m/351-3513201_fire-png-flame-transparent-png.png");
+  background-image: url("/assets/the-game/fire.png");
   background-size: 100% 100%;
   background-repeat:no-repeat;
   color: blue;
@@ -15,5 +15,13 @@
 }
 
 .card {
-  font-size: larger;
+  font-size: xxx-large;
+}
+
+.selectable {
+
+}
+
+.selectable:hover {
+  cursor: pointer;
 }

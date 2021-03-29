@@ -12,6 +12,7 @@ export class CardComponent implements OnInit {
   @Input() cardNumber: number;
   @Input() selected: boolean;
   @Input() onFire: boolean;
+  @Input() isCurrentPayer: boolean;
 
   constructor() { }
 
@@ -36,6 +37,7 @@ export class CardComponent implements OnInit {
   getNgClass() {
     return {
       'on-fire': this.isOnFireCard(),
+      selectable: this.isCurrentPayer,
       selected: this.selected,
       card: true
     };

@@ -1,10 +1,13 @@
 <div class="deck-container">
+  <p *ngIf="isCurrentPlayer" class="header-message">{{getHeaderMessage()}}</p>
   <p class="container">
     <app-card *ngFor="let cardNumber of deck"
               [cardNumber]="cardNumber"
               [selected]="selectedCard === cardNumber"
               [onFire]="onFire"
-              (selectCard)="onCardSelected(cardNumber)">
+              [isCurrentPayer]="isCurrentPlayer"
+              (selectCard)="onCardSelected(cardNumber)"
+              [style.width.pt]="getCardWidth(cardNumber)">
 
     </app-card>
   </p>

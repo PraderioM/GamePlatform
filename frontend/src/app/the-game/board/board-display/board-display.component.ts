@@ -91,7 +91,7 @@ export class BoardDisplayComponent implements OnInit {
       return;
     }
 
-    this.blockPile.emit(new BlockPile(pileId));
+    this.slowDownPile.emit(new SlowDownPile(pileId));
   }
 
   getPileById(pileId: number): Pile {
@@ -151,12 +151,14 @@ export class BoardDisplayComponent implements OnInit {
       }
 
       // Turn cannot be ended if on playing game on fire and fire cards are on piles for more than 1 turn.
-      for (const pile of this.piles) {
-        const lastPileCard = pile.getLastCard();
-        const lastPlayedTurn = pile.getLastAddedTurn();
-        for (const onFireCard of onFireCardList) {
-          if (onFireCard === lastPileCard && this.turn - lastPlayedTurn >= onFireLife) {
-            return false;
+      if (this.onFire) {
+        for (const pile of this.piles) {
+          const lastPileCard = pile.getLastCard();
+          const lastPlayedTurn = pile.getLastAddedTurn();
+          for (const onFireCard of onFireCardList) {
+            if (onFireCard === lastPileCard && this.turn - lastPlayedTurn >= onFireLife) {
+              return false;
+            }
           }
         }
       }

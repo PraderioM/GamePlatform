@@ -6,3 +6,8 @@
 .table-container {
   border: solid;
 }
+
+.remaining-message {
+  font-size: x-large;
+  text-align: center;
+}

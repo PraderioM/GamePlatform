@@ -22,8 +22,6 @@ export class HomeComponent {
   gameSelections: boolean[];
 
   constructor(private stateService: StateService) {
-    // todo uncomment.
-    // this.gameSelections = [false, false, false, false, true, false];
     this.gameSelections = [];
     for (const name of this.gameNames) {
       this.gameSelections.push(false);
@@ -70,6 +68,7 @@ export class HomeComponent {
   getClass() {
     return {
       'vaso-container': this.name === 'Vaso',
+      'rosaria-container': this.name === 'Rosaria',
     };
   }
 }

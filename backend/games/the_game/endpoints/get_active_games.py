@@ -23,7 +23,8 @@ async def get_active_games(request: web.Request) -> web.Response:
                                              on_fire AS on_fire,
                                              turn AS turn,
                                              deck_size AS deck_size,
-                                             min_to_play_cards AS min_to_play_cards
+                                             min_to_play_cards AS min_to_play_cards,
+                                             n_actions AS n_actions
                                       FROM {ACTIVE_GAMES_TABLE}
                                       ORDER BY creation_date DESC
                                       LIMIT $1 OFFSET $2

@@ -6,3 +6,8 @@
 .deck-container {
   border: solid;
 }
+
+.header-message {
+  font-size: x-large;
+  text-align: center;
+}

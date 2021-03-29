@@ -1,31 +1,31 @@
-<label>
-  <p *ngIf="blockingPlayerNameList.length > 0">
-    <span>
-      Blocked by {{getBlockingNameString()}}
-    </span>
-  </p>
-  <p *ngIf="slowingDownPlayerNameList.length > 0">
-    <span>
-      Slowed down by {{getSlowingDownNameString()}}
-    </span>
-  </p>
-  <p>
-    <span>{{getDirection()}}</span>
-  </p>
-  <p>
-    <app-card [cardNumber]="topCard"
-              [selected]="false"
-              [onFire]="onFire">
+<label class="pile-container">
+  <br *ngIf="blockingPlayerNameList.length > 0">
+  <span *ngIf="blockingPlayerNameList.length > 0" class="reserve-listing">
+    Blocked by {{getBlockingNameString()}}
+  </span>
 
-    </app-card>
-  </p>
-  <p *ngIf="canPlayCard">
-    <button (click)="playCard.emit()">Play card</button>
-  </p>
-  <p *ngIf="canBlockPile">
-    <button (click)="blockPile.emit()">Block pile</button>
-  </p>
-  <p *ngIf="canSlowDownPile">
-    <button (click)="slowDownPile.emit()">Slow down pile</button>
-  </p>
+  <br *ngIf="slowingDownPlayerNameList.length > 0">
+  <span *ngIf="slowingDownPlayerNameList.length > 0" class="reserve-listing">
+    Slowed down by {{getSlowingDownNameString()}}
+  </span>
+
+  <br>
+  <span>{{getDirection()}}</span>
+
+  <br>
+  <app-card [cardNumber]="topCard"
+            [selected]="false"
+            [onFire]="onFire">
+  </app-card>
+  <br>
+
+  <br *ngIf="isSelectedCardPlayable()">
+  <button *ngIf="isSelectedCardPlayable()" (click)="playCard.emit()">Play card</button>
+
+  <br *ngIf="canBlockPile">
+  <button *ngIf="canBlockPile" (click)="blockPile.emit()">Block pile</button>
+
+  <br *ngIf="canSlowDownPile">
+  <button *ngIf="canSlowDownPile" (click)="slowDownPile.emit()">Slow down pile</button>
+
 </label>

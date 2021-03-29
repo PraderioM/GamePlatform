@@ -2,7 +2,8 @@
 <div *ngIf="description != null && isPlaying" class="container">
   <app-players-display [playerList]="description.playerList"
                        [currentPlayerName]="getCurrentPlayerName()"
-                       [gameStarted]="gameStarted()">
+                       [gameStarted]="gameStarted()"
+                       style="width: 10%">
 
   </app-players-display>
   <app-board-display (playCard)="playCard($event)"
@@ -21,13 +22,16 @@
                      [nRemainingCards]="getNRemainingCards()"
                      [nInitialCards]="getCurrentPlayerInitialCards()"
                      [turn]="description.turn"
-                     [name]="name">
+                     [name]="name"
+                     style="width: 60%; height: 80%"
+                     [style.background-color]="getBackgroundColor()">
 
   </app-board-display>
   <app-options-display (backToMenu)="onBackToMenu()"
                        [gameId]="description.id"
                        [instructions]="''"
-                       [link]="link">
+                       [link]="link"
+                       style="width: 10%">
 
   </app-options-display>
 </div>
