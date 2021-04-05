@@ -71,4 +71,10 @@ export class HomeComponent {
       'rosaria-container': this.name === 'Rosaria',
     };
   }
+
+  getBackgroundColor() {
+    if (this.name !== 'Vaso') {
+      return 'white';
+    }
+  }
 }

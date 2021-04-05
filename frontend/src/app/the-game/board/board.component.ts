@@ -132,10 +132,4 @@ export class BoardComponent implements OnInit {
       return this.description.getCurrentPlayer().originalDeckLength;
     }
   }
-
-  getBackgroundColor() {
-    if (this.name === 'Rosaria') {
-      return 'white';
-    }
-  }
 }
