@@ -25,7 +25,8 @@ async def get_game_data(game_id: str, db: asyncpg.Connection) -> Optional[Dict]:
                                     victory_criterion AS victory_criterion,
                                     play_mode AS play_mode,
                                     total_points AS total_points,
-                                    n_plays AS n_plays
+                                    n_plays AS n_plays,
+                                    n_actions AS n_actions
                              FROM {ACTIVE_GAMES_TABLE}
                              WHERE id = $1
                              """, game_id)
