@@ -1,6 +1,6 @@
-export const backendURL = 'http://gameplatform.tetesake.site:37017';
+// export const backendURL = 'http://gameplatform.tetesake.site:37017';
 // export const backendURL = 'http://localhost:2121';
-// export const backendURL = 'https://3ce4d82ab4f9.ngrok.io';
+export const backendURL = 'https://d44b84360086.ngrok.io';
 
 export const assetsPath = '/assets';
 export const lossScope = '/loss-images';
