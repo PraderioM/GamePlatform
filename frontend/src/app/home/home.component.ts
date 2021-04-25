@@ -22,11 +22,10 @@ export class HomeComponent {
   gameSelections: boolean[];
 
   constructor(private stateService: StateService) {
-    // this.gameSelections = [];
-    // for (const name of this.gameNames) {
-    //   this.gameSelections.push(false);
-    // }
-    this.gameSelections = [false, false, false, false, true, false];
+    this.gameSelections = [];
+    for (const name of this.gameNames) {
+      this.gameSelections.push(false);
+    }
   }
 
   async logOut() {
