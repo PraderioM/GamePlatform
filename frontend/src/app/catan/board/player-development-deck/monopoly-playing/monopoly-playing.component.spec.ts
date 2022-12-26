@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { MonopolyPlayingComponent } from './monopoly-playing.component';
 
@@ -6,7 +6,7 @@ describe('MonopolyPlayingComponent', () => {
   let component: MonopolyPlayingComponent;
   let fixture: ComponentFixture<MonopolyPlayingComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ MonopolyPlayingComponent ]
     })

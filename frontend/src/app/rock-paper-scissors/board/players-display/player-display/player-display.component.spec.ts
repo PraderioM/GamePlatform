@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { PlayerDisplayComponent } from './player-display.component';
 
@@ -6,7 +6,7 @@ describe('PlayerDisplayComponent', () => {
   let component: PlayerDisplayComponent;
   let fixture: ComponentFixture<PlayerDisplayComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ PlayerDisplayComponent ]
     })
