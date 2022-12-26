@@ -1,18 +1,40 @@
 <div [ngClass]="getClass()">
   <p>Logged in as {{name}}</p>
-  <app-tic-tac-toe [token]="token" [name]="name" (backToMenu)="deSelectGames()" *ngIf="isSelected('tic-tac-toe')">
+  <app-tic-tac-toe [token]="token"
+                   [name]="name"
+                   (backToMenu)="deSelectGames()"
+                   *ngIf="isSelected('tic-tac-toe')"
+                   [ngClass]="getGameClass()">
   </app-tic-tac-toe>
-  <app-sudoku (backToMenu)="deSelectGames()" *ngIf="isSelected('SuDoKu')"> </app-sudoku>
-  <app-catan [token]="token" [name]="name" (backToMenu)="deSelectGames()" *ngIf="isSelected('CATAN')">
+  <app-sudoku (backToMenu)="deSelectGames()"
+              *ngIf="isSelected('SuDoKu')"
+              [ngClass]="getGameClass()">
+  </app-sudoku>
+  <app-catan [token]="token"
+             [name]="name"
+             (backToMenu)="deSelectGames()"
+             *ngIf="isSelected('CATAN')"
+             [ngClass]="getGameClass()">
   </app-catan>
-  <app-dixit [token]="token" [name]="name" (backToMenu)="deSelectGames()" *ngIf="isSelected('DiXiT')">
+  <app-dixit [token]="token"
+             [name]="name"
+             (backToMenu)="deSelectGames()"
+             *ngIf="isSelected('DiXiT')"
+             [ngClass]="getGameClass()">
   </app-dixit>
-  <app-the-game [token]="token" [name]="name" (backToMenu)="deSelectGames()" *ngIf="isSelected('the GAME')">
+  <app-the-game [token]="token"
+                [name]="name"
+                (backToMenu)="deSelectGames()"
+                *ngIf="isSelected('the GAME')"
+                [ngClass]="getGameClass()">
   </app-the-game>
-  <app-rock-paper-scissors [token]="token" [name]="name" (backToMenu)="deSelectGames()"
-                           *ngIf="isSelected('rock-paper-scissors')">
-
+  <app-rock-paper-scissors [token]="token"
+                           [name]="name"
+                           (backToMenu)="deSelectGames()"
+                           *ngIf="isSelected('rock-paper-scissors')"
+                           [ngClass]="getGameClass()">
   </app-rock-paper-scissors>
+
   <ul style="text-align:center" class="data-container" *ngIf="!isAnyGameSelected()">
     Select Game
     <li style="text-align:center" class="data-container">

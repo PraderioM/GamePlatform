@@ -43,7 +43,7 @@
   flex-flow: wrap;
   justify-content: space-around;
   align-content: center;
-  width: 80%;
+  width: 80vw;
 }
 
 .active-games-row {

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { RightSideDisplayComponent } from './right.side.display.component';
 
@@ -6,7 +6,7 @@ describe('OptionsDisplayComponent', () => {
   let component: RightSideDisplayComponent;
   let fixture: ComponentFixture<RightSideDisplayComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ RightSideDisplayComponent ]
     })

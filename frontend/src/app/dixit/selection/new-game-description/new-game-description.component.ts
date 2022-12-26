@@ -2,7 +2,6 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {GameDescription} from '../../services/models';
 import {StateService} from '../../services/state.service';
 import {deckSize} from '../../services/constants';
-import {stringify} from 'querystring';
 import {nCards} from '../../services/cards';
 
 @Component({
@@ -75,7 +74,8 @@ export class NewGameDescriptionComponent implements OnInit {
       this.isTotalPointsCorrect = false;
       return;
     } else if (nCards[imageSet] < (npc + pc ) * deckSize) {
-      alert('There can be at most ' + stringify(Math.floor(nCards[imageSet] / deckSize)) + ' for playing with the image set ' + imageSet);
+      const n = Math.floor(nCards[imageSet] / deckSize).toString();
+      alert('There can be at most ' + n + ' for playing with the image set ' + imageSet);
       this.isPCCorrect = false;
       this.isNPCCorrect = false;
     }

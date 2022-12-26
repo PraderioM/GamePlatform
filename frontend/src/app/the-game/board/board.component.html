@@ -3,7 +3,7 @@
   <app-players-display [playerList]="description.playerList"
                        [currentPlayerName]="getCurrentPlayerName()"
                        [gameStarted]="gameStarted()"
-                       style="width: 10%">
+                       style="width: 10vw">
 
   </app-players-display>
   <app-board-display (playCard)="playCard($event)"
@@ -23,15 +23,14 @@
                      [nInitialCards]="getCurrentPlayerInitialCards()"
                      [turn]="description.turn"
                      [name]="name"
-                     style="width: 60%; height: 80%"
-                     [style.background-color]="getBackgroundColor()">
+                     style="width: 60vw; height: 80vh">
 
   </app-board-display>
   <app-options-display (backToMenu)="onBackToMenu()"
                        [gameId]="description.id"
                        [instructions]="''"
                        [link]="link"
-                       style="width: 10%">
+                       style="width: 10vw">
 
   </app-options-display>
 </div>

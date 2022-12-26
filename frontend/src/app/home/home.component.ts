@@ -71,4 +71,11 @@ export class HomeComponent {
       'rosaria-container': this.name === 'Rosaria',
     };
   }
+
+  getGameClass() {
+    return {
+      'game-container': true,
+      'white-container': this.name !== 'Vaso'
+    };
+  }
 }

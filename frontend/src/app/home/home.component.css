@@ -21,3 +21,15 @@
   background-repeat:no-repeat;
   height: 97vh;
 }
+
+
+.game-container {
+  position: absolute;
+  height: 95vh;
+  width: 95vw;
+  left: 2vw;
+}
+
+.white-container {
+  background: white;
+}
